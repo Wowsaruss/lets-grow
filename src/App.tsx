@@ -25,17 +25,16 @@ function App() {
 }, [setTrivia])
 
 const questions = triviaQs?.map((t, i) => {
-  console.log(t)
     return (
-      <div>
-        <h3 key={i}>{t?.question}</h3>
+      <div key={i}>
+        <h3>{t?.question}</h3>
+        <h5>{t.answer}</h5>
+        {/* {t.showAnswer ? <h3>{t.answer}</h3> : null} */}
         <button onClick={() => {
           t.showAnswer = true
           triviaQs.splice(i, 1, t)
           setTrivia(triviaQs)
         }}>See Answer</button>
-        <h3>{t.answer}</h3>
-        {/* {t.showAnswer ? <h3>{t.answer}</h3> : null} */}
       </div>
       )
 })
