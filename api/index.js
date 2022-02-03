@@ -1,18 +1,17 @@
 const express = require('express');
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
-var path = require('path');
-var logger = require('morgan');
+const path = require('path');
+const logger = require('morgan');
+const {server} = require('./config');
+const triviaRouter = require('./routes/trivia');
 // const bodyParser = require('body-parser');
 // const axios = require('axios');
 
-const triviaRouter = require('./routes/trivia');
-
 const app = express();
-const env = process.env;
 
 app.use(cors());
-app.use(logger(env.ENVIRONMENT));
+app.use(logger(server.environment));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
@@ -24,4 +23,4 @@ app.get('/', (req, res) => {
 
 app.get('/trivia', triviaRouter);
 
-app.listen(env.SERVER_PORT, () => console.log(`SERVER RUNNING ON PORT:${env.SERVER_PORT}`));
+app.listen(server.port, () => console.log(`SERVER RUNNING ON PORT:${server.port}`));

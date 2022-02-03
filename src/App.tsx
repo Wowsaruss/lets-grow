@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
-
+import {config} from './config'
 import './App.css';
 
 interface Category {
@@ -19,7 +19,7 @@ function App() {
   const [triviaQs, setTrivia] = useState<Trivia[]>([]);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_TEST_API}/trivia`).then(res => {
+    axios.get(`${config.backendApiUrl}/trivia`).then(res => {
       setTrivia(res.data)
  })
 }, [setTrivia])
