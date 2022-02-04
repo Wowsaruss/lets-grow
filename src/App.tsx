@@ -1,49 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios'
-import {config} from './config'
-import './App.css';
+import React from 'react'
+// import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LoginButton from './components/LoginButton'
 
-interface Category {
-  id: number;
-  title: string;
-}
-interface Trivia {
-  id: number;
-  question: string;
-  category: Category;
-  answer: string;
-  showAnswer?: boolean;
-}
+import './App.css'
 
 function App() {
-  const [triviaQs, setTrivia] = useState<Trivia[]>([]);
-
-  useEffect(() => {
-    axios.get(`${config.backendApiUrl}/trivia`).then(res => {
-      setTrivia(res.data)
- })
-}, [setTrivia])
-
-const questions = triviaQs?.map((t, i) => {
     return (
-      <div key={i}>
-        <h3>{t?.question}</h3>
-        <h5>{t.answer}</h5>
-        {/* {t.showAnswer ? <h3>{t.answer}</h3> : null} */}
-        <button onClick={() => {
-          t.showAnswer = true
-          triviaQs.splice(i, 1, t)
-          setTrivia(triviaQs)
-        }}>See Answer</button>
-      </div>
-      )
-})
-
-  return (
-    <div className="App" style={{display: "flex", flexDirection: "column"}}>
-      {questions}
-    </div>
-  );
+        <div>
+            <LoginButton />
+        </div>
+    )
 }
 
-export default App;
+export default App
