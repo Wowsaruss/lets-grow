@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Auth0Provider } from '@auth0/auth0-react'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
@@ -14,7 +15,9 @@ ReactDOM.render(
         redirectUri={window.location.origin}
     >
         <React.StrictMode>
-            <App />
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
         </React.StrictMode>
     </Auth0Provider>,
     document.getElementById('root')
