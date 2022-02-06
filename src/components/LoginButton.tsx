@@ -5,15 +5,15 @@ const LoginButton = () => {
     const { loginWithRedirect } = useAuth0()
 
     return (
-        <button
+        <li
             onClick={() =>
                 loginWithRedirect({
-                    redirectUri: `${window.location.origin}/home`,
+                    redirectUri: `${window.location.origin}/dashboard`,
                 })
             }
         >
-            Log In
-        </button>
+            Login
+        </li>
     )
 }
 

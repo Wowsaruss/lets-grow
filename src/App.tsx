@@ -5,38 +5,54 @@ import LogoutButton from './components/LogoutButton'
 import Profile from './components/Profile'
 
 import './App.css'
+import { useAuth0 } from '@auth0/auth0-react'
+
+const Home = () => (
+    <div>
+        <h1>HOME!</h1>
+    </div>
+)
+
+const About = () => (
+    <div>
+        <h1>ABOUT!</h1>
+    </div>
+)
+
+const Dashboard = () => (
+    <div>
+        <h1>DASHBOARD!</h1>
+        <Profile />
+    </div>
+)
+
+function TopNavigation() {
+    const { isAuthenticated } = useAuth0()
+
+    return (
+        <nav>
+            <ul>
+                <li>
+                    <Link to="/">Home</Link>
+                </li>
+                <li>
+                    <Link to="/about">About</Link>
+                </li>
+                {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+            </ul>
+        </nav>
+    )
+}
 
 function App() {
     return (
         <div>
+            <TopNavigation />
+
             <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <div>
-                            <a href="/login">Login Page</a>
-                        </div>
-                    }
-                />
-                <Route
-                    path="/login"
-                    element={
-                        <div>
-                            <LoginButton />
-                        </div>
-                    }
-                />
-                <Route
-                    path="home"
-                    element={
-                        <div>
-                            <h1>You are logged in now!!</h1>
-                            <a href="/profile">Profile</a>
-                            <Profile />
-                            <LogoutButton />
-                        </div>
-                    }
-                />
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
         </div>
     )
