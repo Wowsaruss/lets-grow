@@ -1,30 +1,19 @@
 import React from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import {
+    Routes,
+    Route,
+    Link,
+    Navigate,
+    useLocation,
+    Outlet,
+} from 'react-router-dom'
+import { useAuth0 } from '@auth0/auth0-react'
 import LoginButton from './components/LoginButton'
 import LogoutButton from './components/LogoutButton'
-import Profile from './components/Profile'
-
+import Dashboard from './components/pages/Dashboard'
+import About from './components/pages/About'
+import Home from './components/pages/Home'
 import './App.css'
-import { useAuth0 } from '@auth0/auth0-react'
-
-const Home = () => (
-    <div>
-        <h1>HOME!</h1>
-    </div>
-)
-
-const About = () => (
-    <div>
-        <h1>ABOUT!</h1>
-    </div>
-)
-
-const Dashboard = () => (
-    <div>
-        <h1>DASHBOARD!</h1>
-        <Profile />
-    </div>
-)
 
 function TopNavigation() {
     const { isAuthenticated } = useAuth0()
@@ -38,24 +27,54 @@ function TopNavigation() {
                 <li>
                     <Link to="/about">About</Link>
                 </li>
-                {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+                {isAuthenticated ? (
+                    <>
+                        <li>
+                            <Link to="/dashboard">Dashboard</Link>
+                        </li>
+                        <LogoutButton />
+                    </>
+                ) : (
+                    <>
+                        <LoginButton />
+                    </>
+                )}
             </ul>
         </nav>
     )
 }
 
+function NotFound() {
+    return <>!!!!!!!!!!!NOT FOUND!!!!!!!!!!!</>
+}
+
 function App() {
     return (
-        <div>
+        <>
             <TopNavigation />
 
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                {/* I need to eventually figure out how to fix the RequireAuth route wrapper */}
+                <Route element={<RequireAuth />}></Route>
+                <Route path="*" element={<NotFound />} />
             </Routes>
-        </div>
+        </>
     )
+}
+
+// I need to eventually figure out how to fix the RequireAuth route wrapper
+function RequireAuth() {
+    const { isAuthenticated } = useAuth0()
+    const location = useLocation()
+
+    if (isAuthenticated) {
+        return <Navigate to="/" state={{ from: location }} />
+    }
+
+    return <Outlet />
 }
 
 export default App
