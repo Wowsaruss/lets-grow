@@ -20,7 +20,14 @@ function TopNavigation() {
     const { isAuthenticated } = useAuth0()
 
     return (
-        <nav>
+        <nav
+            style={{
+                position: 'fixed',
+                height: '100%',
+                width: 150,
+                backgroundColor: '#f4edcd',
+            }}
+        >
             <ul>
                 <li>
                     <Link to="/">Home</Link>
@@ -54,19 +61,21 @@ function NotFound() {
 
 function App() {
     return (
-        <>
+        <div style={{ display: 'flex' }}>
             <TopNavigation />
 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/plants" element={<Plants />} />
-                {/* I need to eventually figure out how to fix the RequireAuth route wrapper */}
-                <Route element={<RequireAuth />}></Route>
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-        </>
+            <div style={{paddingLeft: 150}}>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/plants" element={<Plants />} />
+                    {/* I need to eventually figure out how to fix the RequireAuth route wrapper */}
+                    <Route element={<RequireAuth />}></Route>
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </div>
+        </div>
     )
 }
 
