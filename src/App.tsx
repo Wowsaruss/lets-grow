@@ -28,21 +28,35 @@ function TopNavigation() {
                 backgroundColor: '#f4edcd',
             }}
         >
-            <ul>
-                <li>
-                    <Link to="/">Home</Link>
-                </li>
-                <li>
-                    <Link to="/about">About</Link>
-                </li>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'baseline',
+                    marginLeft: 15,
+                    marginTop: 15,
+                }}
+            >
+                <img
+                    src="https://github.com/Wowsaruss/lets-grow/blob/master/src/Grow-PNG-HD.png"
+                    alt=""
+                    width="100px"
+                    height="100px"
+                />
+                <Link to="/" style={{ marginBottom: 10 }}>
+                    Home
+                </Link>
+                <Link to="/about" style={{ marginBottom: 10 }}>
+                    About
+                </Link>
                 {isAuthenticated ? (
                     <>
-                        <li>
-                            <Link to="/dashboard">Dashboard</Link>
-                        </li>
-                        <li>
-                            <Link to="/plants">Plants</Link>
-                        </li>
+                        <Link to="/dashboard" style={{ marginBottom: 10 }}>
+                            Dashboard
+                        </Link>
+                        <Link to="/plants" style={{ marginBottom: 10 }}>
+                            Plants
+                        </Link>
                         <LogoutButton />
                     </>
                 ) : (
@@ -50,7 +64,7 @@ function TopNavigation() {
                         <LoginButton />
                     </>
                 )}
-            </ul>
+            </div>
         </nav>
     )
 }
@@ -64,7 +78,7 @@ function App() {
         <div style={{ display: 'flex' }}>
             <TopNavigation />
 
-            <div style={{paddingLeft: 150}}>
+            <div style={{ paddingLeft: 150 }}>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
