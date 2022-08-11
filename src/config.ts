@@ -16,3 +16,5 @@ export const config = {
         useRefreshTokens: true,
     },
 }
+
+export default config

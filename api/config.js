@@ -6,11 +6,10 @@ const config = {
         environment: env.SERVER_ENVIRONMENT ? env.SERVER_ENVIRONMENT : 'dev',
     },
     db: {
-        host: env.DB_HOST ? env.DB_HOST : '',
-        port: env.DB_PORT ? env.DB_PORT : '',
-        user: env.DB_USER ? env.DB_USER : '',
-        password: env.DB_PASSWORD ? env.DB_PASSWORD : '',
-        database: env.DB_NAME ? env.DB_NAME : '',
+        connectionString: process.env.DB_URI,
+        ssl: {
+            rejectUnauthorized: false,
+        },
     },
     listPerPage: env.LIST_PER_PAGE ? env.LIST_PER_PAGE : 10,
 }

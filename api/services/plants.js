@@ -1,14 +1,14 @@
 const db = require('./db')
-const helper = require('../helper')
+const helpers = require('../helpers')
 const config = require('../config')
 
 async function getMany(page = 1) {
-    const offset = helper.getOffset(page, config.listPerPage)
+    const offset = helpers.getOffset(page, config.listPerPage)
     const rows = await db.query(
-        'SELECT id, question, answer FROM trivia OFFSET $1 LIMIT $2',
+        'SELECT * FROM plants OFFSET $1 LIMIT $2',
         [offset, config.listPerPage]
     )
-    const data = helper.emptyOrRows(rows)
+    const data = helpers.emptyOrRows(rows)
     const meta = { page }
 
     return {

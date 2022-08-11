@@ -4,9 +4,7 @@ const cors = require('cors')
 const path = require('path')
 const logger = require('morgan')
 const { server } = require('./config')
-const triviaRouter = require('./routes/trivia')
-// const bodyParser = require('body-parser');
-// const axios = require('axios');
+const plantsRouter = require('./routes/plants')
 
 const app = express()
 
@@ -18,10 +16,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/', (req, res) => {
-    return res.send('WELCOME!')
+    return res.send('Lets Grow!')
 })
 
-app.get('/trivia', triviaRouter)
+app.get('/plants', plantsRouter)
 
 app.listen(server.port, () =>
     console.log(`SERVER RUNNING ON PORT:${server.port}`)

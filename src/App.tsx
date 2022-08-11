@@ -14,6 +14,7 @@ import Dashboard from './components/pages/Dashboard'
 import About from './components/pages/About'
 import Home from './components/pages/Home'
 import './App.css'
+import Plants from './components/pages/Plants'
 
 function TopNavigation() {
     const { isAuthenticated } = useAuth0()
@@ -31,6 +32,9 @@ function TopNavigation() {
                     <>
                         <li>
                             <Link to="/dashboard">Dashboard</Link>
+                        </li>
+                        <li>
+                            <Link to="/plants">Plants</Link>
                         </li>
                         <LogoutButton />
                     </>
@@ -57,6 +61,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/plants" element={<Plants />} />
                 {/* I need to eventually figure out how to fix the RequireAuth route wrapper */}
                 <Route element={<RequireAuth />}></Route>
                 <Route path="*" element={<NotFound />} />
