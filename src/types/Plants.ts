@@ -1,5 +1,29 @@
 export interface Plant {
-    id: any;
-    first_name: string;
-    type: string;
+    created_at: string
+    days_to_germination: string
+    days_to_harvest: string
+    description: string
+    determinate: string
+    fall_start_indoors: string
+    fall_start_outdoors: string
+    fall_transplant: string
+    family: string
+    first_name: string
+    germination_temps_f: string
+    id: string
+    last_day_to_plant: string
+    light: string
+    perennial: string
+    plant_spacing: string
+    pruning: string
+    row_spacing: string
+    second_name: string
+    seed_depth: string
+    soil: string
+    start_indoors: string
+    start_outdoors: string
+    transplant: string
+    type: string
+    updated_at: string
+    water: string
 }
