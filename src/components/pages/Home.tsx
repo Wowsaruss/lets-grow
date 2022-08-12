@@ -1,25 +1,10 @@
 import React from 'react'
+import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
 
 const Home = () => {
     return (
-        <PageWrapper header={
-                <div
-                    style={{
-                        // position: 'fixed',
-                        height: 70,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        width: '100%',
-                        boxShadow: '-5px 4px 10px #f2f2f2',
-                        paddingLeft: 25,
-                    }}
-                >
-                    <h1>Home</h1>
-                </div>
-            }>
+        <PageWrapper header={<PageHeader title="Home" />}>
             <h3>Not sure what goes here yet</h3>
         </PageWrapper>
     )

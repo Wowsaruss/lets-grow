@@ -8,6 +8,7 @@ import { getTheme } from '@table-library/react-table-library/baseline'
 import PlantService from '../../services/plants'
 import { Plant } from '../../types/Plants'
 import PageWrapper from '../PageWrapper'
+import PageHeader from '../PageHeader'
 
 const columns = [
     { label: 'First Name', renderCell: (item: any) => item.first_name },
@@ -56,25 +57,7 @@ export default function Plants() {
     }
 
     return (
-        <PageWrapper
-            header={
-                <div
-                    style={{
-                        // position: 'fixed',
-                        height: 70,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        width: '100%',
-                        boxShadow: '-5px 4px 10px #f2f2f2',
-                        paddingLeft: 25,
-                    }}
-                >
-                    <h1>Plants</h1>
-                </div>
-            }
-        >
+        <PageWrapper header={<PageHeader title="Plants" />}>
             <CompactTable
                 columns={columns}
                 data={data}
