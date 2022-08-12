@@ -28,6 +28,23 @@
   color: #61dafb;
 }
 
+.Link-active {
+  color: white;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  width: 100%;
+  background-color: gray;
+  text-decoration: none;
+}
+
+.Link-inactive {
+  color: black;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  width: 100%;
+  text-decoration: none;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

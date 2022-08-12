@@ -11,9 +11,16 @@ const LoginButton = () => {
                     redirectUri: `${window.location.origin}/dashboard`,
                 })
             }
-            style={{marginBottom: 10}}
+            style={{
+                paddingBottom: 10,
+                paddingTop: 10,
+                width: '100%',
+                textDecoration: 'none',
+                color: 'black',
+                cursor: 'pointer',
+            }}
         >
-            Login
+            <h3 style={{ paddingLeft: 10, marginRight: 10 }}>Login</h3>
         </div>
     )
 }
