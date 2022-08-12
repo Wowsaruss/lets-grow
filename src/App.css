@@ -29,11 +29,12 @@
 }
 
 .Link-active {
+    width: 100px;
     color: white;
     padding-bottom: 10px;
     padding-top: 10px;
     width: 100%;
-    background-color: gray;
+    border-left: 10px solid;
     text-decoration: none;
 }
 
