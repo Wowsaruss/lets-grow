@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { CompactTable } from '@table-library/react-table-library/compact'
+import { useRowSelect } from '@table-library/react-table-library/select'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
+
 import PlantService from '../../services/plants'
 import { Plant } from '../../types/Plants'
 import PageWrapper from '../PageWrapper'
@@ -44,6 +46,15 @@ export default function Plants() {
 
     const data = { nodes: getResult ? getResult : [] }
 
+    const select = useRowSelect(data, {
+        onChange: onSelectChange,
+    })
+
+    function onSelectChange(action: any, state: any) {
+        // To-do: add action when selecting plant row
+        console.log(action, state)
+    }
+
     return (
         <PageWrapper
             header={
@@ -64,7 +75,12 @@ export default function Plants() {
                 </div>
             }
         >
-            <CompactTable columns={columns} data={data} theme={theme} />
+            <CompactTable
+                columns={columns}
+                data={data}
+                theme={theme}
+                select={select}
+            />
         </PageWrapper>
     )
 }
