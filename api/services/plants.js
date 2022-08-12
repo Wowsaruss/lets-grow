@@ -4,10 +4,10 @@ const config = require('../config')
 
 async function getMany(page = 1) {
     const offset = helpers.getOffset(page, config.listPerPage)
-    const rows = await db.query(
-        'SELECT * FROM plants OFFSET $1 LIMIT $2',
-        [offset, config.listPerPage]
-    )
+    const rows = await db.query('SELECT * FROM plants OFFSET $1 LIMIT $2', [
+        offset,
+        config.listPerPage,
+    ])
     const data = helpers.emptyOrRows(rows)
     const meta = { page }
 
@@ -17,6 +17,17 @@ async function getMany(page = 1) {
     }
 }
 
+async function getOne(plantId) {
+    const rows = await db.query('SELECT * FROM plants WHERE plants.id = $1', [
+        plantId,
+    ])
+
+    return {
+        data: rows[0],
+    }
+}
+
 module.exports = {
     getMany,
+    getOne,
 }

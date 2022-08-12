@@ -14,6 +14,11 @@ const fetchAll = async () => {
     return response.data
 }
 
-const PlantService = { fetchAll }
+const fetchOne = async (plantId: string | number) => {
+    const response = await apiClient.get<Plant>(`/plants/${plantId}`)
+    return response.data
+}
+
+const PlantService = { fetchAll, fetchOne }
 
 export default PlantService
