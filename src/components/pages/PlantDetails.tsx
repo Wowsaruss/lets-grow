@@ -42,6 +42,7 @@ export default function PlantDetails() {
                             ? `${plant?.second_name} ${plant?.first_name}`
                             : ''
                     }
+                    backButton={true}
                 />
             }
         >

@@ -52,7 +52,7 @@ export default function Plants() {
     })
 
     function onSelectChange(action: any, state: any) {
-        return window.location.href = `/plants/${state.id}`
+        return (window.location.href = `/plants/${state.id}`)
     }
 
     return (

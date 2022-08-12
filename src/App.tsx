@@ -16,6 +16,7 @@ import Home from './components/pages/Home'
 import './App.css'
 import Plants from './components/pages/Plants'
 import PlantDetails from './components/pages/PlantDetails'
+import Logo from './Logo.png'
 
 function MainNavigation() {
     const { isAuthenticated } = useAuth0()
@@ -36,12 +37,19 @@ function MainNavigation() {
                     alignItems: 'baseline',
                 }}
             >
-                <img
-                    src="https://github.com/Wowsaruss/lets-grow/blob/master/src/Logo.png"
-                    alt="Logo"
-                    width="100px"
-                    height="100px"
-                />
+                <a
+                    style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        marginTop: 25,
+                        marginBottom: 25,
+                    }}
+                    href="/"
+                >
+                    <img src={Logo} alt="Logo" width="100px" height="100px" />
+                </a>
                 <NavLink
                     to="/"
                     className={({ isActive }) =>
