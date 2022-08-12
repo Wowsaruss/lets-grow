@@ -16,7 +16,7 @@ import Home from './components/pages/Home'
 import './App.css'
 import Plants from './components/pages/Plants'
 
-function TopNavigation() {
+function MainNavigation() {
     const { isAuthenticated } = useAuth0()
 
     return (
@@ -38,8 +38,8 @@ function TopNavigation() {
                 }}
             >
                 <img
-                    src="https://github.com/Wowsaruss/lets-grow/blob/master/src/Grow-PNG-HD.png"
-                    alt=""
+                    src="https://github.com/Wowsaruss/lets-grow/blob/master/src/Logo.png"
+                    alt="Logo"
                     width="100px"
                     height="100px"
                 />
@@ -76,9 +76,9 @@ function NotFound() {
 function App() {
     return (
         <div style={{ display: 'flex' }}>
-            <TopNavigation />
+            <MainNavigation />
 
-            <div style={{ paddingLeft: 150 }}>
+            <div style={{ paddingLeft: 150, width: "100%" }}>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
