@@ -52,8 +52,7 @@ export default function Plants() {
     })
 
     function onSelectChange(action: any, state: any) {
-        // To-do: add action when selecting plant row
-        console.log(action, state)
+        return window.location.href = `/plants/${state.id}`
     }
 
     return (

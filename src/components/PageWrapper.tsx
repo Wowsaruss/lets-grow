@@ -1,5 +1,5 @@
 interface Props {
-    header: any
+    header?: any
     children: any
 }
 

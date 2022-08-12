@@ -15,6 +15,7 @@ import About from './components/pages/About'
 import Home from './components/pages/Home'
 import './App.css'
 import Plants from './components/pages/Plants'
+import PlantDetails from './components/pages/PlantDetails'
 
 function MainNavigation() {
     const { isAuthenticated } = useAuth0()
@@ -106,6 +107,7 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/plants" element={<Plants />} />
+                    <Route path="/plants/:plantId" element={<PlantDetails />} />
                     <Route element={<RequireAuth />}></Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>
