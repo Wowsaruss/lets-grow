@@ -9,6 +9,7 @@ const PageHeader = (props: Props) => {
     return (
         <div
             style={{
+                // To-do: This header needs to be changed so that it is fixed into place.
                 // position: 'fixed',
                 height: 70,
                 display: 'flex',
@@ -21,7 +22,10 @@ const PageHeader = (props: Props) => {
             }}
         >
             {props.backButton ? (
-                <div onClick={() => window.history.back()}>
+                <div
+                    onClick={() => window.history.back()}
+                    style={{ cursor: 'pointer', marginRight: 5 }}
+                >
                     <img
                         src={BackArrow}
                         alt="back arrow"
