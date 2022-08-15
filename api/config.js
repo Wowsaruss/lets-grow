@@ -11,7 +11,7 @@ const config = {
             rejectUnauthorized: false,
         },
     },
-    listPerPage: env.LIST_PER_PAGE ? env.LIST_PER_PAGE : 10,
+    listPerPage: env.LIST_PER_PAGE ? env.LIST_PER_PAGE : 100,
 }
 
 module.exports = config

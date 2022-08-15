@@ -50,7 +50,9 @@ export default function PlantDetails() {
                 <h3>description: {plant?.description}</h3>
             ) : null}
             {plant?.type ? <h3>type: {plant?.type}</h3> : null}
-            {plant?.perennial ? <h3>perennial: {plant?.perennial}</h3> : null}
+            {plant?.perennial ? (
+                <h3>perennial: {plant?.perennial ? 'YES' : 'NO'}</h3>
+            ) : null}
             {plant?.seed_depth ? (
                 <h3>seed_depth: {plant?.seed_depth}</h3>
             ) : null}
