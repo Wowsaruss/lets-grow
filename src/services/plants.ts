@@ -24,6 +24,11 @@ const updateOne = async (plantId: string | number, body: any) => {
     return response.data
 }
 
-const PlantService = { fetchAll, fetchOne, updateOne }
+const createOne = async (body: any) => {
+    const response = await apiClient.post<Plant>(`/plants/new`, body)
+    return response.data
+}
+
+const PlantService = { fetchAll, fetchOne, updateOne, createOne }
 
 export default PlantService

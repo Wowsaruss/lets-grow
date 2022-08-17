@@ -2,11 +2,12 @@ import { useMutation } from 'react-query'
 import { Formik, Field, Form, FormikValues } from 'formik'
 import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
+import PlantService from '../../services/plants'
 
 export default function AddPlant() {
-    // const mutation = useMutation((data) => {
-    //     return PlantService.updateOne(params.plantId, data)
-    // })
+    const mutation = useMutation((data) => {
+        return PlantService.createOne(data)
+    })
 
     const HandleSubmit = async (values: any) => {
         const newValues: any = {}
@@ -19,7 +20,9 @@ export default function AddPlant() {
             return (newValues[key] = values[key])
         })
 
-        // return mutation.mutate(newValues)
+        mutation.mutate(newValues)
+
+        window.location.href = `/plants`
     }
 
     const initialValues: FormikValues = {

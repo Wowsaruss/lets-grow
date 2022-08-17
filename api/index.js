@@ -6,6 +6,7 @@ const logger = require('morgan')
 const { server } = require('./config')
 const plantsRouter = require('./routes/plants')
 const plantRouter = require('./routes/plant-by-id')
+const createPlantRouter = require('./routes/create-plant')
 const updatePlantRouter = require('./routes/update-plant')
 
 const app = express()
@@ -23,6 +24,8 @@ app.get('/', (req, res) => {
 
 app.get('/plants', plantsRouter)
 app.get('/plants/:plantId', plantRouter)
+
+app.post('/plants/new', createPlantRouter)
 
 app.patch('/plants/:plantId/edit', updatePlantRouter)
 
