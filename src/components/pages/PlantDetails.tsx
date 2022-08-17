@@ -43,6 +43,10 @@ export default function PlantDetails() {
                             : ''
                     }
                     backButton={true}
+                    actionTitle="edit"
+                    onActionPress={() =>
+                        (window.location.href = `/plants/${plant?.id}/edit`)
+                    }
                 />
             }
         >

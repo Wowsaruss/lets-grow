@@ -6,6 +6,7 @@ const logger = require('morgan')
 const { server } = require('./config')
 const plantsRouter = require('./routes/plants')
 const plantRouter = require('./routes/plant-by-id')
+const updatePlantRouter = require('./routes/update-plant')
 
 const app = express()
 
@@ -22,6 +23,8 @@ app.get('/', (req, res) => {
 
 app.get('/plants', plantsRouter)
 app.get('/plants/:plantId', plantRouter)
+
+app.patch('/plants/:plantId/edit', updatePlantRouter)
 
 app.listen(server.port, () =>
     console.log(`SERVER RUNNING ON PORT:${server.port}`)

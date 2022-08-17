@@ -19,6 +19,11 @@ const fetchOne = async (plantId: string | number) => {
     return response.data
 }
 
-const PlantService = { fetchAll, fetchOne }
+const updateOne = async (plantId: string | number, body: any) => {
+    const response = await apiClient.patch<Plant>(`/plants/${plantId}/edit`, body)
+    return response.data
+}
+
+const PlantService = { fetchAll, fetchOne, updateOne }
 
 export default PlantService

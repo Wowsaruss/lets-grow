@@ -16,6 +16,7 @@ import Home from './components/pages/Home'
 import './App.css'
 import Plants from './components/pages/Plants'
 import PlantDetails from './components/pages/PlantDetails'
+import EditPlant from './components/pages/EditPlant'
 import Logo from './Logo.png'
 
 function MainNavigation() {
@@ -116,6 +117,10 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/plants" element={<Plants />} />
                     <Route path="/plants/:plantId" element={<PlantDetails />} />
+                    <Route
+                        path="/plants/:plantId/edit"
+                        element={<EditPlant />}
+                    />
                     <Route element={<RequireAuth />}></Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>
