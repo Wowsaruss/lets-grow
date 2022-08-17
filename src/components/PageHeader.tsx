@@ -11,15 +11,17 @@ const PageHeader = (props: Props) => {
     return (
         <div
             style={{
-                // To-do: This header needs to be changed so that it is fixed into place.
-                // position: 'fixed',
-                height: 70,
+                zIndex: 1,
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
+                position: 'sticky',
+                top: 0,
+                height: 70,
                 width: '100%',
                 boxShadow: '-5px 4px 10px #f2f2f2',
+                backgroundColor: 'white',
             }}
         >
             <div

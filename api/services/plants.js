@@ -1,6 +1,11 @@
+const fs = require('fs')
 const db = require('./db')
 const helpers = require('../helpers')
 const config = require('../config')
+
+const updatePlant = fs
+    .readFileSync('api/db-queries/update_plant.sql')
+    .toString()
 
 async function getMany(page = 1) {
     const offset = helpers.getOffset(page, config.listPerPage)
@@ -28,37 +33,34 @@ async function getOne(plantId) {
 }
 
 async function updateOne(plantId, body) {
-    const rows = await db.query(
-        'UPDATE plants SET days_to_germination = $2, days_to_harvest = $3 WHERE plants.id = $1',
-        [
-            plantId,
-            body.days_to_germination,
-            body.days_to_harvest,
-            // body.description,
-            // body.determinate,
-            // body.fall_start_indoors,
-            // body.fall_start_outdoors,
-            // body.fall_transplant,
-            // body.family,
-            // body.first_name,
-            // body.germination_temps_f,
-            // body.last_day_to_plant,
-            // body.light,
-            // body.perennial,
-            // body.plant_spacing,
-            // body.pruning,
-            // body.row_spacing,
-            // body.second_name,
-            // body.seed_depth,
-            // body.soil,
-            // body.start_indoors,
-            // body.start_outdoors,
-            // body.transplant,
-            // body.type,
-            // body.water,
-            // new Date().toISOString(),
-        ]
-    )
+    const rows = await db.query(updatePlant, [
+        plantId,
+        body.days_to_germination,
+        body.days_to_harvest,
+        body.description,
+        body.determinate,
+        body.fall_start_indoors,
+        body.fall_start_outdoors,
+        body.fall_transplant,
+        body.family,
+        body.first_name,
+        body.germination_temps_f,
+        body.last_day_to_plant,
+        body.light,
+        body.perennial,
+        body.plant_spacing,
+        body.pruning,
+        body.row_spacing,
+        body.second_name,
+        body.seed_depth,
+        body.soil,
+        body.start_indoors,
+        body.start_outdoors,
+        body.transplant,
+        body.type,
+        body.water,
+        new Date().toISOString(),
+    ])
 
     return {
         data: { rows },

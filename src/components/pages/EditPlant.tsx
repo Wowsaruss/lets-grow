@@ -28,11 +28,11 @@ export default function PlantDetails() {
         const newValues: any = {}
         const keys = Object.keys(values)
 
-        keys.forEach((key, index) => {
+        keys.forEach((key, _) => {
             if (values[key] === '') {
                 return (newValues[key] = null)
             }
-            return newValues[key] = values[key]
+            return (newValues[key] = values[key])
         })
 
         return mutation.mutate(newValues)
