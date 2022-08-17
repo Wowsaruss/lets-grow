@@ -24,7 +24,19 @@ export default function PlantDetails() {
         return PlantService.updateOne(params.plantId, data)
     })
 
-    const HandleSubmit = async (values: any) => mutation.mutate(values)
+    const HandleSubmit = async (values: any) => {
+        const newValues: any = {}
+        const keys = Object.keys(values)
+
+        keys.forEach((key, index) => {
+            if (values[key] === '') {
+                return (newValues[key] = null)
+            }
+            return newValues[key] = values[key]
+        })
+
+        return mutation.mutate(newValues)
+    }
 
     const isLoaded = !isLoadingPlant && !!plantData
 
@@ -279,7 +291,7 @@ export default function PlantDetails() {
                             }}
                         >
                             <label>Days to Harvest:</label>
-                            <Field name="days_to_harvest" type="text" />
+                            <Field name="days_to_harvest" type="integer" />
                         </div>
                         <div
                             style={{

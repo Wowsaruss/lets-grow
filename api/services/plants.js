@@ -29,11 +29,11 @@ async function getOne(plantId) {
 
 async function updateOne(plantId, body) {
     const rows = await db.query(
-        'UPDATE plants SET days_to_germination = $2 WHERE plants.id = $1',
+        'UPDATE plants SET days_to_germination = $2, days_to_harvest = $3 WHERE plants.id = $1',
         [
             plantId,
             body.days_to_germination,
-            // body.days_to_harvest,
+            body.days_to_harvest,
             // body.description,
             // body.determinate,
             // body.fall_start_indoors,
