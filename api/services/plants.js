@@ -3,13 +3,21 @@ const db = require('./db')
 const helpers = require('../helpers')
 const config = require('../config')
 
+const selectAllPlants = fs
+    .readFileSync('api/db-queries/select_all_plants.sql')
+    .toString()
+
+const selectPlantById = fs
+    .readFileSync('api/db-queries/select_plant_by_id.sql')
+    .toString()
+
 const updatePlant = fs
     .readFileSync('api/db-queries/update_plant.sql')
     .toString()
 
 async function getMany(page = 1) {
     const offset = helpers.getOffset(page, config.listPerPage)
-    const rows = await db.query('SELECT * FROM plants OFFSET $1 LIMIT $2', [
+    const rows = await db.query(selectAllPlants, [
         offset,
         config.listPerPage,
     ])
@@ -23,7 +31,7 @@ async function getMany(page = 1) {
 }
 
 async function getOne(plantId) {
-    const rows = await db.query('SELECT * FROM plants WHERE plants.id = $1', [
+    const rows = await db.query(selectPlantById, [
         plantId,
     ])
 

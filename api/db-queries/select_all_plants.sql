@@ -1,0 +1,1 @@
+SELECT * FROM plants OFFSET $1 LIMIT $2;

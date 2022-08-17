@@ -25,4 +25,4 @@ SET
     type = $24,
     water = $25,
     updated_at = $26
-WHERE plants.id = $1
+WHERE plants.id = $1;
