@@ -115,7 +115,15 @@ export default function Plants() {
     )
 
     return (
-        <PageWrapper header={<PageHeader title="Plants" />}>
+        <PageWrapper
+            header={
+                <PageHeader
+                    title="Plants"
+                    actionTitle="Add Plant"
+                    onActionPress={() => (window.location.href = `/plants/new`)}
+                />
+            }
+        >
             <label htmlFor="search">
                 Search by Name:&nbsp;
                 <input

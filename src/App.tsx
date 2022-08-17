@@ -16,6 +16,7 @@ import Home from './components/pages/Home'
 import './App.css'
 import Plants from './components/pages/Plants'
 import PlantDetails from './components/pages/PlantDetails'
+import AddPlant from './components/pages/AddPlant'
 import EditPlant from './components/pages/EditPlant'
 import Logo from './Logo.png'
 
@@ -117,6 +118,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/plants" element={<Plants />} />
                     <Route path="/plants/:plantId" element={<PlantDetails />} />
+                    <Route path="/plants/new" element={<AddPlant />} />
                     <Route
                         path="/plants/:plantId/edit"
                         element={<EditPlant />}

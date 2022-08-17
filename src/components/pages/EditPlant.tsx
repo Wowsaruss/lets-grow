@@ -6,7 +6,7 @@ import PlantService from '../../services/plants'
 import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
 
-export default function PlantDetails() {
+export default function EditPlant() {
     const params: Record<string, any> = useParams()
 
     const { isLoading: isLoadingPlant, data: plantData } = useQuery<
