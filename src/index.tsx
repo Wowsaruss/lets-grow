@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import reportWebVitals from './reportWebVitals'
 import App from './App'
 
-import './index.css'
+import './css/index.css'
 import Auth0ProviderWithHistory from './auth/auth0-provider-with-history'
 
 const queryClient = new QueryClient()

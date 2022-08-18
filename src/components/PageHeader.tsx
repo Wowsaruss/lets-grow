@@ -53,7 +53,17 @@ const PageHeader = (props: Props) => {
             </div>
             <div style={{ marginRight: 25 }}>
                 {!!props.onActionPress ? (
-                    <button onClick={props.onActionPress}>
+                    <button
+                        style={{
+                            padding: 10,
+                            color: 'black',
+                            backgroundColor: 'white',
+                            border: 'none',
+                            borderRadius: 3,
+                            boxShadow: ' 2px 2px 9px -2px gray',
+                        }}
+                        onClick={props.onActionPress}
+                    >
                         {props.actionTitle?.toUpperCase()}
                     </button>
                 ) : null}
