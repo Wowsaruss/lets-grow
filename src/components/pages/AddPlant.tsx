@@ -22,7 +22,7 @@ export default function AddPlant() {
 
         mutation.mutate(newValues)
 
-        window.location.href = `/plants`
+        return window.location.href = `/plants`
     }
 
     const initialValues: FormikValues = {

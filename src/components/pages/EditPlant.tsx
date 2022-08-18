@@ -35,7 +35,9 @@ export default function EditPlant() {
             return (newValues[key] = values[key])
         })
 
-        return mutation.mutate(newValues)
+        mutation.mutate(newValues)
+
+        return window.location.href = `/plants`
     }
 
     const isLoaded = !isLoadingPlant && !!plantData
