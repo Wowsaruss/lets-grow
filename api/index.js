@@ -8,6 +8,7 @@ const plantsRouter = require('./routes/plants')
 const plantRouter = require('./routes/plant-by-id')
 const createPlantRouter = require('./routes/create-plant')
 const updatePlantRouter = require('./routes/update-plant')
+const deletePlantRouter = require('./routes/delete-plant')
 
 const app = express()
 
@@ -28,6 +29,8 @@ app.get('/plants/:plantId', plantRouter)
 app.post('/plants/new', createPlantRouter)
 
 app.patch('/plants/:plantId/edit', updatePlantRouter)
+
+app.delete('/plants/:plantId/delete', deletePlantRouter)
 
 app.listen(server.port, () =>
     console.log(`SERVER RUNNING ON PORT:${server.port}`)

@@ -5,6 +5,7 @@ import { Plant } from '../../types/Plants'
 import PlantService from '../../services/plants'
 import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
+import { useCallback } from 'react'
 
 export default function EditPlant() {
     const params: Record<string, any> = useParams()
@@ -20,8 +21,12 @@ export default function EditPlant() {
         {}
     )
 
-    const mutation = useMutation((data) => {
+    const editMutation = useMutation((data) => {
         return PlantService.updateOne(params.plantId, data)
+    })
+
+    const deleteMutation = useMutation(() => {
+        return PlantService.deleteOne(params.plantId)
     })
 
     const HandleSubmit = async (values: any) => {
@@ -35,10 +40,16 @@ export default function EditPlant() {
             return (newValues[key] = values[key])
         })
 
-        mutation.mutate(newValues)
+        await editMutation.mutate(newValues)
 
-        return window.location.href = `/plants`
+        return (window.location.href = `/plants`)
     }
+
+    const handleDelete = useCallback(async () => {
+        await deleteMutation.mutate()
+
+        window.location.href = `/plants`
+    }, [deleteMutation])
 
     const isLoaded = !isLoadingPlant && !!plantData
 
@@ -81,6 +92,8 @@ export default function EditPlant() {
                             : ''
                     }
                     backButton={true}
+                    actionTitle="Delete"
+                    onActionPress={handleDelete}
                 />
             }
         >

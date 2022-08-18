@@ -7,8 +7,8 @@ const selectAllPlants = fs
     .readFileSync('api/db-queries/select_all_plants.sql')
     .toString()
 
-const selectPlantById = fs
-    .readFileSync('api/db-queries/select_plant_by_id.sql')
+const selectPlant = fs
+    .readFileSync('api/db-queries/select_plant.sql')
     .toString()
 
 const createPlant = fs
@@ -19,12 +19,13 @@ const updatePlant = fs
     .readFileSync('api/db-queries/update_plant.sql')
     .toString()
 
+const deletePlant = fs
+    .readFileSync('api/db-queries/delete_plant.sql')
+    .toString()
+
 async function getMany(page = 1) {
     const offset = helpers.getOffset(page, config.listPerPage)
-    const rows = await db.query(selectAllPlants, [
-        offset,
-        config.listPerPage,
-    ])
+    const rows = await db.query(selectAllPlants, [offset, config.listPerPage])
     const data = helpers.emptyOrRows(rows)
     const meta = { page }
 
@@ -35,9 +36,7 @@ async function getMany(page = 1) {
 }
 
 async function getOne(plantId) {
-    const rows = await db.query(selectPlantById, [
-        plantId,
-    ])
+    const rows = await db.query(selectPlant, [plantId])
 
     return {
         data: rows[0],
@@ -114,9 +113,18 @@ async function updateOne(plantId, body) {
     }
 }
 
+async function deleteOne(plantId) {
+    const rows = await db.query(deletePlant, [plantId])
+
+    return {
+        data: rows[0],
+    }
+}
+
 module.exports = {
     getMany,
     getOne,
     createOne,
     updateOne,
+    deleteOne,
 }

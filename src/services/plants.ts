@@ -20,7 +20,10 @@ const fetchOne = async (plantId: string | number) => {
 }
 
 const updateOne = async (plantId: string | number, body: any) => {
-    const response = await apiClient.patch<Plant>(`/plants/${plantId}/edit`, body)
+    const response = await apiClient.patch<Plant>(
+        `/plants/${plantId}/edit`,
+        body
+    )
     return response.data
 }
 
@@ -29,6 +32,10 @@ const createOne = async (body: any) => {
     return response.data
 }
 
-const PlantService = { fetchAll, fetchOne, updateOne, createOne }
+const deleteOne = async (plantId: string | number) => {
+    return apiClient.delete<Plant>(`/plants/${plantId}/delete`)
+}
+
+const PlantService = { fetchAll, fetchOne, updateOne, createOne, deleteOne }
 
 export default PlantService
