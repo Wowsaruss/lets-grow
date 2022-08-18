@@ -6,6 +6,7 @@ import PlantService from '../../services/plants'
 import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
 import { useCallback } from 'react'
+import { addEditMapping } from '../../helpers'
 
 export default function EditPlant() {
     const { plantId }: Record<string, any> = useParams()
@@ -30,15 +31,7 @@ export default function EditPlant() {
     })
 
     const HandleSubmit = async (values: any) => {
-        const newValues: any = {}
-        const keys = Object.keys(values)
-
-        keys.forEach((key, _) => {
-            if (values[key] === '') {
-                return (newValues[key] = null)
-            }
-            return (newValues[key] = values[key])
-        })
+        const newValues = await addEditMapping(values)
 
         await editMutation.mutate(newValues)
 

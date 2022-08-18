@@ -3,6 +3,7 @@ import { Formik, Field, Form, FormikValues } from 'formik'
 import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
 import PlantService from '../../services/plants'
+import { addEditMapping } from '../../helpers'
 
 export default function AddPlant() {
     const mutation = useMutation((data) => {
@@ -10,15 +11,7 @@ export default function AddPlant() {
     })
 
     const HandleSubmit = async (values: any) => {
-        const newValues: any = {}
-        const keys = Object.keys(values)
-
-        keys.forEach((key, _) => {
-            if (values[key] === '') {
-                return (newValues[key] = null)
-            }
-            return (newValues[key] = values[key])
-        })
+        const newValues = await addEditMapping(values)
 
         await mutation.mutate(newValues)
 
