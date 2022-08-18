@@ -1,2 +1,2 @@
-web: npm i && npm frontend
-server: npm i && npm backend
+web: yarn && yarn frontend
+server: yarn && yarn backend
