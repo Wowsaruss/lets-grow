@@ -7,6 +7,7 @@ import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
 import { useCallback } from 'react'
 import { addEditMapping } from '../../helpers'
+import Button from '../Button'
 
 export default function EditPlant() {
     const { plantId }: Record<string, any> = useParams()
@@ -385,7 +386,7 @@ export default function EditPlant() {
                             <label>Description:</label>
                             <Field name="description" type="textarea" />
                         </div>
-                        <button type="submit">Submit</button>
+                        <Button type="submit" title="Submit"/>
                     </Form>
                 </Formik>
             ) : (

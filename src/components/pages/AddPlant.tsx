@@ -4,6 +4,7 @@ import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
 import PlantService from '../../services/plants'
 import { addEditMapping } from '../../helpers'
+import Button from '../Button'
 
 export default function AddPlant() {
     const mutation = useMutation((data) => {
@@ -343,7 +344,7 @@ export default function AddPlant() {
                         <label>Description:</label>
                         <Field name="description" type="textarea" />
                     </div>
-                    <button type="submit">Submit</button>
+                    <Button type="submit" title="Submit"/>
                 </Form>
             </Formik>
         </PageWrapper>

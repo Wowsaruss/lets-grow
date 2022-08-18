@@ -1,5 +1,6 @@
 import BackArrow from '../BackArrow.png'
 import '../css/button.css'
+import Button from './Button'
 
 interface Props {
     title: string
@@ -54,16 +55,10 @@ const PageHeader = (props: Props) => {
             </div>
             <div style={{ marginRight: 25 }}>
                 {!!props.onActionPress ? (
-                    <button
-                        className={
-                            props.actionTitle?.toLowerCase() === 'delete'
-                                ? 'redbtn redbtn--action'
-                                : 'grnbtn grnbtn--action'
-                        }
-                        onClick={props.onActionPress}
-                    >
-                        {props.actionTitle?.toUpperCase()}
-                    </button>
+                    <Button
+                        title={props.actionTitle ? props.actionTitle : ''}
+                        onPress={props.onActionPress}
+                    />
                 ) : null}
             </div>
         </div>
