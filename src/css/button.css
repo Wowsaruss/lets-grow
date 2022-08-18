@@ -1,75 +1,55 @@
-body {
-    font-family: sans-serif;
-    background-color: #81d4fa;
+.grnbtn {
+    padding: 10px;
+    cursor: pointer;
+    padding: 10px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease;
     font-weight: bold;
 }
 
-.text-box {
-    margin-left: 44vw;
-    margin-top: 42vh;
+.grnbtn:hover {
+    background-color: #b6e273;
 }
 
-.btn:link,
-.btn:visited {
-    text-transform: uppercase;
+.grnbtn--action {
+    border: none;
+    border-radius: 5px;
+    color: black;
+    background-color: white;
+    transition: all 0.3s ease 0s;
+    box-shadow: 2px 2px 9px -2px gray;
+}
+
+.grnbtn--action:active {
+    box-shadow: 0px 0px 0px -2px gray;
+    transform: translateY(2px);
+}
+
+.redbtn {
+    padding: 10px;
+    cursor: pointer;
+    padding: 10px;
     text-decoration: none;
-    padding: 15px 40px;
-    display: inline-block;
-    border-radius: 100px;
-    transition: all .2s;
-    position: absolute;
+    text-align: center;
+    transition: all 0.2s ease;
+    font-weight: bold;
 }
 
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+.redbtn:hover {
+    background-color: #e27373;
 }
 
-.btn:active {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+.redbtn--action {
+    border: none;
+    border-radius: 5px;
+    color: black;
+    background-color: white;
+    transition: all 0.3s ease 0s;
+    box-shadow: 2px 2px 9px -2px gray;
 }
 
-.btn-white {
-    background-color: #fff;
-    color: #777;
-}
-
-.btn::after {
-    content: "";
-    display: inline-block;
-    height: 100%;
-    width: 100%;
-    border-radius: 100px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    transition: all .4s;
-}
-
-.btn-white::after {
-    background-color: #fff;
-}
-
-.btn:hover::after {
-    transform: scaleX(1.4) scaleY(1.6);
-    opacity: 0;
-}
-
-.btn-animated {
-    animation: moveInBottom 5s ease-out;
-    animation-fill-mode: backwards;
-}
-
-@keyframes moveInBottom {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0px);
-    }
+.redbtn--action:active {
+    box-shadow: 0px 0px 0px -2px gray;
+    transform: translateY(2px);
 }
