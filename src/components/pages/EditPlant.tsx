@@ -8,7 +8,7 @@ import PageWrapper from '../PageWrapper'
 import { useCallback } from 'react'
 
 export default function EditPlant() {
-    const params: Record<string, any> = useParams()
+    const { plantId }: Record<string, any> = useParams()
 
     const { isLoading: isLoadingPlant, data: plantData } = useQuery<
         Plant,
@@ -16,17 +16,17 @@ export default function EditPlant() {
     >(
         'query-plant',
         async () => {
-            return PlantService.fetchOne(params.plantId)
+            return PlantService.fetchOne(plantId)
         },
         {}
     )
 
     const editMutation = useMutation((data) => {
-        return PlantService.updateOne(params.plantId, data)
+        return PlantService.updateOne(plantId, data)
     })
 
     const deleteMutation = useMutation(() => {
-        return PlantService.deleteOne(params.plantId)
+        return PlantService.deleteOne(plantId)
     })
 
     const HandleSubmit = async (values: any) => {
@@ -42,13 +42,13 @@ export default function EditPlant() {
 
         await editMutation.mutate(newValues)
 
-        return (window.location.href = `/plants`)
+        return (window.location.href = `/plants/${plantId}`)
     }
 
     const handleDelete = useCallback(async () => {
         await deleteMutation.mutate()
 
-        window.location.href = `/plants`
+        window.location.href = '/plants'
     }, [deleteMutation])
 
     const isLoaded = !isLoadingPlant && !!plantData

@@ -20,9 +20,9 @@ export default function AddPlant() {
             return (newValues[key] = values[key])
         })
 
-        mutation.mutate(newValues)
+        await mutation.mutate(newValues)
 
-        return window.location.href = `/plants`
+        return (window.location.href = '/plants')
     }
 
     const initialValues: FormikValues = {
