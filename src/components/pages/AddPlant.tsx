@@ -1,5 +1,6 @@
 import { useMutation } from 'react-query'
 import { Formik, Field, Form, FormikValues } from 'formik'
+import * as Yup from 'yup'
 import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
 import PlantService from '../../services/plants'
@@ -46,6 +47,33 @@ export default function AddPlant() {
         water: '',
     }
 
+    const validationSchema = Yup.object({
+        days_to_germination: Yup.string(),
+        days_to_harvest: Yup.number(),
+        description: Yup.string(),
+        determinate: Yup.boolean(),
+        fall_start_indoors: Yup.string(),
+        fall_start_outdoors: Yup.string(),
+        fall_transplant: Yup.string(),
+        family: Yup.string(),
+        first_name: Yup.string().required('Required'),
+        germination_temps_f: Yup.string(),
+        last_day_to_plant: Yup.string(),
+        light: Yup.string(),
+        perennial: Yup.boolean(),
+        plant_spacing: Yup.number(),
+        pruning: Yup.string(),
+        row_spacing: Yup.number(),
+        second_name: Yup.string().required('Required'),
+        seed_depth: Yup.string(),
+        soil: Yup.string(),
+        start_indoors: Yup.string(),
+        start_outdoors: Yup.string(),
+        transplant: Yup.string(),
+        type: Yup.string(),
+        water: Yup.string(),
+    })
+
     return (
         <PageWrapper
             header={<PageHeader title="Add Plant" backButton={true} />}
@@ -53,6 +81,7 @@ export default function AddPlant() {
             <Formik
                 style={{ display: 'flex', flexDirection: 'column' }}
                 initialValues={initialValues}
+                validationSchema={validationSchema}
                 onSubmit={HandleSubmit}
             >
                 <Form style={{ width: 500 }}>
@@ -66,7 +95,7 @@ export default function AddPlant() {
                         }}
                     >
                         <label>First Name:</label>
-                        <Field name="first_name" type="text" />
+                        <Field name="first_name" type="text" required />
                     </div>
                     <div
                         style={{
@@ -78,7 +107,7 @@ export default function AddPlant() {
                         }}
                     >
                         <label>Last Name:</label>
-                        <Field name="second_name" type="text" />
+                        <Field name="second_name" type="text" required />
                     </div>
                     <div
                         style={{
@@ -344,7 +373,7 @@ export default function AddPlant() {
                         <label>Description:</label>
                         <Field name="description" type="textarea" />
                     </div>
-                    <Button type="submit" title="Submit"/>
+                    <Button type="submit" title="Submit" />
                 </Form>
             </Formik>
         </PageWrapper>
