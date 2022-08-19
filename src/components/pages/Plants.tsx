@@ -10,6 +10,7 @@ import PlantService from '../../services/plants'
 import { Plant } from '../../types/Plants'
 import PageWrapper from '../PageWrapper'
 import PageHeader from '../PageHeader'
+import Loader from '../Loader'
 
 const columns = [
     {
@@ -134,13 +135,17 @@ export default function Plants() {
                 />
             </label>
             <br />
-            <CompactTable
-                columns={columns}
-                data={data}
-                theme={theme}
-                select={select}
-                sort={sort}
-            />
+            {!isLoadingPlants ? (
+                <CompactTable
+                    columns={columns}
+                    data={data}
+                    theme={theme}
+                    select={select}
+                    sort={sort}
+                />
+            ) : (
+                <Loader />
+            )}
         </PageWrapper>
     )
 }
