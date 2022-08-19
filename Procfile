@@ -1,2 +1,3 @@
-web: yarn && yarn frontend
-server: yarn && yarn backend
+yarn-install: yarn
+server: yarn backend
+web: yarn frontend
