@@ -64,15 +64,15 @@ export default function EditPlant() {
                   plantData?.determinate !== null ? plantData?.determinate : '',
               fall_start_indoors:
                   plantData?.fall_start_indoors !== null
-                      ? plantData?.fall_start_indoors
+                      ? new Date(plantData?.fall_start_indoors)
                       : '',
               fall_start_outdoors:
                   plantData?.fall_start_outdoors !== null
-                      ? plantData?.fall_start_outdoors
+                      ? new Date(plantData?.fall_start_outdoors)
                       : '',
               fall_transplant:
                   plantData?.fall_transplant !== null
-                      ? plantData?.fall_transplant
+                      ? new Date(plantData?.fall_transplant)
                       : '',
               family: plantData?.family !== null ? plantData?.family : '',
               first_name: plantData?.first_name,
@@ -82,7 +82,7 @@ export default function EditPlant() {
                       : '',
               last_day_to_plant:
                   plantData?.last_day_to_plant !== null
-                      ? plantData?.last_day_to_plant
+                      ? new Date(plantData?.last_day_to_plant)
                       : '',
               light: plantData?.light !== null ? plantData?.light : '',
               perennial:
@@ -100,14 +100,16 @@ export default function EditPlant() {
               soil: plantData?.soil !== null ? plantData?.soil : '',
               start_indoors:
                   plantData?.start_indoors !== null
-                      ? plantData?.start_indoors
+                      ? new Date(plantData?.start_indoors)
                       : '',
               start_outdoors:
                   plantData?.start_outdoors !== null
-                      ? plantData?.start_outdoors
+                      ? new Date(plantData?.start_outdoors)
                       : '',
               transplant:
-                  plantData?.transplant !== null ? plantData?.transplant : '',
+                  plantData?.transplant !== null
+                      ? new Date(plantData?.transplant)
+                      : '',
               type: plantData?.type !== null ? plantData?.type : '',
               water: plantData?.water !== null ? plantData?.water : '',
           }

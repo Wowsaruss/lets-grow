@@ -1,6 +1,9 @@
 import { Formik, Field, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 import Button from './Button'
+import { DatePickerField } from './DatePickerField'
+
+import 'react-datepicker/dist/react-datepicker.css'
 
 interface Props {
     initialValues: FormikValues
@@ -77,7 +80,21 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Family:</label>
-                    <Field name="family" type="text" />
+                    <Field name="family" as="select">
+                        <option value="Asteraceae">Asteraceae</option>
+                        <option value="Brassicacae">Brassicacae</option>
+                        <option value="Cucurbitaceae">Cucurbitaceae</option>
+                        <option value="Cyanococcus">Cyanococcus</option>
+                        <option value="Fabaceae">Fabaceae</option>
+                        <option value="Lamiaceae">Lamiaceae</option>
+                        <option value="Liliaceae">Liliaceae</option>
+                        <option value="Poaceae">Poaceae</option>
+                        <option value="Rosaceae">Rosaceae</option>
+                        <option value="Solanaceae">Solanaceae</option>
+                        <option value="Solanaceae">Solanaceae</option>
+                        <option value="Other">Other</option>
+                        <option value="">None</option>
+                    </Field>
                 </div>
                 <div
                     style={{
@@ -89,7 +106,18 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Type:</label>
-                    <Field name="type" type="text" />
+                    <Field name="type" as="select">
+                        <option value="Bush">Bush</option>
+                        <option value="Herb">Herb</option>
+                        <option value="Leaf">Leaf</option>
+                        <option value="Root">Root</option>
+                        <option value="Vine">Vine</option>
+                        <option value="Stalk">Stalk</option>
+                        <option value="Thistle">Thistle</option>
+                        <option value="Vine">Vine</option>
+                        <option value="Other">Other</option>
+                        <option value="">None</option>
+                    </Field>
                 </div>
                 <div
                     style={{
@@ -101,7 +129,7 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Start Indoors (Spring):</label>
-                    <Field name="start_indoors" type="text" />
+                    <DatePickerField name="start_indoors" />
                 </div>
                 <div
                     style={{
@@ -113,7 +141,7 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Transplant (Spring):</label>
-                    <Field name="transplant" type="text" />
+                    <DatePickerField name="transplant" />
                 </div>
                 <div
                     style={{
@@ -125,7 +153,7 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Start Outdoors (Spring):</label>
-                    <Field name="start_outdoors" type="text" />
+                    <DatePickerField name="start_outdoors" />
                 </div>
                 <div
                     style={{
@@ -137,7 +165,7 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Start Indoors (Fall):</label>
-                    <Field name="fall_start_indoors" type="text" />
+                    <DatePickerField name="fall_start_indoors" />
                 </div>
                 <div
                     style={{
@@ -149,7 +177,7 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Transplant (Fall):</label>
-                    <Field name="fall_transplant" type="text" />
+                    <DatePickerField name="fall_transplant" />
                 </div>
                 <div
                     style={{
@@ -161,7 +189,7 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Start Outdoors (Fall):</label>
-                    <Field name="fall_start_outdoors" type="text" />
+                    <DatePickerField name="fall_start_outdoors" />
                 </div>
                 <div
                     style={{
@@ -173,7 +201,7 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Last Day to Plant:</label>
-                    <Field name="last_day_to_plant" type="text" />
+                    <DatePickerField name="last_day_to_plant" />
                 </div>
                 <div
                     style={{
@@ -232,8 +260,24 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                         marginBottom: 10,
                     }}
                 >
-                    <label>Seed Depth (Inches):</label>
-                    <Field name="seed_depth" type="text" />
+                    <label>Seed Depth:</label>
+                    <Field name="seed_depth" as="select">
+                        <option value="1/8">1/8"</option>
+                        <option value="1/4">1/4"</option>
+                        <option value="1/2">1/2"</option>
+                        <option value="3/4">3/4"</option>
+                        <option value="1">1"</option>
+                        <option value="1 1/4">1 1/4"</option>
+                        <option value="1 1/2">1 1/2"</option>
+                        <option value="1 3/4">1 3/4"</option>
+                        <option value="2">2"</option>
+                        <option value="3">3"</option>
+                        <option value="4">4"</option>
+                        <option value="5">5"</option>
+                        <option value="6">6"</option>
+                        <option value="Other">Other</option>
+                        <option value="">None</option>
+                    </Field>
                 </div>
                 <div
                     style={{
@@ -257,7 +301,16 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Light:</label>
-                    <Field name="light" type="text" />
+                    <Field name="light" as="select">
+                        <option value="Full">Full</option>
+                        <option value="Full/Partial">Full/Partial</option>
+                        <option value="Partial">Partial</option>
+                        <option value="Partial/Low">Partial/Low</option>
+                        <option value="Low">Low</option>
+                        <option value="Any">Any</option>
+                        <option value="Other">Other</option>
+                        <option value="">None</option>
+                    </Field>
                 </div>
                 <div
                     style={{
@@ -269,7 +322,17 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Soil:</label>
-                    <Field name="soil" type="text" />
+                    <Field name="soil" as="select">
+                        <option value="Loamy">Loamy</option>
+                        <option value="Sandy">Sandy</option>
+                        <option value="Silty">Silty</option>
+                        <option value="Peaty">Peaty</option>
+                        <option value="Chalky">Chalky</option>
+                        <option value="Clay">Clay</option>
+                        <option value="Any">Any</option>
+                        <option value="Other">Other</option>
+                        <option value="">None</option>
+                    </Field>
                 </div>
                 <div
                     style={{
@@ -281,7 +344,14 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Water:</label>
-                    <Field name="water" type="text" />
+                    <Field name="water" as="select">
+                        <option value="Heavy">Heavy</option>
+                        <option value="Moderate">Moderate</option>
+                        <option value="Light">Light</option>
+                        <option value="Any">Any</option>
+                        <option value="Other">Other</option>
+                        <option value="">None</option>
+                    </Field>
                 </div>
                 <div
                     style={{
@@ -305,7 +375,10 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Perennial:</label>
-                    <Field name="perennial" type="text" />
+                    <Field name="perennial" as="select">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </Field>
                 </div>
                 <div
                     style={{
@@ -317,7 +390,10 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     }}
                 >
                     <label>Determinate:</label>
-                    <Field name="determinate" type="text" />
+                    <Field name="determinate" as="select">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </Field>
                 </div>
                 <div
                     style={{
