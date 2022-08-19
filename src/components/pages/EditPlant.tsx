@@ -8,6 +8,7 @@ import PageWrapper from '../PageWrapper'
 import { useCallback } from 'react'
 import { addEditMapping } from '../../helpers'
 import Button from '../Button'
+import '../../css/loadingAnimation.css'
 
 export default function EditPlant() {
     const { plantId }: Record<string, any> = useParams()
@@ -386,11 +387,14 @@ export default function EditPlant() {
                             <label>Description:</label>
                             <Field name="description" type="textarea" />
                         </div>
-                        <Button type="submit" title="Submit"/>
+                        <Button type="submit" title="Submit" />
                     </Form>
                 </Formik>
             ) : (
-                <div>LOADING</div>
+                <div id="loader">
+                    <div id="shadow"></div>
+                    <div id="box"></div>
+                </div>
             )}
         </PageWrapper>
     )
