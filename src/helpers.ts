@@ -3,14 +3,17 @@ export const addEditMapping = async (values: any) => {
     const keys = Object.keys(values)
 
     await keys.forEach((key, _) => {
+        console.log(values[key])
         if (
             key.includes('transplant') ||
             key.includes('start') ||
             key === 'last_day_to_plant'
         ) {
-            return (newValues[key] = `${getReadableMonth(
-                values[key].getMonth() + 1
-            )} ${values[key].getDate()}`)
+            if (values[key]) {
+                return (newValues[key] = `${getReadableMonth(
+                    values[key].getMonth() + 1
+                )} ${values[key].getDate()}`)
+            }
         }
         if (values[key] === '' || values[key] === 0) {
             return (newValues[key] = null)
