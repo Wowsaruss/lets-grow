@@ -11,7 +11,6 @@ import { useAuth0 } from '@auth0/auth0-react'
 import LoginButton from './components/LoginButton'
 import LogoutButton from './components/LogoutButton'
 import Dashboard from './components/pages/Dashboard'
-import About from './components/pages/About'
 import Home from './components/pages/Home'
 import './css/App.css'
 import Plants from './components/pages/Plants'
@@ -60,14 +59,6 @@ function MainNavigation() {
                 >
                     <h3 style={{ paddingLeft: 10, marginRight: 10 }}>Home</h3>
                 </NavLink>
-                <NavLink
-                    to="/about"
-                    className={({ isActive }) =>
-                        isActive ? 'Link-active' : 'Link-inactive'
-                    }
-                >
-                    <h3 style={{ paddingLeft: 10, marginRight: 10 }}>About</h3>
-                </NavLink>
                 {isAuthenticated ? (
                     <>
                         <NavLink
@@ -114,7 +105,6 @@ function App() {
             <div style={{ paddingLeft: 150, width: '100%' }}>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/plants" element={<Plants />} />
                     <Route path="/plants/:plantId" element={<PlantDetails />} />
