@@ -108,7 +108,11 @@ export default function Plants() {
                         )
                     }),
                 FAMILY: (array) =>
-                    array.sort((a, b) => a.family.localeCompare(b.family)),
+                    array.sort((a, b) =>
+                        `${a.family ? a.family : 'Z'}`.localeCompare(
+                            `${b.family ? b.family : 'Z'}`
+                        )
+                    ),
                 PERENNIAL: (array) =>
                     array.sort((a, b) => a.perennial - b.perennial),
             },
