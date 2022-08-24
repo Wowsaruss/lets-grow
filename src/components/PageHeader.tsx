@@ -13,7 +13,7 @@ const PageHeader = (props: Props) => {
     return (
         <div
             style={{
-                zIndex: 1,
+                zIndex: 9,
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
