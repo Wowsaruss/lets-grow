@@ -24,6 +24,7 @@ function MainNavigation() {
     return (
         <nav
             style={{
+                zIndex: 10,
                 position: 'fixed',
                 height: '100%',
                 width: 150,
