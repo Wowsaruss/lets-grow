@@ -115,6 +115,7 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                         <option value="Stalk">Stalk</option>
                         <option value="Thistle">Thistle</option>
                         <option value="Vine">Vine</option>
+                        <option value="Tree">Tree</option>
                         <option value="Other">Other</option>
                         <option value="">None</option>
                     </Field>
