@@ -1,37 +1,86 @@
-import React from 'react'
 import {
     Routes,
     Route,
-    Link,
     Navigate,
     useLocation,
     Outlet,
+    NavLink,
 } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 import LoginButton from './components/LoginButton'
 import LogoutButton from './components/LogoutButton'
 import Dashboard from './components/pages/Dashboard'
-import About from './components/pages/About'
 import Home from './components/pages/Home'
-import './App.css'
+import './css/App.css'
+import Plants from './components/pages/Plants'
+import PlantDetails from './components/pages/PlantDetails'
+import AddPlant from './components/pages/AddPlant'
+import EditPlant from './components/pages/EditPlant'
+import Logo from './Logo.png'
 
-function TopNavigation() {
+function MainNavigation() {
     const { isAuthenticated } = useAuth0()
 
     return (
-        <nav>
-            <ul>
-                <li>
-                    <Link to="/">Home</Link>
-                </li>
-                <li>
-                    <Link to="/about">About</Link>
-                </li>
+        <nav
+            style={{
+                zIndex: 10,
+                position: 'fixed',
+                height: '100%',
+                width: 150,
+                backgroundColor: '#f4edcd',
+            }}
+        >
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'baseline',
+                }}
+            >
+                <a
+                    style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        marginTop: 25,
+                        marginBottom: 25,
+                    }}
+                    href="/"
+                >
+                    <img src={Logo} alt="Logo" width="100px" height="100px" />
+                </a>
+                <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                        isActive ? 'Link-active' : 'Link-inactive'
+                    }
+                >
+                    <h3 style={{ paddingLeft: 10, marginRight: 10 }}>Home</h3>
+                </NavLink>
                 {isAuthenticated ? (
                     <>
-                        <li>
-                            <Link to="/dashboard">Dashboard</Link>
-                        </li>
+                        <NavLink
+                            to="/dashboard"
+                            className={({ isActive }) =>
+                                isActive ? 'Link-active' : 'Link-inactive'
+                            }
+                        >
+                            <h3 style={{ paddingLeft: 10, marginRight: 10 }}>
+                                Dashboard
+                            </h3>
+                        </NavLink>
+                        <NavLink
+                            to="/plants"
+                            className={({ isActive }) =>
+                                isActive ? 'Link-active' : 'Link-inactive'
+                            }
+                        >
+                            <h3 style={{ paddingLeft: 10, marginRight: 10 }}>
+                                Plants
+                            </h3>
+                        </NavLink>
                         <LogoutButton />
                     </>
                 ) : (
@@ -39,7 +88,7 @@ function TopNavigation() {
                         <LoginButton />
                     </>
                 )}
-            </ul>
+            </div>
         </nav>
     )
 }
@@ -50,22 +99,28 @@ function NotFound() {
 
 function App() {
     return (
-        <>
-            <TopNavigation />
+        <div style={{ display: 'flex' }}>
+            <MainNavigation />
 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                {/* I need to eventually figure out how to fix the RequireAuth route wrapper */}
-                <Route element={<RequireAuth />}></Route>
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-        </>
+            <div style={{ paddingLeft: 150, width: '100%' }}>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/plants" element={<Plants />} />
+                    <Route path="/plants/:plantId" element={<PlantDetails />} />
+                    <Route path="/plants/new" element={<AddPlant />} />
+                    <Route
+                        path="/plants/:plantId/edit"
+                        element={<EditPlant />}
+                    />
+                    <Route element={<RequireAuth />}></Route>
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </div>
+        </div>
     )
 }
 
-// I need to eventually figure out how to fix the RequireAuth route wrapper
 function RequireAuth() {
     const { isAuthenticated } = useAuth0()
     const location = useLocation()
