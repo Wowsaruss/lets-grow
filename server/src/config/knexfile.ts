@@ -9,9 +9,9 @@ export default {
     connection: {
       host: process.env.DB_HOST || 'localhost',
       port: Number(process.env.DB_PORT) || 5432,
-      database: process.env.DB_NAME || 'lets_grow_dev',
-      user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'postgres'
+      database: process.env.DB_NAME || 'russellhayes',
+      user: process.env.DB_USER || 'russellhayes',
+      password: process.env.DB_PASSWORD || ''
     },
     pool: {
       min: 2,
