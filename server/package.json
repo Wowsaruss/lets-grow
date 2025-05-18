@@ -7,14 +7,14 @@
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "migrate": "knex migrate:latest",
-    "seed": "knex seed:run"
+    "migrate": "knex migrate:latest --knexfile src/config/knexfile.ts",
+    "seed": "knex seed:run --knexfile src/config/knexfile.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^14.2.0",
     "express": "^4.17.1",
-    "knex": "^2.4.2",
+    "knex": "^2.5.1",
     "pg": "^8.7.1"
   },
   "devDependencies": {

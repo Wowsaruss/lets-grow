@@ -3,6 +3,7 @@ import { Knex } from 'knex';
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('plants', (table) => {
     table.increments('id').primary();
+    table.integer('author_id').unsigned().references('id').inTable('users').onDelete('CASCADE').index();
     table.integer('days_to_germination');
     table.integer('days_to_harvest');
     table.text('description');
@@ -27,7 +28,7 @@ export async function up(knex: Knex): Promise<void> {
     table.date('transplant');
     table.string('type');
     table.string('water');
-    table.timestamps(true, true); // This creates both created_at and updated_at columns
+    table.timestamps(true, true);
   });
 }
 

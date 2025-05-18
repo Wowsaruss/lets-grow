@@ -1,4 +1,6 @@
 import dotenv from 'dotenv';
+import path from 'path';
+
 dotenv.config();
 
 export default {
@@ -17,10 +19,10 @@ export default {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: './src/db/migrations'
+      directory: path.join(__dirname, '../db/migrations')
     },
     seeds: {
-      directory: './src/db/seeds'
+      directory: path.join(__dirname, '../db/seeds')
     }
   },
   production: {
@@ -38,7 +40,7 @@ export default {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: './src/db/migrations'
+      directory: path.join(__dirname, '../db/migrations')
     }
   }
 }; 
