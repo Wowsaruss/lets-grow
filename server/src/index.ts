@@ -1,6 +1,7 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import plantsRouter from './routes/plants';
 
 // Initialize environment variables
 dotenv.config();
@@ -11,6 +12,9 @@ const port = process.env.PORT || 3001;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Routes
+app.use('/api/plants', plantsRouter);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
