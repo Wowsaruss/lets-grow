@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import plantsRouter from './routes/plants';
+import usersRouter from './routes/users';
 
 // Initialize environment variables
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/plants', plantsRouter);
+app.use('/api/users', usersRouter);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

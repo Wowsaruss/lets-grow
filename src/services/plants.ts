@@ -10,30 +10,30 @@ const apiClient = axios.create({
 })
 
 const fetchAll = async () => {
-    const response = await apiClient.get<Plant[]>('/plants')
+    const response = await apiClient.get<Plant[]>('/api/plants')
     return response.data
 }
 
 const fetchOne = async (plantId: string | number) => {
-    const response = await apiClient.get<Plant>(`/plants/${plantId}`)
+    const response = await apiClient.get<Plant>(`/api/plants/${plantId}`)
     return response.data
 }
 
 const updateOne = async (plantId: string | number, body: any) => {
     const response = await apiClient.patch<Plant>(
-        `/plants/${plantId}/edit`,
+        `/api/plants/${plantId}/edit`,
         body
     )
     return response.data
 }
 
 const createOne = async (body: any) => {
-    const response = await apiClient.post<Plant>(`/plants/new`, body)
+    const response = await apiClient.post<Plant>(`/api/plants/new`, body)
     return response.data
 }
 
 const deleteOne = async (plantId: string | number) => {
-    return apiClient.delete<Plant>(`/plants/${plantId}/delete`)
+    return apiClient.delete<Plant>(`/api/plants/${plantId}/delete`)
 }
 
 const PlantService = { fetchAll, fetchOne, updateOne, createOne, deleteOne }
