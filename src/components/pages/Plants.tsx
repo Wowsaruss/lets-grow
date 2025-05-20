@@ -7,7 +7,7 @@ import { getTheme } from '@table-library/react-table-library/baseline'
 import { useSort } from '@table-library/react-table-library/sort'
 
 import PlantService from '../../services/plants'
-import { Plant } from '../../types/Plants'
+import { Plant } from '../../../types/Plants'
 import PageWrapper from '../PageWrapper'
 import PageHeader from '../PageHeader'
 import Loader from '../Loader'
