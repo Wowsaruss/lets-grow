@@ -5,11 +5,11 @@ dotenv.config();
 
 export async function createDatabase() {
   const client = new Client({
+    database: process.env.DB_NAME || 'lets_grow',
+    user: process.env.DB_USER || 'russellhayes',
+    password: process.env.DB_PASSWORD || '',
     host: process.env.DB_HOST || 'localhost',
     port: Number(process.env.DB_PORT) || 5432,
-    user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
-    database: 'postgres' // Connect to default postgres database
   });
 
   try {

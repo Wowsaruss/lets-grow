@@ -7,11 +7,11 @@ export default {
   development: {
     client: 'postgresql',
     connection: {
-      host: process.env.DB_HOST || 'localhost',
-      port: Number(process.env.DB_PORT) || 5432,
-      database: process.env.DB_NAME || 'russellhayes',
+      database: process.env.DB_NAME || 'lets_grow',
       user: process.env.DB_USER || 'russellhayes',
-      password: process.env.DB_PASSWORD || ''
+      password: process.env.DB_PASSWORD || '',
+      host: process.env.DB_HOST || 'localhost',
+      port: Number(process.env.DB_PORT) || 5432
     },
     pool: {
       min: 2,
@@ -28,11 +28,11 @@ export default {
   production: {
     client: 'postgresql',
     connection: {
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
       database: process.env.DB_NAME,
       user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD
+      password: process.env.DB_PASSWORD,
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT)
     },
     pool: {
       min: 2,
