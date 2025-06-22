@@ -14,7 +14,7 @@ export async function createDatabase() {
 
   try {
     await client.connect();
-    const dbName = process.env.DB_NAME || 'lets_grow_dev';
+    const dbName = process.env.DB_NAME || 'lets_grow';
     
     // Check if database exists
     const checkDb = await client.query(
