@@ -6,8 +6,8 @@ export async function up(knex: Knex): Promise<void> {
     table.integer('author_id').unsigned().references('id').inTable('users').onDelete('CASCADE').index();
     table.string('name').unique().notNullable();
     table.text('description');
-    table.date('created_at');
-    table.date('updated_at');
+    table.dateTime('created_at');
+    table.dateTime('updated_at');
   });
 }
 

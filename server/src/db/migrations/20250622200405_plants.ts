@@ -26,9 +26,9 @@ export async function up(knex: Knex): Promise<void> {
     table.integer('row_spacing');
     table.text('pruning');
     table.string('sowing_depth');
-    table.date('deleted_at');
-    table.date('created_at');
-    table.date('updated_at');
+    table.dateTime('deleted_at');
+    table.dateTime('created_at');
+    table.dateTime('updated_at');
   });
 }
 

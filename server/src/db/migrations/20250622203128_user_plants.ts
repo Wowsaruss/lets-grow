@@ -7,9 +7,9 @@ export async function up(knex: Knex): Promise<void> {
     table.integer('plant_id').unsigned().references('id').inTable('plants').onDelete('CASCADE').index();
     table.boolean('currently_growing');
     table.boolean('grow_again');
-    table.date('deleted_at');
-    table.date('created_at');
-    table.date('updated_at');
+    table.dateTime('deleted_at');
+    table.dateTime('created_at');
+    table.dateTime('updated_at');
   });
 }
 

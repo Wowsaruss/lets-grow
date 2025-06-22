@@ -20,9 +20,9 @@ export async function up(knex: Knex): Promise<void> {
     table.boolean('is_active').defaultTo(true);
     table.boolean('barter_enabled').defaultTo(false);
     table.integer('garden_type_id').unsigned().references('id').inTable('garden_types').onDelete('CASCADE').index();
-    table.date('deleted_at');
-    table.date('created_at');
-    table.date('updated_at');
+    table.dateTime('deleted_at');
+    table.dateTime('created_at');
+    table.dateTime('updated_at');
   });
 }
 

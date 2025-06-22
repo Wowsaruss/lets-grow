@@ -7,9 +7,9 @@ export async function up(knex: Knex): Promise<void> {
     table.boolean('email');
     table.boolean('sms');
     table.boolean('push');
-    table.date('deleted_at');
-    table.date('created_at');
-    table.date('updated_at');
+    table.dateTime('deleted_at');
+    table.dateTime('created_at');
+    table.dateTime('updated_at');
   });
 }
 

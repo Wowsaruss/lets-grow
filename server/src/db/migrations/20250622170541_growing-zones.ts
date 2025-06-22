@@ -4,8 +4,8 @@ export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable('growing_zones', (table) => {
         table.increments('id').primary();
         table.string('zone').unique().notNullable();
-        table.date('created_at');
-        table.date('updated_at');
+        table.dateTime('created_at');
+        table.dateTime('updated_at');
     });
 }
 
