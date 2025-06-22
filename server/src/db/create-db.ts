@@ -3,35 +3,34 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export async function createDatabase() {
+const dbName = process.env.DB_NAME || 'lets_grow';
+const dbUser = process.env.DB_USER || 'postgres';
+const dbPassword = process.env.DB_PASSWORD || 'postgres';
+const dbHost = process.env.DB_HOST || 'localhost';
+const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432;
+
+async function createDatabase() {
+  // Connect to the default 'postgres' database
   const client = new Client({
-    database: process.env.DB_NAME || 'lets_grow',
-    user: process.env.DB_USER || 'russellhayes',
-    password: process.env.DB_PASSWORD || '',
-    host: process.env.DB_HOST || 'localhost',
-    port: Number(process.env.DB_PORT) || 5432,
+    user: dbUser,
+    password: dbPassword,
+    host: dbHost,
+    port: dbPort,
+    database: 'postgres',
   });
 
   try {
     await client.connect();
-    const dbName = process.env.DB_NAME || 'lets_grow';
-    
-    // Check if database exists
-    const checkDb = await client.query(
-      "SELECT 1 FROM pg_database WHERE datname = $1",
-      [dbName]
-    );
-
-    if (checkDb.rowCount === 0) {
-      // Create database
-      await client.query(`CREATE DATABASE ${dbName}`);
-      console.log(`Database ${dbName} created successfully`);
+    // Check if the database exists
+    const res = await client.query('SELECT 1 FROM pg_database WHERE datname = $1', [dbName]);
+    if (res.rowCount === 0) {
+      await client.query(`CREATE DATABASE "${dbName}"`);
+      console.log(`Database '${dbName}' created successfully.`);
     } else {
-      console.log(`Database ${dbName} already exists`);
+      console.log(`Database '${dbName}' already exists.`);
     }
-  } catch (error) {
-    console.error('Error creating database:', error);
-    throw error;
+  } catch (err) {
+    console.error('Error creating database:', err);
   } finally {
     await client.end();
   }

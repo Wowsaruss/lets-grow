@@ -7,7 +7,10 @@
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
+    "create-db": "ts-node src/db/create-db.ts",
     "migrate": "knex migrate:latest --knexfile src/config/knexfile.ts",
+    "migrate:make": "knex migrate:make --knexfile src/config/knexfile.ts",
+    "migrate:rollback": "knex migrate:rollback --knexfile src/config/knexfile.ts",
     "seed": "knex seed:run --knexfile src/config/knexfile.ts"
   },
   "dependencies": {
