@@ -1,9 +1,10 @@
 import { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
-    return knex.schema.createTable('growing_zones', (table) => {
+    return knex.schema.createTable('garden_types', (table) => {
         table.increments('id').primary();
-        table.string('zone').unique().notNullable();
+        table.string('title').unique().notNullable();
+        table.string('description').notNullable();
         table.date('created_at');
         table.date('updated_at');
     });
@@ -11,6 +12,6 @@ export async function up(knex: Knex): Promise<void> {
 
 
 export async function down(knex: Knex): Promise<void> {
-    return knex.schema.dropTable('growing_zones');
+    return knex.schema.dropTable('garden_types');
 }
 
