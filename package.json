@@ -58,5 +58,8 @@
     "devDependencies": {
         "@types/pg": "^8.15.4",
         "@types/react-router-dom": "^5.3.3"
+    },
+    "engines": {
+        "node": "22.x"
     }
 }
