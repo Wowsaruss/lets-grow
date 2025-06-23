@@ -119,17 +119,67 @@ router.post('/', (async (req: Request, res: Response) => {
 // Update user
 router.put('/:id', (async (req: Request, res: Response) => {
   try {
-    const { first_name, last_name, is_active } = req.body as UpdateUserBody;
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      username,
+      role,
+      city,
+      state,
+      address1,
+      address2,
+      zipcode,
+      password,
+      growingZoneId,
+      gardenTypeId,
+      auth0Id,
+      is_active
+    } = req.body as UpdateUserBody;
     const { id } = req.params;
+
+    // Build update object with only provided fields
+    const updateData: any = {
+      updated_at: db.fn.now()
+    };
+
+    if (firstName !== undefined) updateData.first_name = firstName;
+    if (lastName !== undefined) updateData.last_name = lastName;
+    if (email !== undefined) updateData.email = email;
+    if (phone !== undefined) updateData.phone = phone;
+    if (username !== undefined) updateData.username = username;
+    if (role !== undefined) updateData.role = role;
+    if (city !== undefined) updateData.city = city;
+    if (state !== undefined) updateData.state = state;
+    if (address1 !== undefined) updateData.address_1 = address1;
+    if (address2 !== undefined) updateData.address_2 = address2;
+    if (zipcode !== undefined) updateData.zipcode = zipcode;
+    if (growingZoneId !== undefined) updateData.growing_zone_id = growingZoneId;
+    if (gardenTypeId !== undefined) updateData.garden_type_id = gardenTypeId;
+    if (auth0Id !== undefined) updateData.auth0_id = auth0Id;
+    if (is_active !== undefined) updateData.is_active = is_active;
+
+    // Handle password hashing if password is provided
+    if (password) {
+      const saltRounds = 10;
+      updateData.password_hash = await bcrypt.hash(password, saltRounds);
+    }
+
+    // Check if email is being updated and if it already exists
+    if (email) {
+      const existingUser = await db('users')
+        .where({ email })
+        .whereNot({ id })
+        .first();
+      if (existingUser) {
+        return res.status(400).json({ error: 'User with this email already exists' });
+      }
+    }
 
     const [user] = await db('users')
       .where({ id })
-      .update({
-        first_name,
-        last_name,
-        is_active,
-        updated_at: db.fn.now()
-      })
+      .update(updateData)
       .returning(['id', 'email', 'first_name', 'last_name', 'is_active', 'created_at']);
 
     if (!user) {
@@ -137,6 +187,7 @@ router.put('/:id', (async (req: Request, res: Response) => {
     }
     res.json(user);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Failed to update user' });
   }
 }) as RequestHandler);
