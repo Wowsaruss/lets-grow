@@ -1,0 +1,130 @@
+import { Knex } from 'knex';
+
+export async function seed(knex: Knex): Promise<void> {
+    // Deletes ALL existing entries
+    await knex('plant_types').del();
+
+    // Inserts seed entries
+    await knex('plant_types').insert([
+        {
+            id: 1,
+            author_id: null,
+            name: 'Root',
+            description: 'Plants grown for their edible roots (e.g., carrot, beet, radish, turnip, parsnip).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 2,
+            author_id: null,
+            name: 'Leafy Green',
+            description: 'Plants grown for their edible leaves (e.g., lettuce, spinach, kale, chard, arugula).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 3,
+            author_id: null,
+            name: 'Fruit',
+            description: 'Plants grown for their edible fruits (e.g., tomato, pepper, cucumber, squash, melon, eggplant).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 4,
+            author_id: null,
+            name: 'Legume',
+            description: 'Plants in the bean family grown for their seeds or pods (e.g., bean, pea, lentil, chickpea).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 5,
+            author_id: null,
+            name: 'Brassica',
+            description: 'Plants in the cabbage family (e.g., cabbage, broccoli, cauliflower, Brussels sprouts, kohlrabi).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 6,
+            author_id: null,
+            name: 'Allium',
+            description: 'Plants in the onion family (e.g., onion, garlic, leek, shallot, chive).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 7,
+            author_id: null,
+            name: 'Herb',
+            description: 'Plants grown for culinary or medicinal use (e.g., basil, parsley, cilantro, dill, mint, rosemary, thyme).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 8,
+            author_id: null,
+            name: 'Tuber',
+            description: 'Plants grown for their underground storage organs (e.g., potato, yam, Jerusalem artichoke).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 9,
+            author_id: null,
+            name: 'Vine',
+            description: 'Climbing or trailing plants (e.g., cucumber, melon, pumpkin, squash, pole bean).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 10,
+            author_id: null,
+            name: 'Bulb',
+            description: 'Plants grown for their bulbous underground parts (e.g., onion, garlic, shallot, tulip).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 11,
+            author_id: null,
+            name: 'Stalk',
+            description: 'Plants grown for their edible stalks (e.g., celery, rhubarb, asparagus, kohlrabi).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 12,
+            author_id: null,
+            name: 'Flower',
+            description: 'Plants grown for their edible flowers (e.g., broccoli, cauliflower, artichoke, squash blossom).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 13,
+            author_id: null,
+            name: 'Grain',
+            description: 'Plants grown for their edible seeds (e.g., corn, wheat, rice, barley, oats, quinoa, amaranth).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 14,
+            author_id: null,
+            name: 'Fruiting Shrub',
+            description: 'Shrubs grown for their edible fruits (e.g., blueberry, currant, gooseberry, raspberry, blackberry).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+        {
+            id: 15,
+            author_id: null,
+            name: 'Tree Fruit',
+            description: 'Trees grown for their edible fruits (e.g., apple, pear, peach, plum, cherry, apricot, fig, persimmon).',
+            created_at: new Date(),
+            updated_at: new Date(),
+        },
+    ]);
+}
