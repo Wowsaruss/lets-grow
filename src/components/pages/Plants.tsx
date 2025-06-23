@@ -11,31 +11,32 @@ import { Plant } from '../../../types/Plants'
 import PageWrapper from '../PageWrapper'
 import PageHeader from '../PageHeader'
 import Loader from '../Loader'
+import { TableNode } from '@table-library/react-table-library/types/table'
 
 const columns = [
     {
-        label: 'First Name',
-        renderCell: (item: any) => item.first_name,
-        sort: { sortKey: 'FIRST_NAME' },
+        label: 'Common Name',
+        renderCell: (item: TableNode) => (item as Plant).commonName,
+        sort: { sortKey: 'COMMON_NAME' },
     },
     {
-        label: 'Last Name',
-        renderCell: (item: any) => item.second_name,
-        sort: { sortKey: 'SECOND_NAME' },
+        label: 'Scientific Name',
+        renderCell: (item: TableNode) => (item as Plant).scientificName,
+        sort: { sortKey: 'SCIENTIFIC_NAME' },
     },
     {
-        label: 'Type',
-        renderCell: (item: any) => (item.type ? item.type : '-'),
-        sort: { sortKey: 'TYPE' },
+        label: 'Type ID',
+        renderCell: (item: TableNode) => (item as Plant).plantTypeId ? (item as Plant).plantTypeId : '-',
+        sort: { sortKey: 'PLANT_TYPE_ID' },
     },
     {
-        label: 'Family',
-        renderCell: (item: any) => (item.family ? item.family : '-'),
-        sort: { sortKey: 'FAMILY' },
+        label: 'Family ID',
+        renderCell: (item: TableNode) => (item as Plant).plantFamilyId ? (item as Plant).plantFamilyId : '-',
+        sort: { sortKey: 'PLANT_FAMILY_ID' },
     },
     {
         label: 'Perennial',
-        renderCell: (item: any) => (item.perennial ? 'YES' : 'NO'),
+        renderCell: (item: TableNode) => (item as Plant).perennial ? 'YES' : 'NO',
         sort: { sortKey: 'PERENNIAL' },
     },
 ]
@@ -83,8 +84,8 @@ export default function Plants() {
     }
 
     data = {
-        nodes: data.nodes.filter((item) =>
-            item.first_name.toLowerCase().includes(search.toLowerCase())
+        nodes: data.nodes.filter((item: Plant) =>
+            item.commonName?.toLowerCase().includes(search.toLowerCase())
         ),
     }
 
@@ -93,28 +94,20 @@ export default function Plants() {
         {},
         {
             sortFns: {
-                FIRST_NAME: (array) =>
+                COMMON_NAME: (array: TableNode[]) =>
                     array.sort((a, b) =>
-                        a.first_name.localeCompare(b.first_name)
+                        ((a as Plant).commonName || '').localeCompare((b as Plant).commonName || '')
                     ),
-                SECOND_NAME: (array) =>
+                SCIENTIFIC_NAME: (array: TableNode[]) =>
                     array.sort((a, b) =>
-                        a.second_name.localeCompare(b.second_name)
+                        ((a as Plant).scientificName || '').localeCompare((b as Plant).scientificName || '')
                     ),
-                TYPE: (array) =>
-                    array.sort((a, b) => {
-                        return `${a.type ? a.type : 'Z'}`.localeCompare(
-                            `${b.type ? b.type : 'Z'}`
-                        )
-                    }),
-                FAMILY: (array) =>
-                    array.sort((a, b) =>
-                        `${a.family ? a.family : 'Z'}`.localeCompare(
-                            `${b.family ? b.family : 'Z'}`
-                        )
-                    ),
-                PERENNIAL: (array) =>
-                    array.sort((a, b) => a.perennial - b.perennial),
+                PLANT_TYPE_ID: (array: TableNode[]) =>
+                    array.sort((a, b) => ((a as Plant).plantTypeId || 0) - ((b as Plant).plantTypeId || 0)),
+                PLANT_FAMILY_ID: (array: TableNode[]) =>
+                    array.sort((a, b) => ((a as Plant).plantFamilyId || 0) - ((b as Plant).plantFamilyId || 0)),
+                PERENNIAL: (array: TableNode[]) =>
+                    array.sort((a, b) => Number((a as Plant).perennial) - Number((b as Plant).perennial)),
             },
         }
     )

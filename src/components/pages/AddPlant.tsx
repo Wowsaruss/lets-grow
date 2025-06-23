@@ -9,15 +9,7 @@ import { useAuthToken, getStoredToken } from '../../services/auth'
 import UserService from '../../services/users'
 import { useEffect } from 'react'
 import { User as ApiUser } from '../../../types/User'
-
-interface User {
-    id: number;
-    email: string;
-    first_name?: string;
-    last_name?: string;
-    is_active: boolean;
-    created_at: string;
-}
+import { Plant } from '../../../types/Plants'
 
 export default function AddPlant() {
     const { getToken } = useAuthToken()
@@ -49,7 +41,7 @@ export default function AddPlant() {
         }
 
         const newValues = await addEditMapping(values)
-        newValues.user_id = userData.id
+        newValues.authorId = userData.id
 
         try {
             await mutation.mutateAsync(newValues)
@@ -61,30 +53,28 @@ export default function AddPlant() {
     }
 
     const initialValues: FormikValues = {
-        days_to_germination: '',
-        days_to_harvest: '',
+        commonName: '',
+        scientificName: '',
         description: '',
-        determinate: '',
-        fall_start_indoors: '',
-        fall_start_outdoors: '',
-        fall_transplant: '',
-        family: '',
-        first_name: '',
-        germination_temps_f: '',
-        last_day_to_plant: '',
+        plantFamilyId: undefined,
+        plantTypeId: undefined,
+        daysToGermination: undefined,
+        daysToHarvest: undefined,
+        indeterminate: false,
+        germinationTempHigh: undefined,
+        germinationTempLow: undefined,
         light: '',
-        perennial: '',
-        plant_spacing: '',
-        pruning: '',
-        row_spacing: '',
-        second_name: '',
-        seed_depth: '',
-        soil: '',
-        start_indoors: '',
-        start_outdoors: '',
-        transplant: '',
-        type: '',
         water: '',
+        soil: '',
+        perennial: false,
+        heirloom: false,
+        hybrid: false,
+        openPollinated: false,
+        selfPollinated: false,
+        spacing: undefined,
+        rowSpacing: undefined,
+        pruning: '',
+        sowingDepth: undefined,
     }
 
     if (isUserLoading) {

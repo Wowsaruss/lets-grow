@@ -32,17 +32,13 @@ export default function PlantDetails() {
 
     useEffect(() => {
         getPlant()
-    }, [isLoadingPlant, getPlant])
+    }, [getPlant])
 
     return (
         <PageWrapper
             header={
                 <PageHeader
-                    title={
-                        !isLoadingPlant
-                            ? `${plant?.second_name} ${plant?.first_name}`
-                            : ''
-                    }
+                    title={!isLoadingPlant ? plant?.commonName || '' : ''}
                     backButton={true}
                     actionTitle="edit"
                     onActionPress={() =>
@@ -53,71 +49,44 @@ export default function PlantDetails() {
         >
             {!isLoadingPlant ? (
                 <>
-                    {plant?.description ? (
-                        <h3>DESCRIPTION: {plant?.description}</h3>
-                    ) : null}
-                    {plant?.type ? <h3>TYPE: {plant?.type}</h3> : null}
-                    {plant?.family ? <h3>FAMILY: {plant?.family}</h3> : null}
-                    {plant?.perennial !== null ? (
-                        <h3>PERENNIAL: {plant?.perennial ? 'YES' : 'NO'}</h3>
-                    ) : null}
-                    {plant?.determinate !== null ? (
+                    {plant?.description && <h3>DESCRIPTION: {plant.description}</h3>}
+                    {plant?.scientificName && <h3>SCIENTIFIC NAME: {plant.scientificName}</h3>}
+                    {(plant?.plantFamilyId !== undefined && plant?.plantFamilyId !== null) && <h3>FAMILY ID: {plant.plantFamilyId}</h3>}
+                    {(plant?.plantTypeId !== undefined && plant?.plantTypeId !== null) && <h3>TYPE ID: {plant.plantTypeId}</h3>}
+                    {(plant?.perennial !== undefined && plant?.perennial !== null) && (
+                        <h3>PERENNIAL: {plant.perennial ? 'YES' : 'NO'}</h3>
+                    )}
+                    {(plant?.indeterminate !== undefined && plant?.indeterminate !== null) && (
                         <h3>
-                            DETERMINATE: {plant?.determinate ? 'YES' : 'NO'}
+                            INDETERMINATE: {plant.indeterminate ? 'YES' : 'NO'}
                         </h3>
-                    ) : null}
-                    {plant?.seed_depth ? (
-                        <h3>SEED DEPTH: {plant?.seed_depth}</h3>
-                    ) : null}
-                    {plant?.days_to_germination ? (
+                    )}
+                    {(plant?.sowingDepth !== undefined && plant?.sowingDepth !== null) && (
+                        <h3>SOWING DEPTH: {plant.sowingDepth}</h3>
+                    )}
+                    {(plant?.daysToGermination !== undefined && plant?.daysToGermination !== null) && (
                         <h3>
-                            DAYS TO GERMINATION: {plant?.days_to_germination}
+                            DAYS TO GERMINATION: {plant.daysToGermination}
                         </h3>
-                    ) : null}
-                    {plant?.germination_temps_f ? (
+                    )}
+                    {((plant?.germinationTempHigh !== undefined && plant?.germinationTempHigh !== null) || (plant?.germinationTempLow !== undefined && plant?.germinationTempLow !== null)) && (
                         <h3>
-                            GERMINATION TEMPERATURES:{' '}
-                            {plant?.germination_temps_f}
+                            GERMINATION TEMPERATURES: {plant.germinationTempLow ?? ''}{(plant.germinationTempLow !== undefined && plant.germinationTempLow !== null && plant.germinationTempHigh !== undefined && plant.germinationTempHigh !== null) ? ' - ' : ''}{plant.germinationTempHigh ?? ''}
                         </h3>
-                    ) : null}
-                    {plant?.days_to_harvest ? (
-                        <h3>DAYS TO HARVEST: {plant?.days_to_harvest}</h3>
-                    ) : null}
-                    {plant?.plant_spacing ? (
-                        <h3>PLANT SPACING: {plant?.plant_spacing}</h3>
-                    ) : null}
-                    {plant?.row_spacing ? (
-                        <h3>ROW SPACING: {plant?.row_spacing}</h3>
-                    ) : null}
-                    {plant?.start_indoors ? (
-                        <h3>START INDOORS: {plant?.start_indoors}</h3>
-                    ) : null}
-                    {plant?.transplant ? (
-                        <h3>TRANSPLANT: {plant?.transplant}</h3>
-                    ) : null}
-                    {plant?.start_outdoors ? (
-                        <h3>START OUTDOORS: {plant?.start_outdoors}</h3>
-                    ) : null}
-                    {plant?.fall_start_indoors ? (
-                        <h3>
-                            START INDOORS (FALL): {plant?.fall_start_indoors}
-                        </h3>
-                    ) : null}
-                    {plant?.fall_transplant ? (
-                        <h3>TRANSPLANT (FALL): {plant?.fall_transplant}</h3>
-                    ) : null}
-                    {plant?.fall_start_outdoors ? (
-                        <h3>
-                            START OUTDOORS (FALL): {plant?.fall_start_outdoors}
-                        </h3>
-                    ) : null}
-                    {plant?.last_day_to_plant ? (
-                        <h3>LAST DAY TO PLANT: {plant?.last_day_to_plant}</h3>
-                    ) : null}
-                    {plant?.soil ? <h3>SOIL: {plant?.soil}</h3> : null}
-                    {plant?.light ? <h3>LIGHT: {plant?.light}</h3> : null}
-                    {plant?.water ? <h3>WATER: {plant?.water}</h3> : null}
-                    {plant?.pruning ? <h3>PRUNING: {plant?.pruning}</h3> : null}
+                    )}
+                    {(plant?.daysToHarvest !== undefined && plant?.daysToHarvest !== null) && (
+                        <h3>DAYS TO HARVEST: {plant.daysToHarvest}</h3>
+                    )}
+                    {(plant?.spacing !== undefined && plant?.spacing !== null) && (
+                        <h3>PLANT SPACING: {plant.spacing}</h3>
+                    )}
+                    {(plant?.rowSpacing !== undefined && plant?.rowSpacing !== null) && (
+                        <h3>ROW SPACING: {plant.rowSpacing}</h3>
+                    )}
+                    {plant?.soil && <h3>SOIL: {plant.soil}</h3>}
+                    {plant?.light && <h3>LIGHT: {plant.light}</h3>}
+                    {plant?.water && <h3>WATER: {plant.water}</h3>}
+                    {plant?.pruning && <h3>PRUNING: {plant.pruning}</h3>}
                 </>
             ) : (
                 <Loader />
