@@ -91,7 +91,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/express-jwt@^8.4.1":
+"@types/express-jwt@^7.4.4":
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/@types/express-jwt/-/express-jwt-7.4.4.tgz#1f5ecd4a59be9858c8d5f98537c00e37b1247fbd"
   integrity sha512-F0f+zvdAT6gBOtMf0XTkNTvwiqXv0JjW0yj6nZM1Q03P8cCoA0+zrg+JeFv+AyaJ50qJJadBpbqOSdr4kYjuyg==
