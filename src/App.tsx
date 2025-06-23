@@ -16,7 +16,7 @@ import Plants from './components/pages/Plants'
 import PlantDetails from './components/pages/PlantDetails'
 import AddPlant from './components/pages/AddPlant'
 import EditPlant from './components/pages/EditPlant'
-import Logo from './Logo.png'
+import Logo from './assets/Logo.png'
 
 function MainNavigation() {
     const { isAuthenticated } = useAuth0()

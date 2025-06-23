@@ -1,4 +1,4 @@
-import BackArrow from '../BackArrow.png'
+import BackArrow from '../assets/BackArrow.png'
 import '../css/button.css'
 import Button from './Button'
 
