@@ -1,6 +1,7 @@
 import express from 'express';
 import db from '../db';
 import { keysToCamel } from '../helpers/case';
+import { checkJwt, attachUser } from '../middleware/auth';
 
 const router = express.Router();
 
@@ -29,9 +30,12 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Create new plant
-router.post('/', async (req, res) => {
+// Create new plant (admin only)
+router.post('/', checkJwt, attachUser, async (req: any, res) => {
   try {
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Only admin users can add plants' });
+    }
     const [plant] = await db('plants').insert(req.body).returning('*');
     res.status(201).json(keysToCamel(plant));
   } catch (error) {
@@ -40,9 +44,12 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Update plant
-router.put('/:id', async (req, res) => {
+// Update plant (admin only)
+router.put('/:id', checkJwt, attachUser, async (req: any, res) => {
   try {
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Only admin users can update plants' });
+    }
     const [plant] = await db('plants')
       .where({ id: req.params.id })
       .update(req.body)
@@ -58,14 +65,20 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Delete plant
-router.delete('/:id', async (req, res) => {
+// Delete plant (admin only)
+router.delete('/:id', checkJwt, attachUser, async (req: any, res) => {
   try {
-    const deleted = await db('plants').where({ id: req.params.id }).delete();
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Only admin users can delete plants' });
+    }
+    const deleted = await db('plants')
+      .where({ id: req.params.id })
+      .del();
+
     if (!deleted) {
       return res.status(404).json({ error: 'Plant not found' });
     }
-    res.status(204).send();
+    res.json({ success: true });
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: 'Failed to delete plant' });
