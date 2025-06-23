@@ -3,8 +3,8 @@ import express, { Request, Response, RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
 import db from '../db';
 import { checkJwt, attachUser } from '../middleware/auth';
-import { CreateUserBody, UpdateUserBody } from '../types/Users';
 import { fetchGrowingZoneId } from '../helpers/growingZones';
+import { CreateUserBody, UpdateUserBody } from '../../../types/User';
 
 const router = express.Router();
 
@@ -135,7 +135,7 @@ router.put('/:id', (async (req: Request, res: Response) => {
       growingZoneId,
       gardenTypeId,
       auth0Id,
-      is_active
+      isActive
     } = req.body as UpdateUserBody;
     const { id } = req.params;
 
@@ -158,7 +158,7 @@ router.put('/:id', (async (req: Request, res: Response) => {
     if (growingZoneId !== undefined) updateData.growing_zone_id = growingZoneId;
     if (gardenTypeId !== undefined) updateData.garden_type_id = gardenTypeId;
     if (auth0Id !== undefined) updateData.auth0_id = auth0Id;
-    if (is_active !== undefined) updateData.is_active = is_active;
+    if (isActive !== undefined) updateData.is_active = isActive;
 
     // Handle password hashing if password is provided
     if (password) {
