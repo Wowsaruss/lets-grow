@@ -5,6 +5,7 @@ import db from '../db';
 import { checkJwt, attachUser } from '../middleware/auth';
 import { fetchGrowingZoneId } from '../helpers/growingZones';
 import { CreateUserBody, UpdateUserBody } from '../../../types/User';
+import { keysToCamel } from '../helpers/case';
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.get('/me', checkJwt, attachUser, (async (req: any, res: Response) => {
 
     // Return user data without sensitive information
     const { password_hash, ...userData } = user;
-    res.json(userData);
+    res.json(keysToCamel(userData));
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch user data' });
   }
@@ -30,7 +31,7 @@ router.get('/', (async (req: Request, res: Response) => {
     const users = await db('users')
       .select('id', 'email', 'first_name', 'last_name', 'is_active', 'created_at')
       .where('is_active', true);
-    res.json(users);
+    res.json(keysToCamel(users));
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch users' });
   }
@@ -47,7 +48,7 @@ router.get('/:id', (async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    res.json(user);
+    res.json(keysToCamel(user));
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch user' });
   }
@@ -109,7 +110,7 @@ router.post('/', (async (req: Request, res: Response) => {
       })
       .returning(['id', 'email', 'first_name', 'last_name', 'is_active', 'created_at']);
 
-    await res.status(201).json(user);
+    await res.status(201).json(keysToCamel(user));
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: 'Failed to create user' });
@@ -185,7 +186,7 @@ router.put('/:id', (async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    res.json(user);
+    res.json(keysToCamel(user));
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Failed to update user' });
@@ -222,7 +223,7 @@ router.get('/auth0/:auth0_id', (async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    res.json(user);
+    res.json(keysToCamel(user));
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch user' });
   }
