@@ -52,18 +52,20 @@ function MainNavigation() {
                 >
                     <img src={Logo} alt="Logo" width="100px" height="100px" />
                 </a>
-                <NavLink
-                    to="/"
-                    className={({ isActive }) =>
-                        isActive ? 'Link-active' : 'Link-inactive'
-                    }
-                >
-                    <h3 style={{ paddingLeft: 10, marginRight: 10 }}>Home</h3>
-                </NavLink>
+                {!isAuthenticated && (
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) =>
+                            isActive ? 'Link-active' : 'Link-inactive'
+                        }
+                    >
+                        <h3 style={{ paddingLeft: 10, marginRight: 10 }}>Home</h3>
+                    </NavLink>
+                )}
                 {isAuthenticated ? (
                     <>
                         <NavLink
-                            to="/dashboard"
+                            to="/my-garden"
                             className={({ isActive }) =>
                                 isActive ? 'Link-active' : 'Link-inactive'
                             }
@@ -99,14 +101,25 @@ function NotFound() {
 }
 
 function App() {
+    const { isAuthenticated } = useAuth0()
+
     return (
         <div style={{ display: 'flex' }}>
             <MainNavigation />
 
             <div style={{ paddingLeft: 150, width: '100%' }}>
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/dashboard" element={<MyGarden />} />
+                    <Route
+                        path="/"
+                        element={
+                            isAuthenticated ? (
+                                <Navigate to="/my-garden" replace />
+                            ) : (
+                                <Home />
+                            )
+                        }
+                    />
+                    <Route path="/my-garden" element={<MyGarden />} />
                     <Route path="/plants" element={<Plants />} />
                     <Route path="/plants/:plantId" element={<PlantDetails />} />
                     <Route path="/plants/new" element={<AddPlant />} />

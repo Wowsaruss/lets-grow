@@ -8,7 +8,7 @@ const LoginButton = () => {
         <div
             onClick={() =>
                 loginWithRedirect({
-                    redirectUri: `${window.location.origin}/dashboard`,
+                    redirectUri: `${window.location.origin}/my-garden`,
                 })
             }
             className="Link-inactive"
