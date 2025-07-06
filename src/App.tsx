@@ -9,7 +9,7 @@ import {
 import { useAuth0 } from '@auth0/auth0-react'
 import LoginButton from './components/LoginButton'
 import LogoutButton from './components/LogoutButton'
-import Dashboard from './components/pages/Dashboard'
+import MyGarden from './components/pages/MyGarden'
 import Home from './components/pages/Home'
 import './css/App.css'
 import Plants from './components/pages/Plants'
@@ -17,6 +17,7 @@ import PlantDetails from './components/pages/PlantDetails'
 import AddPlant from './components/pages/AddPlant'
 import EditPlant from './components/pages/EditPlant'
 import Logo from './assets/Logo.png'
+import Register from './components/pages/Register'
 
 function MainNavigation() {
     const { isAuthenticated } = useAuth0()
@@ -68,7 +69,7 @@ function MainNavigation() {
                             }
                         >
                             <h3 style={{ paddingLeft: 10, marginRight: 10 }}>
-                                Dashboard
+                                My Garden
                             </h3>
                         </NavLink>
                         <NavLink
@@ -105,7 +106,7 @@ function App() {
             <div style={{ paddingLeft: 150, width: '100%' }}>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/dashboard" element={<MyGarden />} />
                     <Route path="/plants" element={<Plants />} />
                     <Route path="/plants/:plantId" element={<PlantDetails />} />
                     <Route path="/plants/new" element={<AddPlant />} />
@@ -113,6 +114,7 @@ function App() {
                         path="/plants/:plantId/edit"
                         element={<EditPlant />}
                     />
+                    <Route path="/register" element={<Register />} />
                     <Route element={<RequireAuth />}></Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>

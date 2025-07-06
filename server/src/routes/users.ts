@@ -229,4 +229,69 @@ router.get('/auth0/:auth0_id', (async (req: Request, res: Response) => {
   }
 }) as RequestHandler);
 
+// Register a new user in Auth0 and return the Auth0 user_id
+router.post('/auth0-register', async (req: Request, res: Response) => {
+  try {
+    const {
+      email,
+      password,
+      firstName,
+      lastName,
+      username,
+      phone,
+      city,
+      state,
+      address1,
+      address2,
+      zipcode,
+    } = req.body;
+
+    // Get Auth0 Management API token
+    const auth0Domain = process.env.AUTH0_ISSUER_BASE_URL;
+    const clientId = process.env.AUTH0_MGMT_CLIENT_ID;
+    const clientSecret = process.env.AUTH0_MGMT_CLIENT_SECRET;
+    const audience = `${auth0Domain}/api/v2/`;
+
+    const tokenRes = await axios.post(`${auth0Domain}/oauth/token`, {
+      grant_type: 'client_credentials',
+      client_id: clientId,
+      client_secret: clientSecret,
+      audience,
+    });
+    const mgmtToken = tokenRes.data.access_token;
+
+    // Create user in Auth0
+    const userRes = await axios.post(
+      `${auth0Domain}/api/v2/users`,
+      {
+        connection: 'Username-Password-Authentication',
+        email,
+        password,
+        user_metadata: {
+          firstName,
+          lastName,
+          username,
+          phone,
+          city,
+          state,
+          address1,
+          address2,
+          zipcode,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${mgmtToken}`,
+        },
+      }
+    );
+
+    const auth0UserId = userRes.data.user_id;
+    res.status(201).json({ auth0UserId });
+  } catch (error: any) {
+    console.error('Error registering user in Auth0:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to register user in Auth0', details: error.response?.data || error.message });
+  }
+});
+
 export default router; 

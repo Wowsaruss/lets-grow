@@ -2,9 +2,18 @@ import { User } from '../../types/User'
 import api from './api'
 
 class UserService {
-    static async getCurrentUser(): Promise<User> {
-        const response = await api.get('/users/me')
-        return response.data
+    static async getCurrentUser(token: string) {
+        try {
+            const response = await api.get('/users/me', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+
+            return response.data
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 

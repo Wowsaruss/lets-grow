@@ -5,32 +5,34 @@ import { addEditMapping } from '../../helpers'
 import PlantForm from '../PlantForm'
 import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
-import { useAuthToken, getStoredToken } from '../../services/auth'
+import { useAuth0 } from '@auth0/auth0-react'
 import UserService from '../../services/users'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { User as ApiUser } from '../../../types/User'
 import { Plant } from '../../../types/Plants'
 
 export default function AddPlant() {
-    const { getToken } = useAuthToken()
-    
-    // Get token before fetching user data
+    const { getAccessTokenSilently, isAuthenticated } = useAuth0()
+    const [token, setToken] = useState<string | null>(null)
+
     useEffect(() => {
-        getToken()
-    }, [getToken])
+        if (isAuthenticated) {
+            getAccessTokenSilently({ audience: 'https://lets-grow-api/' }).then(setToken)
+        }
+    }, [isAuthenticated, getAccessTokenSilently])
 
     const { data: userData, isLoading: isUserLoading } = useQuery<ApiUser>(
-        'currentUser',
-        UserService.getCurrentUser,
+        ['currentUser', token],
+        () => token ? UserService.getCurrentUser(token) : Promise.reject('No token'),
         {
-            enabled: !!getStoredToken(), // Only run query if we have a token
-            retry: false, // Don't retry on failure
+            enabled: !!token,
+            retry: false,
         }
     )
-    
+
     const mutation = useMutation(async (data) => {
         // Ensure we have a valid token before making the request
-        await getToken()
+        if (!token) throw new Error('No token')
         return PlantService.createOne(data)
     })
 
