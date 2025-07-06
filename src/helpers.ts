@@ -3,7 +3,6 @@ export const addEditMapping = async (values: any) => {
     const keys = Object.keys(values)
 
     await keys.forEach((key, _) => {
-        console.log(values[key])
         if (
             key.includes('transplant') ||
             key.includes('start') ||

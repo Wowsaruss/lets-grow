@@ -19,6 +19,15 @@ const fetchOne = async (plantId: string | number) => {
     return response.data
 }
 
+const fetchUserPlants = async (userId: string | number, token: string): Promise<Plant[]> => {
+    const response = await apiClient.get<Plant[]>(`/api/plants/user/${userId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    return response.data
+}
+
 const updateOne = async (plantId: string | number, body: any) => {
     const response = await apiClient.patch<Plant>(
         `/api/plants/${plantId}/edit`,
@@ -36,6 +45,6 @@ const deleteOne = async (plantId: string | number) => {
     return apiClient.delete<Plant>(`/api/plants/${plantId}/delete`)
 }
 
-const PlantService = { fetchAll, fetchOne, updateOne, createOne, deleteOne }
+const PlantService = { fetchAll, fetchOne, fetchUserPlants, updateOne, createOne, deleteOne }
 
 export default PlantService

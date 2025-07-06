@@ -101,13 +101,14 @@ export default function Plants() {
                     const dbUser = await UserService.getCurrentUser(token)
                     setCurrentUser(dbUser)
 
-                    const userPlantsRes = await UserPlantService.fetchByUserId(dbUser.id, token)
-                    const userPlantIds = userPlantsRes.map((up: any) => up.plantId)
+                    const userPlants = await PlantService.fetchUserPlants(dbUser.id, token)
+                    const userPlantIds = userPlants.map(plant => plant.id)
                     setUserPlants(userPlantIds)
                 } catch (error) {
                     console.error('Error fetching user plants:', error)
                 }
             }
+
             fetchUserPlants()
         }
     }, [isAuthenticated, user, getAccessTokenSilently])

@@ -26,6 +26,7 @@ const MyGarden = () => {
 
     useEffect(() => {
         if (!isAuthenticated) return
+
         const fetchData = async () => {
             setLoading(true)
             try {
@@ -34,28 +35,15 @@ const MyGarden = () => {
                 const dbUser = await UserService.getCurrentUser(token)
                 setCurrentUser(dbUser)
 
-                // Fetch user_plants for the current user using database ID
-                const userPlantsRes = await UserPlantService.fetchByUserId(dbUser.id, token)
-                console.log(userPlantsRes)
-
-                // Fetch plant details for each user plant
-                const plantDetails = await Promise.all(
-                    userPlantsRes.map(async (userPlant) => {
-                        try {
-                            return await PlantService.fetchOne(userPlant.plantId)
-                        } catch (error) {
-                            console.error(`Error fetching plant ${userPlant.plantId}:`, error)
-                            return null
-                        }
-                    })
-                )
-                setUserPlantDetails(plantDetails.filter(Boolean) as Plant[])
+                const userPlants = await PlantService.fetchUserPlants(dbUser.id, token)
+                setUserPlantDetails(userPlants)
             } catch (error) {
                 console.error('Error fetching data:', error)
             } finally {
                 setLoading(false)
             }
         }
+
         fetchData()
     }, [isAuthenticated, getAccessTokenSilently])
 

@@ -1,6 +1,8 @@
 import express from 'express';
 import db from '../db';
 import { keysToCamel } from '../helpers/case';
+import { checkJwt, attachUser } from '../middleware/auth';
+import { Request } from '../types/express';
 
 const router = express.Router();
 
@@ -12,6 +14,34 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: 'Failed to fetch plants' });
+  }
+});
+
+// Get plants for authenticated user (requires authentication)
+router.get('/user/:userId', checkJwt, attachUser, async (req: Request, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    const { userId } = req.params;
+
+    // Ensure user can only access their own plants
+    if (String(userId) !== String(req.user.id)) {
+      return res.status(403).json({ error: 'Forbidden: You can only access your own plants' });
+    }
+
+    // Join plants with user_plants to get only plants that belong to this user
+    const userPlants = await db('plants')
+      .select('plants.*')
+      .join('user_plants', 'plants.id', 'user_plants.plant_id')
+      .where('user_plants.user_id', userId)
+      .whereNull('user_plants.deleted_at');
+
+    res.json(keysToCamel(userPlants));
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Failed to fetch user plants' });
   }
 });
 
