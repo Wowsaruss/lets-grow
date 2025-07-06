@@ -78,13 +78,19 @@ router.post('/', async (req: Request, res) => {
         }
 
         const now = new Date();
+
+        // Convert camelCase to snake_case for database columns
+        const userPlantData = {
+            user_id: req.user.id, // Always use authenticated user's ID
+            plant_id: req.body.plantId || req.body.plant_id, // Handle both camelCase and snake_case
+            currently_growing: req.body.currentlyGrowing || req.body.currently_growing || true,
+            grow_again: req.body.growAgain || req.body.grow_again || true,
+            created_at: now,
+            updated_at: now,
+        };
+
         const [userPlant] = await db('user_plants')
-            .insert({
-                ...req.body,
-                user_id: req.user.id, // Ensure the user_id is set to the authenticated user
-                created_at: now,
-                updated_at: now,
-            })
+            .insert(userPlantData)
             .returning('*');
         res.status(201).json(keysToCamel(userPlant));
     } catch (error) {

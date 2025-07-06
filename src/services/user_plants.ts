@@ -18,7 +18,7 @@ const fetchByUserId = async (userId: string | number, token: string): Promise<Us
 }
 
 const addPlantToUser = async (data: { userId: string | number; plantId: string }, token: string): Promise<UserPlant> => {
-    const response = await api.post('/user_plants', data, {
+    const response = await api.post('/user-plants', data, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -27,7 +27,7 @@ const addPlantToUser = async (data: { userId: string | number; plantId: string }
 }
 
 const updateUserPlant = async (id: string, data: Partial<UserPlant>, token: string): Promise<UserPlant> => {
-    const response = await api.put(`/user_plants/${id}`, data, {
+    const response = await api.put(`/user-plants/${id}`, data, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -36,7 +36,7 @@ const updateUserPlant = async (id: string, data: Partial<UserPlant>, token: stri
 }
 
 const deleteUserPlant = async (id: string, token: string): Promise<void> => {
-    await api.delete(`/user_plants/${id}`, {
+    await api.delete(`/user-plants/${id}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
