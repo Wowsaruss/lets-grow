@@ -68,6 +68,7 @@ export default function Plants() {
     const [getResult, setGetResult] = useState<Plant[] | null>(null)
     const [search, setSearch] = React.useState('')
     const [addingToGarden, setAddingToGarden] = useState<string | null>(null)
+    const [removingFromGarden, setRemovingFromGarden] = useState<string | null>(null)
     const [userPlants, setUserPlants] = useState<string[]>([])
     const [currentUser, setCurrentUser] = useState<User | null>(null)
 
@@ -143,6 +144,50 @@ export default function Plants() {
             alert('Failed to add plant to garden. Please try again.')
         } finally {
             setAddingToGarden(null)
+        }
+    }
+
+    const handleRemoveFromGarden = async (plantId: string) => {
+        if (!isAuthenticated || !currentUser) {
+            alert('Please log in to manage your garden')
+            return
+        }
+
+        // Find the plant name for the confirmation dialog
+        const plant = getResult?.find(p => p.id === plantId)
+        if (!plant) return
+
+        // Ask for confirmation
+        const isConfirmed = window.confirm(
+            `Are you sure you want to remove "${plant.commonName}" from your garden?`
+        )
+
+        if (!isConfirmed) return
+
+        setRemovingFromGarden(plantId)
+        try {
+            const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+
+            // Find the user_plant record to get its ID
+            const userPlantsRes = await UserPlantService.fetchByUserId(currentUser.id, token)
+            const userPlant = userPlantsRes.find(up => up.plantId === plantId)
+
+            if (!userPlant) {
+                alert('Plant not found in your garden')
+                return
+            }
+
+            // Delete the user_plant record
+            await UserPlantService.deleteUserPlant(userPlant.id, token)
+
+            // Update the userPlants state to remove the plant
+            setUserPlants(prev => prev.filter(id => id !== plantId))
+            alert('Plant removed from your garden!')
+        } catch (error) {
+            console.error('Error removing plant from garden:', error)
+            alert('Failed to remove plant from garden. Please try again.')
+        } finally {
+            setRemovingFromGarden(null)
         }
     }
 
