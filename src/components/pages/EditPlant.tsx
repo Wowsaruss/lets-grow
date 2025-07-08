@@ -47,29 +47,29 @@ export default function EditPlant() {
 
     const initialValues: FormikValues = isLoaded
         ? {
-              commonName: plantData?.commonName || '',
-              scientificName: plantData?.scientificName || '',
-              description: plantData?.description || '',
-              plantFamilyId: plantData?.plantFamilyId ?? 0,
-              plantTypeId: plantData?.plantTypeId ?? 0,
-              daysToGermination: plantData?.daysToGermination ?? 0,
-              daysToHarvest: plantData?.daysToHarvest ?? 0,
-              indeterminate: plantData?.indeterminate ?? false,
-              germinationTempHigh: plantData?.germinationTempHigh ?? 0,
-              germinationTempLow: plantData?.germinationTempLow ?? 0,
-              light: plantData?.light || '',
-              water: plantData?.water || '',
-              soil: plantData?.soil || '',
-              perennial: plantData?.perennial ?? false,
-              heirloom: plantData?.heirloom ?? false,
-              hybrid: plantData?.hybrid ?? false,
-              openPollinated: plantData?.openPollinated ?? false,
-              selfPollinated: plantData?.selfPollinated ?? false,
-              spacing: plantData?.spacing ?? 0,
-              rowSpacing: plantData?.rowSpacing ?? 0,
-              pruning: plantData?.pruning || '',
-              sowingDepth: plantData?.sowingDepth ?? 0,
-          }
+            commonName: plantData?.commonName || '',
+            scientificName: plantData?.scientificName || '',
+            description: plantData?.description || '',
+            plantFamilyId: plantData?.plantFamilyId ?? 0,
+            plantTypeId: plantData?.plantTypeId ?? 0,
+            daysToGermination: plantData?.daysToGermination ?? 0,
+            daysToHarvest: plantData?.daysToHarvest ?? 0,
+            indeterminate: plantData?.indeterminate ?? false,
+            germinationTempHigh: plantData?.germinationTempHigh ?? 0,
+            germinationTempLow: plantData?.germinationTempLow ?? 0,
+            light: plantData?.light || '',
+            water: plantData?.water || '',
+            soil: plantData?.soil || '',
+            perennial: plantData?.perennial ?? false,
+            heirloom: plantData?.heirloom ?? false,
+            hybrid: plantData?.hybrid ?? false,
+            openPollinated: plantData?.openPollinated ?? false,
+            selfPollinated: plantData?.selfPollinated ?? false,
+            spacing: plantData?.spacing ?? 0,
+            rowSpacing: plantData?.rowSpacing ?? 0,
+            pruning: plantData?.pruning || '',
+            sowingDepth: plantData?.sowingDepth ?? 0,
+        }
         : {}
 
     return (
@@ -78,8 +78,6 @@ export default function EditPlant() {
                 <PageHeader
                     title={!isLoadingPlant ? (plantData?.commonName || '') : ''}
                     backButton={true}
-                    actionTitle="Delete"
-                    onActionPress={handleDelete}
                 />
             }
         >
@@ -87,6 +85,7 @@ export default function EditPlant() {
                 <PlantForm
                     initialValues={initialValues}
                     handleSubmit={HandleSubmit}
+                    onDelete={handleDelete}
                 />
             ) : (
                 <Loader />

@@ -9,9 +9,10 @@ import 'react-datepicker/dist/react-datepicker.css'
 interface Props {
     initialValues: FormikValues
     handleSubmit: (values: any) => Promise<string>
+    onDelete?: () => void
 }
 
-export default function PlantForm({ initialValues, handleSubmit }: Props) {
+export default function PlantForm({ initialValues, handleSubmit, onDelete }: Props) {
     const validationSchema = Yup.object({
         commonName: Yup.string().required('Required'),
         scientificName: Yup.string(),
@@ -177,7 +178,17 @@ export default function PlantForm({ initialValues, handleSubmit }: Props) {
                     <label>Sowing Depth:</label>
                     <Field name="sowingDepth" type="number" />
                 </div>
-                <Button type="submit" title="Submit" />
+                <div style={{ display: 'flex', gap: 16, justifyContent: 'flex-end', marginTop: 32 }}>
+                    {onDelete && (
+                        <Button
+                            type="button"
+                            title="Delete"
+                            variant="delete"
+                            onPress={onDelete}
+                        />
+                    )}
+                    <Button type="submit" title="Submit" />
+                </div>
             </Form>
         </Formik>
     )

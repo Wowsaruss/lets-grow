@@ -1,55 +1,43 @@
-.grnbtn {
-    padding: 10px;
+.btn {
+    padding: 10px 20px;
     cursor: pointer;
-    padding: 10px;
     text-decoration: none;
     text-align: center;
     transition: all 0.2s ease;
     font-weight: bold;
-}
-
-.grnbtn:hover {
-    background-color: #b6e273;
-}
-
-.grnbtn--action {
-    border: none;
     border-radius: 5px;
-    color: black;
-    background-color: white;
-    transition: all 0.3s ease 0s;
+    font-size: 1rem;
+    border: none;
+    outline: none;
     box-shadow: 2px 2px 9px -2px gray;
 }
 
-.grnbtn--action:active {
-    box-shadow: 0px 0px 0px -2px gray;
-    transform: translateY(2px);
-}
-
-.redbtn {
-    padding: 10px;
-    cursor: pointer;
-    padding: 10px;
-    text-decoration: none;
-    text-align: center;
-    transition: all 0.2s ease;
-    font-weight: bold;
-}
-
-.redbtn:hover {
-    background-color: #e27373;
-}
-
-.redbtn--action {
+.btn--primary {
+    background: white;
+    color: #2d5a27;
+    /* border: 2px solid #2d5a27; */
     border: none;
-    border-radius: 5px;
-    color: black;
-    background-color: white;
-    transition: all 0.3s ease 0s;
-    box-shadow: 2px 2px 9px -2px gray;
 }
 
-.redbtn--action:active {
+.btn--primary:hover {
+    background: #2d5a27;
+    color: white;
+    border: none;
+}
+
+.btn--delete {
+    background: #ff4444;
+    color: white;
+    border: 2px solid #ff4444;
+}
+
+.btn--delete:hover {
+    background: white;
+    color: #ff4444;
+    border: none;
+}
+
+.btn:active {
     box-shadow: 0px 0px 0px -2px gray;
     transform: translateY(2px);
 }
