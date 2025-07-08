@@ -37,6 +37,19 @@
     border: none;
 }
 
+.btn--edit {
+    background: white;
+    color: #1976d2;
+    border: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn--edit:hover {
+    background: #1976d2;
+    color: white;
+    border: none;
+}
+
 .btn:active {
     box-shadow: 0px 0px 0px -2px gray;
     transform: translateY(2px);

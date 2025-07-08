@@ -9,6 +9,7 @@ import Loader from '../Loader'
 import { useAuth0 } from '@auth0/auth0-react'
 import UserService from '../../services/users'
 import UserPlantService from '../../services/user_plants'
+import Button from '../Button'
 
 export default function PlantDetails() {
     const params: Record<string, any> = useParams()
@@ -142,63 +143,35 @@ export default function PlantDetails() {
                     {isAuthenticated && plant && (
                         <div style={{ marginTop: 32, display: 'flex', gap: 16 }}>
                             {isInGarden ? (
-                                <button
-                                    onClick={handleRemoveFromGarden}
-                                    disabled={removing}
-                                    style={{
-                                        backgroundColor: '#ff4444',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '5px',
-                                        padding: '10px 20px',
-                                        fontSize: '1rem',
-                                        fontWeight: 600,
-                                        cursor: removing ? 'not-allowed' : 'pointer',
-                                        opacity: removing ? 0.6 : 1
-                                    }}
-                                >
-                                    {removing ? 'Removing...' : 'Remove from Garden'}
-                                </button>
+                                <Button
+                                    title='Remove from Garden'
+                                    onPress={handleRemoveFromGarden}
+                                    type='button'
+                                    variant='delete'
+                                // disabled={removing}
+                                />
                             ) : (
-                                <button
-                                    onClick={handleAddToGarden}
-                                    disabled={adding}
-                                    style={{
-                                        backgroundColor: '#2d5a27',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '5px',
-                                        padding: '10px 20px',
-                                        fontSize: '1rem',
-                                        fontWeight: 600,
-                                        cursor: adding ? 'not-allowed' : 'pointer',
-                                        opacity: adding ? 0.6 : 1
-                                    }}
-                                >
-                                    {adding ? 'Adding...' : 'Add to Garden'}
-                                </button>
+                                <Button
+                                    title="Add to Garden"
+                                    onPress={handleAddToGarden}
+                                    type="submit"
+                                    variant="primary"
+                                // disabled={adding}
+                                />
                             )}
-                            <button
-                                onClick={() => window.location.href = `/plants/${plant.id}/edit`}
-                                style={{
-                                    backgroundColor: '#1976d2',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '5px',
-                                    padding: '10px 20px',
-                                    fontSize: '1rem',
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                }}
-                            >
-                                Edit
-                            </button>
+                            <Button
+                                title='Edit'
+                                onPress={() => window.location.href = `/plants/${plant.id}/edit`}
+                                type='reset'
+                                variant='edit'
+                            />
                         </div>
                     )}
                 </>
             ) : (
                 <Loader />
-            )}
-        </PageWrapper>
+            )
+            }
+        </PageWrapper >
     )
 }
