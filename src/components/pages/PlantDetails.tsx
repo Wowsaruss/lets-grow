@@ -6,10 +6,18 @@ import PlantService from '../../services/plants'
 import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
 import Loader from '../Loader'
+import { useAuth0 } from '@auth0/auth0-react'
+import UserService from '../../services/users'
+import UserPlantService from '../../services/user_plants'
 
 export default function PlantDetails() {
     const params: Record<string, any> = useParams()
     const [plant, setPlant] = useState<Plant | null>(null)
+    const [userPlants, setUserPlants] = useState<string[]>([])
+    const [currentUser, setCurrentUser] = useState<any>(null)
+    const [adding, setAdding] = useState(false)
+    const [removing, setRemoving] = useState(false)
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0()
 
     const { isLoading: isLoadingPlant, refetch: getPlant } = useQuery<
         Plant,
@@ -34,16 +42,62 @@ export default function PlantDetails() {
         getPlant()
     }, [getPlant])
 
+    // Fetch user's garden plant IDs
+    useEffect(() => {
+        const fetchUserPlants = async () => {
+            if (!isAuthenticated) return
+            try {
+                const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+                const dbUser = await UserService.getCurrentUser(token)
+                setCurrentUser(dbUser)
+                const userPlantsRes = await UserPlantService.fetchByUserId(dbUser.id, token)
+                setUserPlants(userPlantsRes.map(up => up.plantId))
+            } catch (error) {
+                setUserPlants([])
+            }
+        }
+        fetchUserPlants()
+    }, [isAuthenticated, getAccessTokenSilently])
+
+    const handleAddToGarden = async () => {
+        if (!isAuthenticated || !currentUser || !plant) return
+        setAdding(true)
+        try {
+            const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+            await UserPlantService.addPlantToUser({ userId: currentUser.id, plantId: plant.id }, token)
+            setUserPlants(prev => [...prev, plant.id])
+        } catch (error) {
+            alert('Failed to add plant to garden.')
+        } finally {
+            setAdding(false)
+        }
+    }
+
+    const handleRemoveFromGarden = async () => {
+        if (!isAuthenticated || !currentUser || !plant) return
+        setRemoving(true)
+        try {
+            const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+            const userPlantsRes = await UserPlantService.fetchByUserId(currentUser.id, token)
+            const userPlant = userPlantsRes.find(up => up.plantId === plant.id)
+            if (!userPlant) return
+            await UserPlantService.deleteUserPlant(userPlant.id, token)
+            setUserPlants(prev => prev.filter(id => id !== plant.id))
+        } catch (error) {
+            alert('Failed to remove plant from garden.')
+        } finally {
+            setRemoving(false)
+        }
+    }
+
+    const isInGarden = plant && userPlants.includes(plant.id)
+
     return (
         <PageWrapper
             header={
                 <PageHeader
                     title={!isLoadingPlant ? plant?.commonName || '' : ''}
                     backButton={true}
-                    actionTitle="edit"
-                    onActionPress={() =>
-                        (window.location.href = `/plants/${plant?.id}/edit`)
-                    }
                 />
             }
         >
@@ -62,8 +116,7 @@ export default function PlantDetails() {
                         </h3>
                     )}
                     {(plant?.sowingDepth !== undefined && plant?.sowingDepth !== null) && (
-                        <h3>SOWING DEPTH: {plant.sowingDepth}</h3>
-                    )}
+                        <h3>SOWING DEPTH: {plant.sowingDepth}</h3>)}
                     {(plant?.daysToGermination !== undefined && plant?.daysToGermination !== null) && (
                         <h3>
                             DAYS TO GERMINATION: {plant.daysToGermination}
@@ -71,22 +124,77 @@ export default function PlantDetails() {
                     )}
                     {((plant?.germinationTempHigh !== undefined && plant?.germinationTempHigh !== null) || (plant?.germinationTempLow !== undefined && plant?.germinationTempLow !== null)) && (
                         <h3>
-                            GERMINATION TEMPERATURES: {plant.germinationTempLow ?? ''}{(plant.germinationTempLow !== undefined && plant.germinationTempLow !== null && plant.germinationTempHigh !== undefined && plant.germinationTempHigh !== null) ? ' - ' : ''}{plant.germinationTempHigh ?? ''}
+                            GERMINATION TEMPERATURES: {plant.germinationTempLow ?? ''}{(plant.germinationTempLow !== undefined && plant.germinationTempLow !== null && plant?.germinationTempHigh !== undefined && plant?.germinationTempHigh !== null) ? ' - ' : ''}{plant.germinationTempHigh ?? ''}
                         </h3>
                     )}
                     {(plant?.daysToHarvest !== undefined && plant?.daysToHarvest !== null) && (
-                        <h3>DAYS TO HARVEST: {plant.daysToHarvest}</h3>
-                    )}
+                        <h3>DAYS TO HARVEST: {plant.daysToHarvest}</h3>)}
                     {(plant?.spacing !== undefined && plant?.spacing !== null) && (
-                        <h3>PLANT SPACING: {plant.spacing}</h3>
-                    )}
+                        <h3>PLANT SPACING: {plant.spacing}</h3>)}
                     {(plant?.rowSpacing !== undefined && plant?.rowSpacing !== null) && (
-                        <h3>ROW SPACING: {plant.rowSpacing}</h3>
-                    )}
+                        <h3>ROW SPACING: {plant.rowSpacing}</h3>)}
                     {plant?.soil && <h3>SOIL: {plant.soil}</h3>}
                     {plant?.light && <h3>LIGHT: {plant.light}</h3>}
                     {plant?.water && <h3>WATER: {plant.water}</h3>}
                     {plant?.pruning && <h3>PRUNING: {plant.pruning}</h3>}
+
+                    {/* Add/Remove from Garden Button and Edit Button */}
+                    {isAuthenticated && plant && (
+                        <div style={{ marginTop: 32, display: 'flex', gap: 16 }}>
+                            {isInGarden ? (
+                                <button
+                                    onClick={handleRemoveFromGarden}
+                                    disabled={removing}
+                                    style={{
+                                        backgroundColor: '#ff4444',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '5px',
+                                        padding: '10px 20px',
+                                        fontSize: '1rem',
+                                        fontWeight: 600,
+                                        cursor: removing ? 'not-allowed' : 'pointer',
+                                        opacity: removing ? 0.6 : 1
+                                    }}
+                                >
+                                    {removing ? 'Removing...' : 'Remove from Garden'}
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleAddToGarden}
+                                    disabled={adding}
+                                    style={{
+                                        backgroundColor: '#2d5a27',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '5px',
+                                        padding: '10px 20px',
+                                        fontSize: '1rem',
+                                        fontWeight: 600,
+                                        cursor: adding ? 'not-allowed' : 'pointer',
+                                        opacity: adding ? 0.6 : 1
+                                    }}
+                                >
+                                    {adding ? 'Adding...' : 'Add to Garden'}
+                                </button>
+                            )}
+                            <button
+                                onClick={() => window.location.href = `/plants/${plant.id}/edit`}
+                                style={{
+                                    backgroundColor: '#1976d2',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '5px',
+                                    padding: '10px 20px',
+                                    fontSize: '1rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                Edit
+                            </button>
+                        </div>
+                    )}
                 </>
             ) : (
                 <Loader />
