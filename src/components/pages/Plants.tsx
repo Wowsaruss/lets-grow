@@ -6,6 +6,7 @@ import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 import { useSort } from '@table-library/react-table-library/sort'
 import { useAuth0 } from '@auth0/auth0-react'
+import { useNavigate } from 'react-router-dom'
 
 import PlantService from '../../services/plants'
 import UserPlantService from '../../services/user_plants'
@@ -47,17 +48,9 @@ const columns = [
         label: 'Add to Garden',
         renderCell: (item: TableNode) => {
             const plant = item as Plant
-            return (
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation()
-                        return plant
-                    }}
-                    style={{ padding: '4px 8px', fontSize: '12px' }}
-                >
-                    Add to Garden
-                </button>
-            )
+            // userPlants is in the component scope, so we need to access it from closure
+            // We'll redefine columns inside the component to access userPlants, handlers, etc.
+            return null // placeholder, will redefine below
         },
     },
 ]
@@ -71,6 +64,7 @@ export default function Plants() {
     const [removingFromGarden, setRemovingFromGarden] = useState<string | null>(null)
     const [userPlants, setUserPlants] = useState<string[]>([])
     const [currentUser, setCurrentUser] = useState<User | null>(null)
+    const navigate = useNavigate();
 
     const { isLoading: isLoadingPlants, refetch: getAllPlants } = useQuery<
         Plant[],
@@ -225,74 +219,99 @@ export default function Plants() {
         }
     )
 
-    // Update the columns to include the Add to Garden functionality
-    const updatedColumns = [
-        ...columns.slice(0, -1), // All columns except the last one
+    // Redefine columns here to access userPlants and handlers
+    const columnsWithGarden = [
+        ...columns.slice(0, 5),
         {
             label: 'Add to Garden',
             renderCell: (item: TableNode) => {
                 const plant = item as Plant
                 const isInGarden = userPlants.includes(plant.id)
-                const isLoading = addingToGarden === plant.id
-
                 if (isInGarden) {
-                    return <span style={{ color: 'green', fontSize: '12px' }}>✓ In Garden</span>
+                    return (
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                handleRemoveFromGarden(plant.id)
+                            }}
+                            disabled={removingFromGarden === plant.id}
+                            style={{
+                                backgroundColor: '#ff4444',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '3px',
+                                padding: '4px 8px',
+                                fontSize: '12px',
+                                cursor: removingFromGarden === plant.id ? 'not-allowed' : 'pointer',
+                                opacity: removingFromGarden === plant.id ? 0.6 : 1
+                            }}
+                        >
+                            {removingFromGarden === plant.id ? 'Removing...' : 'Remove from Garden'}
+                        </button>
+                    )
+                } else {
+                    return (
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                handleAddToGarden(plant.id)
+                            }}
+                            disabled={addingToGarden === plant.id}
+                            style={{
+                                backgroundColor: '#2d5a27',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '3px',
+                                padding: '4px 8px',
+                                fontSize: '12px',
+                                cursor: addingToGarden === plant.id ? 'not-allowed' : 'pointer',
+                                opacity: addingToGarden === plant.id ? 0.6 : 1
+                            }}
+                        >
+                            {addingToGarden === plant.id ? 'Adding...' : 'Add to Garden'}
+                        </button>
+                    )
                 }
-
-                return (
-                    <button
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            handleAddToGarden(plant.id)
-                        }}
-                        disabled={isLoading || !isAuthenticated}
-                        style={{
-                            padding: '4px 8px',
-                            fontSize: '12px',
-                            backgroundColor: isLoading ? '#ccc' : '#4CAF50',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '3px',
-                            cursor: isLoading ? 'not-allowed' : 'pointer'
-                        }}
-                    >
-                        {isLoading ? 'Adding...' : 'Add to Garden'}
-                    </button>
-                )
             },
         },
     ]
 
     return (
-        <PageWrapper
-            header={
-                <PageHeader
-                    title="Plants"
-                    actionTitle="Add Plant"
-                    onActionPress={() => (window.location.href = `/plants/new`)}
-                />
-            }
-        >
-            <label htmlFor="search">
-                Search by Name:&nbsp;
-                <input
-                    id="search"
-                    type="text"
-                    value={search}
-                    onChange={handleSearch}
-                />
-            </label>
-            <br />
-            {!isLoadingPlants ? (
+        <PageWrapper header={<PageHeader title="Plants" />}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '20px 0' }}>
+                <button
+                    onClick={() => navigate('/plants/new')}
+                    style={{
+                        backgroundColor: '#2d5a27',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '5px',
+                        padding: '10px 20px',
+                        fontSize: '1rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                    }}
+                >
+                    + Add Plant
+                </button>
+            </div>
+            <input
+                type="text"
+                placeholder="Search plants..."
+                value={search}
+                onChange={handleSearch}
+                style={{ marginBottom: 16 }}
+            />
+            {isLoadingPlants ? (
+                <Loader />
+            ) : (
                 <CompactTable
-                    columns={updatedColumns}
+                    columns={columnsWithGarden}
                     data={data}
                     theme={theme}
                     select={select}
-                    sort={sort}
                 />
-            ) : (
-                <Loader />
             )}
         </PageWrapper>
     )

@@ -10,6 +10,8 @@ interface Props {
 }
 
 const PageHeader = (props: Props) => {
+    // Remove the action button for the Plants page
+    const hideActionButton = props.title === 'Plants';
     return (
         <div
             style={{
@@ -54,7 +56,7 @@ const PageHeader = (props: Props) => {
                 <h1>{props.title}</h1>
             </div>
             <div style={{ marginRight: 25 }}>
-                {!!props.onActionPress ? (
+                {!hideActionButton && !!props.onActionPress ? (
                     <Button
                         title={props.actionTitle ? props.actionTitle : ''}
                         onPress={props.onActionPress}
