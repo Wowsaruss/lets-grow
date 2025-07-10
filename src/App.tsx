@@ -18,6 +18,7 @@ import AddPlant from './components/pages/AddPlant'
 import EditPlant from './components/pages/EditPlant'
 import Logo from './assets/Logo.png'
 import Register from './components/pages/Register'
+import JournalEntryDetails from './components/pages/JournalEntryDetails'
 
 function MainNavigation() {
     const { isAuthenticated } = useAuth0()
@@ -123,6 +124,7 @@ function App() {
                         element={<EditPlant />}
                     />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/journal-entries/:id" element={<JournalEntryDetails />} />
                     <Route element={<RequireAuth />}></Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>

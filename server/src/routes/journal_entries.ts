@@ -70,4 +70,37 @@ router.post('/', checkJwt, attachUser, async (req: Request, res) => {
     }
 });
 
+// Get a single journal entry by ID for the authenticated user
+router.get('/:id', checkJwt, attachUser, async (req: Request, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ error: 'User not authenticated' });
+        }
+        const { id } = req.params;
+        const entry = await db('journal_entries')
+            .leftJoin('plants', 'journal_entries.plant_id', 'plants.id')
+            .select(
+                'journal_entries.*',
+                'plants.id as plant_id',
+                'plants.common_name as plant_common_name'
+            )
+            .where('journal_entries.id', id)
+            .andWhere('journal_entries.user_id', req.user.id)
+            .whereNull('journal_entries.deleted_at')
+            .first();
+        if (!entry) {
+            return res.status(404).json({ error: 'Entry not found' });
+        }
+        const result = keysToCamel(entry);
+        result.plant = {
+            id: entry.plant_id,
+            commonName: entry.plant_common_name,
+        };
+        res.json(result);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Failed to fetch journal entry' });
+    }
+});
+
 export default router; 

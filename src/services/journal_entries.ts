@@ -39,4 +39,13 @@ export const createJournalEntry = async (data: Partial<JournalEntry>, token: str
         },
     });
     return response.data;
+};
+
+export const fetchJournalEntryById = async (id: string, token: string): Promise<JournalEntry> => {
+    const response = await apiClient.get<JournalEntry>(`/api/journal-entries/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
 }; 

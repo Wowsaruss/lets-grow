@@ -14,6 +14,7 @@ import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 import { TableNode } from '@table-library/react-table-library/types/table'
 import Button from '../Button'
+import { useNavigate } from 'react-router-dom'
 
 interface UserPlant {
     id: string
@@ -35,6 +36,8 @@ const MyGarden = () => {
     const [form, setForm] = useState({ plantId: '', date: '', subject: '', body: '' })
     const [adding, setAdding] = useState(false)
     const [error, setError] = useState<string | null>(null)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (!isAuthenticated) return
@@ -253,6 +256,10 @@ const MyGarden = () => {
                             columns={journalColumns}
                             data={journalData}
                             theme={theme}
+                            rowProps={{
+                                style: { cursor: 'pointer' },
+                                onClick: (node: TableNode) => navigate(`/journal-entries/${node.id}`),
+                            }}
                         />
                     )}
                 </>
