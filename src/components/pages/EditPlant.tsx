@@ -9,9 +9,35 @@ import { useCallback } from 'react'
 import { addEditMapping } from '../../helpers'
 import Loader from '../Loader'
 import PlantForm from '../PlantForm'
+import { useAuth0 } from '@auth0/auth0-react'
+import UserService from '../../services/users'
+import { User, UserRole } from '../../types/User'
+import React from 'react'
 
 export default function EditPlant() {
     const { plantId }: Record<string, any> = useParams()
+    const { isAuthenticated, user, getAccessTokenSilently } = useAuth0()
+    const [currentUser, setCurrentUser] = React.useState<User | null>(null)
+    const [loadingUser, setLoadingUser] = React.useState(true)
+
+    React.useEffect(() => {
+        if (isAuthenticated && user) {
+            const fetchUser = async () => {
+                try {
+                    const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+                    const dbUser = await UserService.getCurrentUser(token)
+                    setCurrentUser(dbUser)
+                } catch (error) {
+                    setCurrentUser(null)
+                } finally {
+                    setLoadingUser(false)
+                }
+            }
+            fetchUser()
+        } else {
+            setLoadingUser(false)
+        }
+    }, [isAuthenticated, user, getAccessTokenSilently])
 
     const { isLoading: isLoadingPlant, data: plantData } = useQuery<
         Plant,
@@ -81,14 +107,18 @@ export default function EditPlant() {
                 />
             }
         >
-            {isLoaded ? (
+            {loadingUser || isLoadingPlant ? (
+                <Loader />
+            ) : isLoaded && currentUser && currentUser.role === UserRole.Admin ? (
                 <PlantForm
                     initialValues={initialValues}
                     handleSubmit={HandleSubmit}
                     onDelete={handleDelete}
                 />
             ) : (
-                <Loader />
+                <div style={{ padding: 32, textAlign: 'center', color: '#b71c1c', fontWeight: 600 }}>
+                    Only admin users can edit plants.
+                </div>
             )}
         </PageWrapper>
     )

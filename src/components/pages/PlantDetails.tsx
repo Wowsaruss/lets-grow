@@ -10,6 +10,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import UserService from '../../services/users'
 import UserPlantService from '../../services/user_plants'
 import Button from '../Button'
+import { UserRole } from '../../types/User'
 
 export default function PlantDetails() {
     const params: Record<string, any> = useParams()
@@ -148,7 +149,6 @@ export default function PlantDetails() {
                                     onPress={handleRemoveFromGarden}
                                     type='button'
                                     variant='delete'
-                                // disabled={removing}
                                 />
                             ) : (
                                 <Button
@@ -156,15 +156,16 @@ export default function PlantDetails() {
                                     onPress={handleAddToGarden}
                                     type="submit"
                                     variant="primary"
-                                // disabled={adding}
                                 />
                             )}
-                            <Button
-                                title='Edit'
-                                onPress={() => window.location.href = `/plants/${plant.id}/edit`}
-                                type='reset'
-                                variant='edit'
-                            />
+                            {currentUser && currentUser.role === UserRole.Admin && (
+                                <Button
+                                    title='Edit'
+                                    onPress={() => window.location.href = `/plants/${plant.id}/edit`}
+                                    type='reset'
+                                    variant='edit'
+                                />
+                            )}
                         </div>
                     )}
                 </>
