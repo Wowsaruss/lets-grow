@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import db from '../db';
 import { checkJwt, attachUser } from '../middleware/auth';
 import { fetchGrowingZoneId } from '../helpers/growingZones';
-import { CreateUserBody, UpdateUserBody } from 'shared/types/User';
+import { CreateUserBody, UpdateUserBody } from '../types/User';
 import { keysToCamel } from '../helpers/case';
 
 const router = express.Router();
@@ -73,7 +73,7 @@ router.post('/', (async (req: Request, res: Response) => {
 
     // Fetch the correct growing-zone id
     let growingZoneId = req.body.growingZoneId
-    if (!req.body.growing_zone_id) {
+    if (!req.body.growing_zone_id && zipcode) {
       growingZoneId = await fetchGrowingZoneId(zipcode)
     }
 
