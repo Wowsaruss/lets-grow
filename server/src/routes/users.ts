@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import db from '../db';
 import { checkJwt, attachUser } from '../middleware/auth';
 import { fetchGrowingZoneId } from '../helpers/growingZones';
-import { CreateUserBody, UpdateUserBody } from '../../../types/User';
+import { CreateUserBody, UpdateUserBody } from 'shared/types/User';
 import { keysToCamel } from '../helpers/case';
 
 const router = express.Router();

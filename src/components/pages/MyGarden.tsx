@@ -6,8 +6,8 @@ import Loader from '../Loader'
 import PlantService from '../../services/plants'
 import UserPlantService from '../../services/user_plants'
 import UserService from '../../services/users'
-import { Plant } from '../../types/Plants'
-import { User } from '../../types/User'
+import { User } from '../../shared/types/User'
+import { Plant } from '../../shared/types/Plants'
 
 interface UserPlant {
     id: string

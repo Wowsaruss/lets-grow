@@ -8,9 +8,7 @@ import PageWrapper from '../PageWrapper'
 import { useAuth0 } from '@auth0/auth0-react'
 import UserService from '../../services/users'
 import { useEffect, useState } from 'react'
-import { User as ApiUser } from '../../types/User'
-import { Plant } from '../../types/Plants'
-import { UserRole } from '../../types/User'
+import { UserRole, User as ApiUser } from '../../shared/types/User'
 
 export default function AddPlant() {
     const { getAccessTokenSilently, isAuthenticated } = useAuth0()
@@ -34,7 +32,7 @@ export default function AddPlant() {
     const mutation = useMutation(async (data) => {
         // Ensure we have a valid token before making the request
         if (!token) throw new Error('No token')
-        return PlantService.createOne(data)
+        return PlantService.createOne(data, token)
     })
 
     const HandleSubmit = async (values: any): Promise<string> => {

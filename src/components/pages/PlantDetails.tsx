@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
-import { Plant } from '../../types/Plants'
 import PlantService from '../../services/plants'
 import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
@@ -10,7 +9,8 @@ import { useAuth0 } from '@auth0/auth0-react'
 import UserService from '../../services/users'
 import UserPlantService from '../../services/user_plants'
 import Button from '../Button'
-import { UserRole } from '../../types/User'
+import { Plant } from '../../shared/types/Plants'
+import { UserRole } from '../../shared/types/User'
 
 export default function PlantDetails() {
     const params: Record<string, any> = useParams()
