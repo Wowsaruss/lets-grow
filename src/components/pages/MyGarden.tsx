@@ -202,61 +202,63 @@ const MyGarden = () => {
                     </div>
 
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, marginTop: 48 }}>
-                        <h2>Journal</h2>
-                        <Button
-                            title={showAddForm ? 'Cancel' : 'Add Entry'}
-                            onPress={() => setShowAddForm(f => !f)}
-                            type="button"
-                            variant="primary"
-                        />
+                    <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px #eee', padding: 32 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, marginTop: 0 }}>
+                            <h2>Journal</h2>
+                            <Button
+                                title={showAddForm ? 'Cancel' : 'Add Entry'}
+                                onPress={() => setShowAddForm(f => !f)}
+                                type="button"
+                                variant="primary"
+                            />
+                        </div>
+                        {showAddForm && (
+                            <form onSubmit={handleAddEntry} style={{ marginBottom: 24, background: '#f9f9f9', padding: 16, borderRadius: 8, border: '1px solid #eee' }}>
+                                <div style={{ marginBottom: 8 }}>
+                                    <label>Plant:{' '}
+                                        <select name="plantId" value={form.plantId} onChange={handleFormChange} required>
+                                            <option value="">Select a plant</option>
+                                            {userPlantDetails.map(plant => (
+                                                <option key={plant.id} value={plant.id}>{plant.commonName}</option>
+                                            ))}
+                                        </select>
+                                    </label>
+                                </div>
+                                <div style={{ marginBottom: 8 }}>
+                                    <label>Date:{' '}
+                                        <input type="date" name="date" value={form.date} onChange={handleFormChange} required />
+                                    </label>
+                                </div>
+                                <div style={{ marginBottom: 8 }}>
+                                    <label>Subject:{' '}
+                                        <input type="text" name="subject" value={form.subject} onChange={handleFormChange} required />
+                                    </label>
+                                </div>
+                                <div style={{ marginBottom: 8 }}>
+                                    <label>Body:{' '}
+                                        <textarea name="body" value={form.body} onChange={handleFormChange} required rows={3} style={{ width: '100%' }} />
+                                    </label>
+                                </div>
+                                {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
+                                <button type="submit" disabled={adding}>{adding ? 'Adding...' : 'Add Entry'}</button>
+                            </form>
+                        )}
+                        {loadingJournal ? (
+                            <Loader />
+                        ) : journalEntries.length === 0 ? (
+                            <p>You have no journal entries yet.</p>
+                        ) : (
+                            <CompactTable
+                                columns={journalColumns}
+                                data={journalData}
+                                theme={theme}
+                                rowProps={{
+                                    style: { cursor: 'pointer' },
+                                    onClick: (node: TableNode) => navigate(`/journal-entries/${node.id}`),
+                                }}
+                            />
+                        )}
                     </div>
-                    {showAddForm && (
-                        <form onSubmit={handleAddEntry} style={{ marginBottom: 24, background: '#f9f9f9', padding: 16, borderRadius: 8, border: '1px solid #eee' }}>
-                            <div style={{ marginBottom: 8 }}>
-                                <label>Plant:{' '}
-                                    <select name="plantId" value={form.plantId} onChange={handleFormChange} required>
-                                        <option value="">Select a plant</option>
-                                        {userPlantDetails.map(plant => (
-                                            <option key={plant.id} value={plant.id}>{plant.commonName}</option>
-                                        ))}
-                                    </select>
-                                </label>
-                            </div>
-                            <div style={{ marginBottom: 8 }}>
-                                <label>Date:{' '}
-                                    <input type="date" name="date" value={form.date} onChange={handleFormChange} required />
-                                </label>
-                            </div>
-                            <div style={{ marginBottom: 8 }}>
-                                <label>Subject:{' '}
-                                    <input type="text" name="subject" value={form.subject} onChange={handleFormChange} required />
-                                </label>
-                            </div>
-                            <div style={{ marginBottom: 8 }}>
-                                <label>Body:{' '}
-                                    <textarea name="body" value={form.body} onChange={handleFormChange} required rows={3} style={{ width: '100%' }} />
-                                </label>
-                            </div>
-                            {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
-                            <button type="submit" disabled={adding}>{adding ? 'Adding...' : 'Add Entry'}</button>
-                        </form>
-                    )}
-                    {loadingJournal ? (
-                        <Loader />
-                    ) : journalEntries.length === 0 ? (
-                        <p>You have no journal entries yet.</p>
-                    ) : (
-                        <CompactTable
-                            columns={journalColumns}
-                            data={journalData}
-                            theme={theme}
-                            rowProps={{
-                                style: { cursor: 'pointer' },
-                                onClick: (node: TableNode) => navigate(`/journal-entries/${node.id}`),
-                            }}
-                        />
-                    )}
                 </>
             )}
         </PageWrapper>
