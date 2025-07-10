@@ -13,6 +13,7 @@ import { CompactTable } from '@table-library/react-table-library/compact'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 import { TableNode } from '@table-library/react-table-library/types/table'
+import Button from '../Button'
 
 interface UserPlant {
     id: string
@@ -194,10 +195,16 @@ const MyGarden = () => {
                         </ul>
                     )}
 
-                    <h2 style={{ marginTop: 40 }}>Journal</h2>
-                    <button onClick={() => setShowAddForm(f => !f)} style={{ marginBottom: 16 }}>
-                        {showAddForm ? 'Cancel' : 'Add Journal Entry'}
-                    </button>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, marginTop: 48 }}>
+                        <h2>Journal</h2>
+                        <Button
+                            title={showAddForm ? 'Cancel' : 'Add Entry'}
+                            onPress={() => setShowAddForm(f => !f)}
+                            type="button"
+                            variant="primary"
+                        />
+                    </div>
                     {showAddForm && (
                         <form onSubmit={handleAddEntry} style={{ marginBottom: 24, background: '#f9f9f9', padding: 16, borderRadius: 8, border: '1px solid #eee' }}>
                             <div style={{ marginBottom: 8 }}>
