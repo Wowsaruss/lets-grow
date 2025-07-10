@@ -1,6 +1,9 @@
 import BackArrow from '../assets/BackArrow.png'
 import '../css/button.css'
 import Button from './Button'
+import LoginButton from './LoginButton'
+import LogoutButton from './LogoutButton'
+import { useAuth0 } from '@auth0/auth0-react'
 
 interface Props {
     title: string
@@ -10,6 +13,7 @@ interface Props {
 }
 
 const PageHeader = (props: Props) => {
+    const { isAuthenticated } = useAuth0()
     // Remove the action button for the Plants page
     const hideActionButton = props.title === 'Plants';
     return (
@@ -55,13 +59,14 @@ const PageHeader = (props: Props) => {
                 ) : null}
                 <h1>{props.title}</h1>
             </div>
-            <div style={{ marginRight: 25 }}>
+            <div style={{ marginRight: 25, display: 'flex', alignItems: 'center', gap: 10 }}>
                 {!hideActionButton && !!props.onActionPress ? (
                     <Button
                         title={props.actionTitle ? props.actionTitle : ''}
                         onPress={props.onActionPress}
                     />
                 ) : null}
+                {isAuthenticated ? <LogoutButton /> : <LoginButton />}
             </div>
         </div>
     )

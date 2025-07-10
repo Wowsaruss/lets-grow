@@ -1,16 +1,15 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import '../css/App.css'
+import Button from './Button'
 
 const LogoutButton = () => {
     const { logout } = useAuth0()
 
     return (
-        <div
-            onClick={() => logout({ returnTo: window.location.origin })}
-            className="Link-inactive"
-        >
-            <h3 style={{ paddingLeft: 10, marginRight: 10 }}>Logout</h3>
-        </div>
+        <Button
+            title="Logout"
+            onPress={() => logout({ returnTo: window.location.origin })}
+            type="button"
+        />
     )
 }
 

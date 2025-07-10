@@ -62,7 +62,7 @@ function MainNavigation() {
                         <h3 style={{ paddingLeft: 10, marginRight: 10 }}>Home</h3>
                     </NavLink>
                 )}
-                {isAuthenticated ? (
+                {isAuthenticated && (
                     <>
                         <NavLink
                             to="/my-garden"
@@ -84,11 +84,6 @@ function MainNavigation() {
                                 Plants
                             </h3>
                         </NavLink>
-                        <LogoutButton />
-                    </>
-                ) : (
-                    <>
-                        <LoginButton />
                     </>
                 )}
             </div>
