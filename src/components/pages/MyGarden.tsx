@@ -159,45 +159,47 @@ const MyGarden = () => {
                 <Loader />
             ) : (
                 <>
-                    <h2>Plants</h2>
-                    {userPlantDetails.length === 0 ? (
-                        <p>You have not added any plants to your garden yet.</p>
-                    ) : (
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                            {userPlantDetails.map((plant) => (
-                                <li
-                                    key={plant.id}
-                                    style={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        padding: '10px',
-                                        margin: '5px 0',
-                                        border: '1px solid #ddd',
-                                        borderRadius: '5px',
-                                        backgroundColor: '#f9f9f9'
-                                    }}
-                                >
-                                    <span>{plant.commonName}</span>
-                                    <button
-                                        onClick={() => handleDeletePlant(plant.id)}
-                                        disabled={deletingPlantId === plant.id}
+                    <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px #eee', padding: 32, marginBottom: 32 }}>
+                        <h2>Your Plants</h2>
+                        {userPlantDetails.length === 0 ? (
+                            <p>You have not added any plants to your garden yet.</p>
+                        ) : (
+                            <ul style={{ listStyle: 'none', padding: 0 }}>
+                                {userPlantDetails.map((plant) => (
+                                    <li
+                                        key={plant.id}
                                         style={{
-                                            backgroundColor: '#ff4444',
-                                            color: 'white',
-                                            border: 'none',
-                                            padding: '5px 10px',
-                                            borderRadius: '3px',
-                                            cursor: deletingPlantId === plant.id ? 'not-allowed' : 'pointer',
-                                            opacity: deletingPlantId === plant.id ? 0.6 : 1
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            padding: '10px',
+                                            margin: '5px 0',
+                                            border: '1px solid #ddd',
+                                            borderRadius: '5px',
+                                            backgroundColor: '#f9f9f9'
                                         }}
                                     >
-                                        {deletingPlantId === plant.id ? 'Removing...' : 'Remove'}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                                        <span>{plant.commonName}</span>
+                                        <button
+                                            onClick={() => handleDeletePlant(plant.id)}
+                                            disabled={deletingPlantId === plant.id}
+                                            style={{
+                                                backgroundColor: '#ff4444',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '5px 10px',
+                                                borderRadius: '3px',
+                                                cursor: deletingPlantId === plant.id ? 'not-allowed' : 'pointer',
+                                                opacity: deletingPlantId === plant.id ? 0.6 : 1
+                                            }}
+                                        >
+                                            {deletingPlantId === plant.id ? 'Removing...' : 'Remove'}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
 
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, marginTop: 48 }}>
