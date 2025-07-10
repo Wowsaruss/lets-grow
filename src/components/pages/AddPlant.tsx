@@ -9,6 +9,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import UserService from '../../services/users'
 import { useEffect, useState } from 'react'
 import { UserRole, User as ApiUser } from '../../shared/types/User'
+import { config } from '../../config'
 
 export default function AddPlant() {
     const { getAccessTokenSilently, isAuthenticated } = useAuth0()
@@ -16,7 +17,7 @@ export default function AddPlant() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            getAccessTokenSilently({ audience: 'https://lets-grow-api/' }).then(setToken)
+            getAccessTokenSilently({ audience: config.auth0.audience }).then(setToken)
         }
     }, [isAuthenticated, getAccessTokenSilently])
 

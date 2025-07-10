@@ -17,16 +17,8 @@ import Button from '../Button'
 import { useNavigate } from 'react-router-dom'
 import { config } from '../../config'
 
-interface UserPlant {
-    id: string
-    userId: string
-    plantId: string
-    createdAt: string
-    updatedAt: string
-}
-
 const MyGarden = () => {
-    const { user, isAuthenticated, getAccessTokenSilently } = useAuth0()
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0()
     const [userPlantDetails, setUserPlantDetails] = useState<Plant[]>([])
     const [loading, setLoading] = useState(true)
     const [currentUser, setCurrentUser] = useState<User | null>(null)
@@ -167,7 +159,7 @@ const MyGarden = () => {
                 <Loader />
             ) : (
                 <>
-                    <h2>Your Plants</h2>
+                    <h2>Plants</h2>
                     {userPlantDetails.length === 0 ? (
                         <p>You have not added any plants to your garden yet.</p>
                     ) : (

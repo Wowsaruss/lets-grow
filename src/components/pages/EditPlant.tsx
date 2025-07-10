@@ -13,6 +13,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import UserService from '../../services/users'
 import { User, UserRole } from '../../shared/types/User'
 import React from 'react'
+import { config } from '../../config'
 
 export default function EditPlant() {
     const { plantId }: Record<string, any> = useParams()
@@ -24,7 +25,7 @@ export default function EditPlant() {
         if (isAuthenticated && user) {
             const fetchUser = async () => {
                 try {
-                    const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+                    const token = await getAccessTokenSilently({ audience: config.auth0.audience })
                     const dbUser = await UserService.getCurrentUser(token)
                     setCurrentUser(dbUser)
                 } catch (error) {
@@ -51,12 +52,12 @@ export default function EditPlant() {
     )
 
     const editMutation = useMutation(async (data) => {
-        const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+        const token = await getAccessTokenSilently({ audience: config.auth0.audience })
         return PlantService.updateOne(plantId, data, token)
     })
 
     const deleteMutation = useMutation(async () => {
-        const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+        const token = await getAccessTokenSilently({ audience: config.auth0.audience })
         return PlantService.deleteOne(plantId, token)
     })
 

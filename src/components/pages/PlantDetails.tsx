@@ -11,6 +11,7 @@ import UserPlantService from '../../services/user_plants'
 import Button from '../Button'
 import { Plant } from '../../shared/types/Plants'
 import { UserRole } from '../../shared/types/User'
+import { config } from '../../config'
 
 export default function PlantDetails() {
     const params: Record<string, any> = useParams()
@@ -49,7 +50,7 @@ export default function PlantDetails() {
         const fetchUserPlants = async () => {
             if (!isAuthenticated) return
             try {
-                const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+                const token = await getAccessTokenSilently({ audience: config.auth0.audience })
                 const dbUser = await UserService.getCurrentUser(token)
                 setCurrentUser(dbUser)
                 const userPlantsRes = await UserPlantService.fetchByUserId(dbUser.id, token)
@@ -65,7 +66,7 @@ export default function PlantDetails() {
         if (!isAuthenticated || !currentUser || !plant) return
         setAdding(true)
         try {
-            const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+            const token = await getAccessTokenSilently({ audience: config.auth0.audience })
             await UserPlantService.addPlantToUser({ userId: currentUser.id, plantId: plant.id }, token)
             setUserPlants(prev => [...prev, plant.id])
         } catch (error) {
@@ -79,7 +80,7 @@ export default function PlantDetails() {
         if (!isAuthenticated || !currentUser || !plant) return
         setRemoving(true)
         try {
-            const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+            const token = await getAccessTokenSilently({ audience: config.auth0.audience })
             const userPlantsRes = await UserPlantService.fetchByUserId(currentUser.id, token)
             const userPlant = userPlantsRes.find(up => up.plantId === plant.id)
             if (!userPlant) return
