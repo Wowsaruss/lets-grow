@@ -17,6 +17,7 @@ import PageWrapper from '../PageWrapper'
 import PageHeader from '../PageHeader'
 import Loader from '../Loader'
 import { TableNode } from '@table-library/react-table-library/types/table'
+import Button from '../Button'
 
 const columns = [
     {
@@ -279,22 +280,12 @@ export default function Plants() {
     return (
         <PageWrapper header={<PageHeader title="Plants" />}>
             <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '20px 0' }}>
-                <button
-                    onClick={() => navigate('/plants/new')}
-                    style={{
-                        backgroundColor: '#2d5a27',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        padding: '10px 20px',
-                        fontSize: '1rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-                    }}
-                >
-                    + Add Plant
-                </button>
+                <Button
+                    title='+ Add Plant'
+                    onPress={() => navigate('/plants/new')}
+                    type='button'
+                    variant='primary'
+                />
             </div>
             <input
                 type="text"
