@@ -2,7 +2,7 @@ import { Formik, Field, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 import Button from './Button'
 import { DatePickerField } from './DatePickerField'
-import { Plant } from '../../types/Plants'
+import { Plant } from '../types/Plants'
 
 import 'react-datepicker/dist/react-datepicker.css'
 

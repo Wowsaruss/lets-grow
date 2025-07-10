@@ -8,8 +8,8 @@ import PageWrapper from '../PageWrapper'
 import { useAuth0 } from '@auth0/auth0-react'
 import UserService from '../../services/users'
 import { useEffect, useState } from 'react'
-import { User as ApiUser } from '../../../types/User'
-import { Plant } from '../../../types/Plants'
+import { User as ApiUser } from '../../types/User'
+import { Plant } from '../../types/Plants'
 
 export default function AddPlant() {
     const { getAccessTokenSilently, isAuthenticated } = useAuth0()

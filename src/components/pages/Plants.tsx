@@ -11,8 +11,8 @@ import { useNavigate } from 'react-router-dom'
 import PlantService from '../../services/plants'
 import UserPlantService from '../../services/user_plants'
 import UserService from '../../services/users'
-import { Plant } from '../../../types/Plants'
-import { User } from '../../../types/User'
+import { Plant } from '../../types/Plants'
+import { User, UserRole } from '../../types/User'
 import PageWrapper from '../PageWrapper'
 import PageHeader from '../PageHeader'
 import Loader from '../Loader'
@@ -280,12 +280,14 @@ export default function Plants() {
     return (
         <PageWrapper header={<PageHeader title="Plants" />}>
             <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '20px 0' }}>
-                <Button
-                    title='+ Add Plant'
-                    onPress={() => navigate('/plants/new')}
-                    type='button'
-                    variant='primary'
-                />
+                {currentUser && currentUser.role === UserRole.Admin && (
+                    <Button
+                        title='+ Add Plant'
+                        onPress={() => navigate('/plants/new')}
+                        type='button'
+                        variant='primary'
+                    />
+                )}
             </div>
             <input
                 type="text"

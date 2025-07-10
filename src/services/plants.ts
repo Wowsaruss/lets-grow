@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Plant } from '../../types/Plants'
+import { Plant } from '../types/Plants'
 import config from '../config'
 
 const apiClient = axios.create({
