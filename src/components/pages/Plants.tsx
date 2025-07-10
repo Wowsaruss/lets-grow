@@ -280,33 +280,35 @@ export default function Plants() {
 
     return (
         <PageWrapper header={<PageHeader title="Plants" />}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '20px 0' }}>
-                {currentUser && currentUser.role === UserRole.Admin && (
-                    <Button
-                        title='+ Add Plant'
-                        onPress={() => navigate('/plants/new')}
-                        type='button'
-                        variant='primary'
+            <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px #eee', padding: 32 }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '20px 0' }}>
+                    {currentUser && currentUser.role === UserRole.Admin && (
+                        <Button
+                            title='+ Add Plant'
+                            onPress={() => navigate('/plants/new')}
+                            type='button'
+                            variant='primary'
+                        />
+                    )}
+                </div>
+                <input
+                    type="text"
+                    placeholder="Search plants..."
+                    value={search}
+                    onChange={handleSearch}
+                    style={{ marginBottom: 16 }}
+                />
+                {isLoadingPlants ? (
+                    <Loader />
+                ) : (
+                    <CompactTable
+                        columns={columnsWithGarden}
+                        data={data}
+                        theme={theme}
+                        select={select}
                     />
                 )}
             </div>
-            <input
-                type="text"
-                placeholder="Search plants..."
-                value={search}
-                onChange={handleSearch}
-                style={{ marginBottom: 16 }}
-            />
-            {isLoadingPlants ? (
-                <Loader />
-            ) : (
-                <CompactTable
-                    columns={columnsWithGarden}
-                    data={data}
-                    theme={theme}
-                    select={select}
-                />
-            )}
         </PageWrapper>
     )
 }
