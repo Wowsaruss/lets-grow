@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Plant } from '../types/Plants'
+import { Plant } from '../shared/types/Plants'
 import config from '../config'
 
 const apiClient = axios.create({
@@ -28,21 +28,34 @@ const fetchUserPlants = async (userId: string | number, token: string): Promise<
     return response.data
 }
 
-const updateOne = async (plantId: string | number, body: any) => {
-    const response = await apiClient.patch<Plant>(
-        `/api/plants/${plantId}/edit`,
-        body
+const updateOne = async (plantId: string | number, body: any, token: string) => {
+    const response = await apiClient.put<Plant>(
+        `/api/plants/${plantId}`,
+        body,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
     )
     return response.data
 }
 
-const createOne = async (body: any) => {
-    const response = await apiClient.post<Plant>(`/api/plants/new`, body)
+const createOne = async (body: any, token: string) => {
+    const response = await apiClient.post<Plant>(`/api/plants`, body, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
     return response.data
 }
 
-const deleteOne = async (plantId: string | number) => {
-    return apiClient.delete<Plant>(`/api/plants/${plantId}/delete`)
+const deleteOne = async (plantId: string | number, token: string) => {
+    return apiClient.delete<Plant>(`/api/plants/${plantId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
 }
 
 const PlantService = { fetchAll, fetchOne, fetchUserPlants, updateOne, createOne, deleteOne }

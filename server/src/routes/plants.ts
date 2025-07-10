@@ -1,6 +1,6 @@
 import express from 'express';
 import db from '../db';
-import { keysToCamel } from '../helpers/case';
+import { keysToCamel, keysToSnake } from '../helpers/case';
 import { checkJwt, attachUser } from '../middleware/auth';
 import { Request } from '../types/express';
 
@@ -60,9 +60,13 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create new plant
-router.post('/', async (req, res) => {
+router.post('/', checkJwt, attachUser, async (req: Request, res) => {
   try {
-    const [plant] = await db('plants').insert(req.body).returning('*');
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Forbidden: Only admin users can create plants' });
+    }
+    const snakeCaseBody = keysToSnake(req.body);
+    const [plant] = await db('plants').insert(snakeCaseBody).returning('*');
     res.status(201).json(keysToCamel(plant));
   } catch (error) {
     console.log(error)
@@ -71,11 +75,15 @@ router.post('/', async (req, res) => {
 });
 
 // Update plant
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkJwt, attachUser, async (req: Request, res) => {
   try {
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Forbidden: Only admin users can update plants' });
+    }
+    const snakeCaseBody = keysToSnake(req.body);
     const [plant] = await db('plants')
       .where({ id: req.params.id })
-      .update(req.body)
+      .update(snakeCaseBody)
       .returning('*');
 
     if (!plant) {
@@ -89,8 +97,11 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete plant
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkJwt, attachUser, async (req: Request, res) => {
   try {
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Forbidden: Only admin users can delete plants' });
+    }
     const deleted = await db('plants').where({ id: req.params.id }).delete();
     if (!deleted) {
       return res.status(404).json({ error: 'Plant not found' });

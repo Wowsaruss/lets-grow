@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation } from 'react-query'
 import { FormikValues } from 'formik'
-import { Plant } from '../../types/Plants'
+import { Plant } from '../../shared/types/Plants'
 import PlantService from '../../services/plants'
 import PageHeader from '../PageHeader'
 import PageWrapper from '../PageWrapper'
@@ -11,7 +11,7 @@ import Loader from '../Loader'
 import PlantForm from '../PlantForm'
 import { useAuth0 } from '@auth0/auth0-react'
 import UserService from '../../services/users'
-import { User, UserRole } from '../../types/User'
+import { User, UserRole } from '../../shared/types/User'
 import React from 'react'
 
 export default function EditPlant() {
@@ -50,12 +50,14 @@ export default function EditPlant() {
         {}
     )
 
-    const editMutation = useMutation((data) => {
-        return PlantService.updateOne(plantId, data)
+    const editMutation = useMutation(async (data) => {
+        const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+        return PlantService.updateOne(plantId, data, token)
     })
 
-    const deleteMutation = useMutation(() => {
-        return PlantService.deleteOne(plantId)
+    const deleteMutation = useMutation(async () => {
+        const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+        return PlantService.deleteOne(plantId, token)
     })
 
     const HandleSubmit = async (values: any) => {
