@@ -15,6 +15,7 @@ import { getTheme } from '@table-library/react-table-library/baseline'
 import { TableNode } from '@table-library/react-table-library/types/table'
 import Button from '../Button'
 import { useNavigate } from 'react-router-dom'
+import { config } from '../../config'
 
 interface UserPlant {
     id: string
@@ -46,7 +47,7 @@ const MyGarden = () => {
             setLoading(true)
             try {
                 // Get current user from database
-                const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+                const token = await getAccessTokenSilently({ audience: config.auth0.audience })
                 const dbUser = await UserService.getCurrentUser(token)
                 setCurrentUser(dbUser)
 
@@ -83,7 +84,7 @@ const MyGarden = () => {
 
         setDeletingPlantId(plantId)
         try {
-            const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+            const token = await getAccessTokenSilently({ audience: config.auth0.audience })
 
             // Find the user_plant record to get its ID
             const userPlantsRes = await UserPlantService.fetchByUserId(currentUser.id, token)
@@ -118,7 +119,7 @@ const MyGarden = () => {
         setAdding(true)
         setError(null)
         try {
-            const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+            const token = await getAccessTokenSilently({ audience: config.auth0.audience })
             await createJournalEntry({ ...form, plantId: Number(form.plantId) }, token)
             setForm({ plantId: '', date: '', subject: '', body: '' })
             setShowAddForm(false)

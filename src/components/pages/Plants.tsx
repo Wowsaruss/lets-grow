@@ -18,6 +18,7 @@ import PageHeader from '../PageHeader'
 import Loader from '../Loader'
 import { TableNode } from '@table-library/react-table-library/types/table'
 import Button from '../Button'
+import { config } from '../../config'
 
 const columns = [
     {
@@ -92,7 +93,7 @@ export default function Plants() {
             const fetchUserPlants = async () => {
                 try {
                     // Get current user from database
-                    const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+                    const token = await getAccessTokenSilently({ audience: config.auth0.audience })
                     const dbUser = await UserService.getCurrentUser(token)
                     setCurrentUser(dbUser)
 
@@ -130,7 +131,7 @@ export default function Plants() {
 
         setAddingToGarden(plantId)
         try {
-            const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+            const token = await getAccessTokenSilently({ audience: config.auth0.audience })
             await UserPlantService.addPlantToUser({ userId: currentUser.id, plantId }, token)
             // Update the userPlants state to include the new plant
             setUserPlants(prev => [...prev, plantId])
@@ -162,7 +163,7 @@ export default function Plants() {
 
         setRemovingFromGarden(plantId)
         try {
-            const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+            const token = await getAccessTokenSilently({ audience: config.auth0.audience })
 
             // Find the user_plant record to get its ID
             const userPlantsRes = await UserPlantService.fetchByUserId(currentUser.id, token)

@@ -5,6 +5,7 @@ import PageWrapper from '../PageWrapper'
 import PageHeader from '../PageHeader'
 import Loader from '../Loader'
 import { useAuth0 } from '@auth0/auth0-react'
+import { config } from '../../config'
 
 const JournalEntryDetails = () => {
     const { id } = useParams<{ id: string }>()
@@ -20,7 +21,7 @@ const JournalEntryDetails = () => {
             setLoading(true)
             setError(null)
             try {
-                const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+                const token = await getAccessTokenSilently({ audience: config.auth0.audience })
                 const found = await fetchJournalEntryById(id || '', token)
                 setEntry(found)
             } catch (err: any) {
