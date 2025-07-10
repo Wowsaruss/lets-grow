@@ -9,7 +9,7 @@ const dbPassword = process.env.DB_PASSWORD || 'postgres';
 const dbHost = process.env.DB_HOST || 'localhost';
 const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432;
 
-async function createDatabase() {
+export async function createDatabase() {
   // Connect to the default 'postgres' database
   const client = new Client({
     user: dbUser,
@@ -36,4 +36,7 @@ async function createDatabase() {
   }
 }
 
-createDatabase(); 
+// Only run if this file is executed directly
+if (require.main === module) {
+  createDatabase();
+} 

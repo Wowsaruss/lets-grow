@@ -2,8 +2,6 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-console.log(process.env.DB_NAME)
-console.log('CWD:', process.cwd());
 
 export default {
   development: {
