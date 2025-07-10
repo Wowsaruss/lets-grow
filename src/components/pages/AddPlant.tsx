@@ -10,6 +10,7 @@ import UserService from '../../services/users'
 import { useEffect, useState } from 'react'
 import { User as ApiUser } from '../../types/User'
 import { Plant } from '../../types/Plants'
+import { UserRole } from '../../types/User'
 
 export default function AddPlant() {
     const { getAccessTokenSilently, isAuthenticated } = useAuth0()
@@ -83,6 +84,16 @@ export default function AddPlant() {
         return (
             <PageWrapper header={<PageHeader title="Add Plant" backButton={true} />}>
                 <div>Loading...</div>
+            </PageWrapper>
+        )
+    }
+
+    if (!userData || userData.role !== UserRole.Admin) {
+        return (
+            <PageWrapper header={<PageHeader title="Add Plant" backButton={true} />}>
+                <div style={{ padding: 32, textAlign: 'center', color: '#b71c1c', fontWeight: 600 }}>
+                    Only admin users can add new plants.
+                </div>
             </PageWrapper>
         )
     }
