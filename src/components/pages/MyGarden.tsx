@@ -8,6 +8,11 @@ import UserPlantService from '../../services/user_plants'
 import UserService from '../../services/users'
 import { User } from '../../shared/types/User'
 import { Plant } from '../../shared/types/Plants'
+import { fetchJournalEntries, JournalEntry, createJournalEntry } from '../../services/journal_entries'
+import { CompactTable } from '@table-library/react-table-library/compact'
+import { useTheme } from '@table-library/react-table-library/theme'
+import { getTheme } from '@table-library/react-table-library/baseline'
+import { TableNode } from '@table-library/react-table-library/types/table'
 
 interface UserPlant {
     id: string
@@ -23,6 +28,12 @@ const MyGarden = () => {
     const [loading, setLoading] = useState(true)
     const [currentUser, setCurrentUser] = useState<User | null>(null)
     const [deletingPlantId, setDeletingPlantId] = useState<string | null>(null)
+    const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([])
+    const [loadingJournal, setLoadingJournal] = useState(true)
+    const [showAddForm, setShowAddForm] = useState(false)
+    const [form, setForm] = useState({ plantId: '', date: '', subject: '', body: '' })
+    const [adding, setAdding] = useState(false)
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         if (!isAuthenticated) return
@@ -37,10 +48,15 @@ const MyGarden = () => {
 
                 const userPlants = await PlantService.fetchUserPlants(dbUser.id, token)
                 setUserPlantDetails(userPlants)
+
+                // Fetch journal entries
+                const entries = await fetchJournalEntries(token)
+                setJournalEntries(entries)
             } catch (error) {
                 console.error('Error fetching data:', error)
             } finally {
                 setLoading(false)
+                setLoadingJournal(false)
             }
         }
 
@@ -89,6 +105,49 @@ const MyGarden = () => {
         }
     }
 
+    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        setForm({ ...form, [e.target.name]: e.target.value })
+    }
+
+    const handleAddEntry = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setAdding(true)
+        setError(null)
+        try {
+            const token = await getAccessTokenSilently({ audience: 'https://lets-grow-api/' })
+            await createJournalEntry({ ...form, plantId: Number(form.plantId) }, token)
+            setForm({ plantId: '', date: '', subject: '', body: '' })
+            setShowAddForm(false)
+            // Refresh journal entries
+            setLoadingJournal(true)
+            const entries = await fetchJournalEntries(token)
+            setJournalEntries(entries)
+        } catch (err: any) {
+            setError(err?.response?.data?.error || 'Failed to add journal entry')
+        } finally {
+            setAdding(false)
+            setLoadingJournal(false)
+        }
+    }
+
+    const theme = useTheme(getTheme())
+    // Map journalEntries to TableNode (id as string)
+    const journalData = { nodes: journalEntries.map(entry => ({ ...entry, id: String(entry.id) })) }
+    const journalColumns = [
+        {
+            label: 'Plant',
+            renderCell: (node: TableNode) => (node as unknown as JournalEntry).plant?.commonName || '',
+        },
+        {
+            label: 'Date',
+            renderCell: (node: TableNode) => (node as unknown as JournalEntry).date,
+        },
+        {
+            label: 'Subject',
+            renderCell: (node: TableNode) => (node as unknown as JournalEntry).subject,
+        },
+    ]
+
     return (
         <PageWrapper header={<PageHeader title="My Garden" />}>
             {loading ? (
@@ -133,6 +192,53 @@ const MyGarden = () => {
                                 </li>
                             ))}
                         </ul>
+                    )}
+
+                    <h2 style={{ marginTop: 40 }}>Journal</h2>
+                    <button onClick={() => setShowAddForm(f => !f)} style={{ marginBottom: 16 }}>
+                        {showAddForm ? 'Cancel' : 'Add Journal Entry'}
+                    </button>
+                    {showAddForm && (
+                        <form onSubmit={handleAddEntry} style={{ marginBottom: 24, background: '#f9f9f9', padding: 16, borderRadius: 8, border: '1px solid #eee' }}>
+                            <div style={{ marginBottom: 8 }}>
+                                <label>Plant:{' '}
+                                    <select name="plantId" value={form.plantId} onChange={handleFormChange} required>
+                                        <option value="">Select a plant</option>
+                                        {userPlantDetails.map(plant => (
+                                            <option key={plant.id} value={plant.id}>{plant.commonName}</option>
+                                        ))}
+                                    </select>
+                                </label>
+                            </div>
+                            <div style={{ marginBottom: 8 }}>
+                                <label>Date:{' '}
+                                    <input type="date" name="date" value={form.date} onChange={handleFormChange} required />
+                                </label>
+                            </div>
+                            <div style={{ marginBottom: 8 }}>
+                                <label>Subject:{' '}
+                                    <input type="text" name="subject" value={form.subject} onChange={handleFormChange} required />
+                                </label>
+                            </div>
+                            <div style={{ marginBottom: 8 }}>
+                                <label>Body:{' '}
+                                    <textarea name="body" value={form.body} onChange={handleFormChange} required rows={3} style={{ width: '100%' }} />
+                                </label>
+                            </div>
+                            {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
+                            <button type="submit" disabled={adding}>{adding ? 'Adding...' : 'Add Entry'}</button>
+                        </form>
+                    )}
+                    {loadingJournal ? (
+                        <Loader />
+                    ) : journalEntries.length === 0 ? (
+                        <p>You have no journal entries yet.</p>
+                    ) : (
+                        <CompactTable
+                            columns={journalColumns}
+                            data={journalData}
+                            theme={theme}
+                        />
                     )}
                 </>
             )}
