@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "echo 'Starting server...' && ls -la && echo 'Contents of current directory:' && pwd && echo 'Looking for dist/index.js...' && ls -la dist/ 2>/dev/null || echo 'dist directory not found' && node dist/index.js",
+    "start": "echo 'Starting server...' && ls -la && echo 'Contents of current directory:' && pwd && if [ ! -d 'dist' ]; then echo 'dist directory not found, running build...' && yarn install && tsc && echo 'Build completed. Contents of dist:' && ls -la dist/; else echo 'dist directory found'; fi && echo 'Starting server with dist/index.js...' && node dist/index.js",
     "dev": "nodemon src/index.ts",
     "build": "echo '=== BUILD START ===' && echo 'Current directory:' && pwd && echo 'Installing dependencies...' && yarn install && echo 'Running TypeScript build...' && tsc && echo 'Build completed. Contents of dist:' && ls -la dist/ && echo '=== BUILD END ==='",
     "create-db": "ts-node src/db/create-db.ts",
