@@ -95,19 +95,32 @@ export default function Plants() {
                     // Get current user from database
                     const token = await getAccessTokenSilently({ audience: config.auth0.audience })
                     const dbUser = await UserService.getCurrentUser(token)
+
+                    // Check if user has completed their profile
+                    if (!dbUser) {
+                        // User exists in Auth0 but not in our database - redirect to complete profile
+                        navigate('/register')
+                        return
+                    }
+
                     setCurrentUser(dbUser)
 
                     const userPlants = await PlantService.fetchUserPlants(dbUser.id, token)
                     const userPlantIds = userPlants.map(plant => plant.id)
                     setUserPlants(userPlantIds)
-                } catch (error) {
+                } catch (error: any) {
                     console.error('Error fetching user plants:', error)
+                    // If user not found in database, redirect to complete profile
+                    if (error?.response?.status === 404) {
+                        navigate('/register')
+                        return
+                    }
                 }
             }
 
             fetchUserPlants()
         }
-    }, [isAuthenticated, user, getAccessTokenSilently])
+    }, [isAuthenticated, user, getAccessTokenSilently, navigate])
 
     useEffect(() => {
         getAllPlants()

@@ -16,12 +16,13 @@ import { TableNode } from '@table-library/react-table-library/types/table'
 import Button from '../Button'
 import { useNavigate } from 'react-router-dom'
 import { config } from '../../config'
+import { useProfileCompletion } from '../../hooks/useProfileCompletion'
 
 const MyGarden = () => {
-    const { isAuthenticated, getAccessTokenSilently } = useAuth0()
+    const { user, isAuthenticated, getAccessTokenSilently } = useAuth0()
+    const { currentUser, loading: profileLoading } = useProfileCompletion()
     const [userPlantDetails, setUserPlantDetails] = useState<Plant[]>([])
     const [loading, setLoading] = useState(true)
-    const [currentUser, setCurrentUser] = useState<User | null>(null)
     const [deletingPlantId, setDeletingPlantId] = useState<string | null>(null)
     const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([])
     const [loadingJournal, setLoadingJournal] = useState(true)
@@ -33,23 +34,19 @@ const MyGarden = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!isAuthenticated) return
+        if (!isAuthenticated || !currentUser) return
 
         const fetchData = async () => {
             setLoading(true)
             try {
-                // Get current user from database
                 const token = await getAccessTokenSilently({ audience: config.auth0.audience })
-                const dbUser = await UserService.getCurrentUser(token)
-                setCurrentUser(dbUser)
-
-                const userPlants = await PlantService.fetchUserPlants(dbUser.id, token)
+                const userPlants = await PlantService.fetchUserPlants(currentUser.id, token)
                 setUserPlantDetails(userPlants)
 
                 // Fetch journal entries
                 const entries = await fetchJournalEntries(token)
                 setJournalEntries(entries)
-            } catch (error) {
+            } catch (error: any) {
                 console.error('Error fetching data:', error)
             } finally {
                 setLoading(false)
@@ -58,7 +55,7 @@ const MyGarden = () => {
         }
 
         fetchData()
-    }, [isAuthenticated, getAccessTokenSilently])
+    }, [isAuthenticated, currentUser, getAccessTokenSilently])
 
     const handleDeletePlant = async (plantId: string) => {
         if (!currentUser) return
