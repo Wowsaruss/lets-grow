@@ -131,8 +131,16 @@ const MyGarden = () => {
         }
     }
 
+    // Helper to format date as mm/dd/yyyy
+    const formatDate = (dateStr: string) => {
+        const date = new Date(dateStr)
+        if (isNaN(date.getTime())) return ''
+        const mm = String(date.getMonth() + 1).padStart(2, '0')
+        const dd = String(date.getDate()).padStart(2, '0')
+        const yyyy = date.getFullYear()
+        return `${mm}/${dd}/${yyyy}`
+    }
     const theme = useTheme(getTheme())
-    // Map journalEntries to TableNode (id as string)
     const journalData = { nodes: journalEntries.map(entry => ({ ...entry, id: String(entry.id) })) }
     const journalColumns = [
         {
@@ -141,7 +149,7 @@ const MyGarden = () => {
         },
         {
             label: 'Date',
-            renderCell: (node: TableNode) => (node as unknown as JournalEntry).date,
+            renderCell: (node: TableNode) => formatDate((node as unknown as JournalEntry).date),
         },
         {
             label: 'Subject',
