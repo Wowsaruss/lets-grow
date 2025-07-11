@@ -16,8 +16,17 @@ const port = process.env.PORT || 3001;
 // Make db available to middleware
 app.locals.db = db;
 
+// CORS setup for both local and production
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://lets-grow.vercel.app'
+];
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 // Middleware
-app.use(cors());
 app.use(express.json());
 
 // Routes
