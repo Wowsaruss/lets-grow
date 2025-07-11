@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     const plants = await db('plants').select('*');
     res.json(keysToCamel(plants));
   } catch (error) {
-    console.log(error)
+    console.error('Error fetching plants:', error)
     res.status(500).json({ error: 'Failed to fetch plants' });
   }
 });
@@ -59,7 +59,7 @@ router.get('/user/:userId', checkJwt, attachUser, async (req: Request, res) => {
 
     res.json(keysToCamel(plantsWithVotes));
   } catch (error) {
-    console.log(error)
+    console.error('Error fetching user plants:', error)
     res.status(500).json({ error: 'Failed to fetch user plants' });
   }
 });
@@ -73,7 +73,7 @@ router.get('/:id', async (req, res) => {
     }
     res.json(keysToCamel(plant));
   } catch (error) {
-    console.log(error)
+    console.error('Error fetching plant:', error)
     res.status(500).json({ error: 'Failed to fetch plant' });
   }
 });
@@ -88,7 +88,7 @@ router.post('/', checkJwt, attachUser, async (req: Request, res) => {
     const [plant] = await db('plants').insert(snakeCaseBody).returning('*');
     res.status(201).json(keysToCamel(plant));
   } catch (error) {
-    console.log(error)
+    console.error('Error creating plant:', error)
     res.status(500).json({ error: 'Failed to create plant' });
   }
 });
@@ -110,7 +110,7 @@ router.put('/:id', checkJwt, attachUser, async (req: Request, res) => {
     }
     res.json(keysToCamel(plant));
   } catch (error) {
-    console.log(error)
+    console.error('Error updating plant:', error)
     res.status(500).json({ error: 'Failed to update plant' });
   }
 });
@@ -127,7 +127,7 @@ router.delete('/:id', checkJwt, attachUser, async (req: Request, res) => {
     }
     res.status(204).send();
   } catch (error) {
-    console.log(error)
+    console.error('Error deleting plant:', error)
     res.status(500).json({ error: 'Failed to delete plant' });
   }
 });
@@ -149,7 +149,7 @@ router.get('/green-thumbs', checkJwt, attachUser, async (req: Request, res) => {
 
     res.json(keysToCamel(votes));
   } catch (error) {
-    console.log(error);
+    console.error('Error fetching green thumb votes:', error);
     res.status(500).json({ error: 'Failed to fetch green thumb votes' });
   }
 });
@@ -164,8 +164,6 @@ router.post('/green-thumb/:plant_id', checkJwt, attachUser, async (req: Request,
     const { up } = req.body; // true for upvote, false for downvote
     const userId = req.user.id;
     const growingZoneId = req.user.growing_zone_id;
-
-    console.log(`Green thumb request: User ${userId}, Plant ${plantId}, Vote: ${up ? 'up' : 'down'}`);
 
     if (!growingZoneId) {
       return res.status(400).json({ error: 'User does not have a growing zone set' });
@@ -186,7 +184,6 @@ router.post('/green-thumb/:plant_id', checkJwt, attachUser, async (req: Request,
       .first();
 
     if (existingVote) {
-      console.log(`Updating existing vote: User ${userId}, Plant ${plantId}, Old vote: ${existingVote.up}, New vote: ${up}`);
       // Update existing vote
       const updated = await db('green_thumbs')
         .where({ user_id: userId, plant_growing_zone_detail_id: plantGrowingZoneDetail.id })
@@ -194,7 +191,6 @@ router.post('/green-thumb/:plant_id', checkJwt, attachUser, async (req: Request,
         .returning('*');
       res.json(keysToCamel(updated[0]));
     } else {
-      console.log(`Creating new vote: User ${userId}, Plant ${plantId}, Vote: ${up}`);
       // Create new vote
       const newVote = await db('green_thumbs')
         .insert({ user_id: userId, plant_growing_zone_detail_id: plantGrowingZoneDetail.id, up })
@@ -202,7 +198,7 @@ router.post('/green-thumb/:plant_id', checkJwt, attachUser, async (req: Request,
       res.status(201).json(keysToCamel(newVote[0]));
     }
   } catch (error) {
-    console.log(error);
+    console.error('Error processing green thumb vote:', error);
     res.status(500).json({ error: 'Failed to process green thumb vote' });
   }
 });

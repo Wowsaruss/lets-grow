@@ -11,7 +11,8 @@ class UserService {
 
             return response.data
         } catch (error) {
-            console.log(error)
+            console.error('Error fetching user:', error)
+            throw error
         }
     }
 }

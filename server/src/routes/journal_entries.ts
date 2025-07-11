@@ -37,7 +37,7 @@ router.get('/', checkJwt, attachUser, async (req: Request, res) => {
         });
         res.json(result);
     } catch (error) {
-        console.log(error);
+        console.error('Error fetching journal entries:', error);
         res.status(500).json({ error: 'Failed to fetch journal entries' });
     }
 });
@@ -65,7 +65,7 @@ router.post('/', checkJwt, attachUser, async (req: Request, res) => {
         const [entry] = await db('journal_entries').insert(entryData).returning('*');
         res.status(201).json(keysToCamel(entry));
     } catch (error) {
-        console.log(error);
+        console.error('Error creating journal entry:', error);
         res.status(500).json({ error: 'Failed to create journal entry' });
     }
 });
@@ -98,7 +98,7 @@ router.get('/:id', checkJwt, attachUser, async (req: Request, res) => {
         };
         res.json(result);
     } catch (error) {
-        console.log(error);
+        console.error('Error fetching journal entry:', error);
         res.status(500).json({ error: 'Failed to fetch journal entry' });
     }
 });

@@ -37,7 +37,7 @@ router.get('/', async (req: Request, res) => {
         const userPlants = await query.select('*');
         res.json(keysToCamel(userPlants));
     } catch (error) {
-        console.log(error);
+        console.error('Error fetching user plants:', error);
         res.status(500).json({ error: 'Failed to fetch user plants' });
     }
 });
@@ -65,7 +65,7 @@ router.get('/:id', async (req: Request, res) => {
 
         res.json(keysToCamel(userPlant));
     } catch (error) {
-        console.log(error);
+        console.error('Error fetching user plant:', error);
         res.status(500).json({ error: 'Failed to fetch user plant' });
     }
 });
@@ -94,7 +94,7 @@ router.post('/', async (req: Request, res) => {
             .returning('*');
         res.status(201).json(keysToCamel(userPlant));
     } catch (error) {
-        console.log(error);
+        console.error('Error creating user plant:', error);
         res.status(500).json({ error: 'Failed to create user plant' });
     }
 });
@@ -128,7 +128,7 @@ router.put('/:id', async (req: Request, res) => {
             .returning('*');
         res.json(keysToCamel(userPlant));
     } catch (error) {
-        console.log(error);
+        console.error('Error updating user plant:', error);
         res.status(500).json({ error: 'Failed to update user plant' });
     }
 });
@@ -162,7 +162,7 @@ router.delete('/:id', async (req: Request, res) => {
             .returning('*');
         res.json({ success: true });
     } catch (error) {
-        console.log(error);
+        console.error('Error deleting user plant:', error);
         res.status(500).json({ error: 'Failed to delete user plant' });
     }
 });

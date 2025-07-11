@@ -112,7 +112,7 @@ router.post('/', (async (req: Request, res: Response) => {
 
     await res.status(201).json(keysToCamel(user));
   } catch (error) {
-    console.log(error)
+    console.error('Error creating user:', error)
     res.status(500).json({ error: 'Failed to create user' });
   }
 }) as RequestHandler);
@@ -188,7 +188,7 @@ router.put('/:id', (async (req: Request, res: Response) => {
     }
     res.json(keysToCamel(user));
   } catch (error) {
-    console.log(error);
+    console.error('Error updating user:', error)
     res.status(500).json({ error: 'Failed to update user' });
   }
 }) as RequestHandler);
