@@ -26,4 +26,5 @@ export interface Plant {
     deletedAt?: string
     createdAt?: Date
     updatedAt?: Date
+    userVote?: boolean | null
 }

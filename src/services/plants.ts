@@ -58,6 +58,24 @@ const deleteOne = async (plantId: string | number, token: string) => {
     })
 }
 
-const PlantService = { fetchAll, fetchOne, fetchUserPlants, updateOne, createOne, deleteOne }
+const greenThumb = async (plantId: string | number, up: boolean, token: string) => {
+    const response = await apiClient.post(`/api/plants/green-thumb/${plantId}`, { up }, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    return response.data
+}
+
+const fetchGreenThumbs = async (token: string) => {
+    const response = await apiClient.get('/api/plants/green-thumbs', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    return response.data
+}
+
+const PlantService = { fetchAll, fetchOne, fetchUserPlants, updateOne, createOne, deleteOne, greenThumb, fetchGreenThumbs }
 
 export default PlantService

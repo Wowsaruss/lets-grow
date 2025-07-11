@@ -5,8 +5,6 @@ import PageHeader from '../PageHeader'
 import Loader from '../Loader'
 import PlantService from '../../services/plants'
 import UserPlantService from '../../services/user_plants'
-import UserService from '../../services/users'
-import { User } from '../../shared/types/User'
 import { Plant } from '../../shared/types/Plants'
 import { fetchJournalEntries, JournalEntry, createJournalEntry } from '../../services/journal_entries'
 import { CompactTable } from '@table-library/react-table-library/compact'
@@ -17,10 +15,11 @@ import Button from '../Button'
 import { useNavigate } from 'react-router-dom'
 import { config } from '../../config'
 import { useProfileCompletion } from '../../hooks/useProfileCompletion'
+import greenThumbImg from '../../assets/green-thumb.jpg'
 
 const MyGarden = () => {
-    const { user, isAuthenticated, getAccessTokenSilently } = useAuth0()
-    const { currentUser, loading: profileLoading } = useProfileCompletion()
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0()
+    const { currentUser } = useProfileCompletion()
     const [userPlantDetails, setUserPlantDetails] = useState<Plant[]>([])
     const [loading, setLoading] = useState(true)
     const [deletingPlantId, setDeletingPlantId] = useState<string | null>(null)
@@ -96,6 +95,26 @@ const MyGarden = () => {
             alert('Failed to remove plant from garden. Please try again.')
         } finally {
             setDeletingPlantId(null)
+        }
+    }
+
+    const handleGreenThumb = async (plantId: string, up: boolean) => {
+        if (!currentUser) return
+        try {
+            const token = await getAccessTokenSilently({ audience: config.auth0.audience })
+            await PlantService.greenThumb(plantId, up, token)
+
+            // Update local state to reflect the vote
+            setUserPlantDetails(prev => prev.map(plant =>
+                plant.id === plantId
+                    ? { ...plant, userVote: up }
+                    : plant
+            ))
+
+            alert(up ? 'You gave this plant a Green Thumb upvote!' : 'You gave this plant a downvote!')
+        } catch (error) {
+            console.error('Error giving green thumb:', error)
+            alert('Failed to give green thumb. Please try again.')
         }
     }
 
@@ -177,21 +196,56 @@ const MyGarden = () => {
                                         }}
                                     >
                                         <span>{plant.commonName}</span>
-                                        <button
-                                            onClick={() => handleDeletePlant(plant.id)}
-                                            disabled={deletingPlantId === plant.id}
-                                            style={{
-                                                backgroundColor: '#ff4444',
-                                                color: 'white',
-                                                border: 'none',
-                                                padding: '5px 10px',
-                                                borderRadius: '3px',
-                                                cursor: deletingPlantId === plant.id ? 'not-allowed' : 'pointer',
-                                                opacity: deletingPlantId === plant.id ? 0.6 : 1
-                                            }}
-                                        >
-                                            {deletingPlantId === plant.id ? 'Removing...' : 'Remove'}
-                                        </button>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                            <button
+                                                onClick={() => handleDeletePlant(plant.id)}
+                                                disabled={deletingPlantId === plant.id}
+                                                style={{
+                                                    backgroundColor: '#ff4444',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    padding: '5px 10px',
+                                                    borderRadius: '3px',
+                                                    cursor: deletingPlantId === plant.id ? 'not-allowed' : 'pointer',
+                                                    opacity: deletingPlantId === plant.id ? 0.6 : 1
+                                                }}
+                                            >
+                                                {deletingPlantId === plant.id ? 'Removing...' : 'Remove'}
+                                            </button>
+                                            <button
+                                                onClick={() => handleGreenThumb(plant.id, true)}
+                                                style={{
+                                                    background: 'none',
+                                                    border: 'none',
+                                                    cursor: 'pointer',
+                                                    padding: 0,
+                                                    opacity: plant.userVote === true ? 1 : 0.5,
+                                                    transform: plant.userVote === true ? 'scale(1.1)' : 'scale(1)',
+                                                    transition: 'all 0.2s ease'
+                                                }}
+                                                title={plant.userVote === true ? "You upvoted this plant!" : "Give a Green Thumb upvote!"}
+                                            >
+                                                <img src={greenThumbImg} alt="Green Thumb Up" style={{ width: 32, height: 32 }} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleGreenThumb(plant.id, false)}
+                                                style={{
+                                                    background: 'none',
+                                                    border: 'none',
+                                                    cursor: 'pointer',
+                                                    padding: 0,
+                                                    opacity: plant.userVote === false ? 1 : 0.5,
+                                                    transform: plant.userVote === false ? 'scale(1.1)' : 'scale(1)',
+                                                    transition: 'all 0.2s ease'
+                                                }}
+                                                title={plant.userVote === false ? "You downvoted this plant!" : "Give a downvote!"}
+                                            >
+                                                <span style={{
+                                                    fontSize: 24,
+                                                    color: plant.userVote === false ? '#ff4444' : '#666'
+                                                }}>👎</span>
+                                            </button>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
