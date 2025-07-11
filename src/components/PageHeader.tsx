@@ -28,7 +28,7 @@ const PageHeader = (props: Props) => {
                 top: 0,
                 height: 70,
                 width: '100%',
-                boxShadow: '-5px 4px 10px #f2f2f2',
+                boxShadow: '-5px 4px 10px rgba(151, 151, 151, 0.29)',
                 backgroundColor: 'white',
             }}
         >
