@@ -6,6 +6,7 @@ import usersRouter from './routes/users';
 import userPlantsRouter from './routes/user_plants';
 import journalEntriesRouter from './routes/journal_entries';
 import db from './db';
+import ai from './db';
 
 // Initialize environment variables
 dotenv.config();
@@ -15,6 +16,7 @@ const port = process.env.PORT || 3001;
 
 // Make db available to middleware
 app.locals.db = db;
+app.locals.ai = ai;
 
 // CORS setup for both local and production
 const allowedOrigins = [

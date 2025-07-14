@@ -241,4 +241,48 @@ router.post('/green-thumb/:plant_id', checkJwt, attachUser, async (req: Request,
   }
 });
 
+// AI-powered plant creation endpoint
+router.post('/ai-generate', checkJwt, attachUser, async (req: Request, res) => {
+  try {
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Forbidden: Only admin users can use AI plant creation' });
+    }
+    const { commonName, variety } = req.body;
+    if (!commonName || !variety) {
+      return res.status(400).json({ error: 'commonName and variety are required' });
+    }
+
+    // 1. Use AI to generate plant data (placeholder)
+    const plantData = await req.app.locals.ai.generatePlantData(commonName, variety);
+    // plantData should include all fields needed for the plants table
+
+    // 2. Insert plant
+    const [plant] = await db('plants').insert(plantData).returning('*');
+
+    // 3. Fetch all growing zones
+    const growingZones = await db('growing_zones').select('id', 'zone');
+
+    // 4. For each zone, use AI to generate growing zone details (placeholder)
+    const zoneDetails = await Promise.all(growingZones.map(async (zone) => {
+      const details = await req.app.locals.ai.generateZoneDetails(commonName, variety, zone.zone);
+      return {
+        plant_id: plant.id,
+        growing_zone_id: zone.id,
+        ...details,
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+    }));
+
+    // 5. Insert all plant_growing_zone_details
+    await db('plant_growing_zone_details').insert(zoneDetails);
+
+    // 6. Return the created plant and its growing zone details
+    res.status(201).json({ plant, growingZoneDetails: zoneDetails });
+  } catch (error) {
+    console.error('Error in AI plant creation:', error);
+    res.status(500).json({ error: 'Failed to create plant with AI' });
+  }
+});
+
 export default router; 
