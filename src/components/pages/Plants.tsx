@@ -22,9 +22,14 @@ import { config } from '../../config'
 
 const columns = [
     {
-        label: 'Common Name',
+        label: 'Name',
         renderCell: (item: TableNode) => (item as Plant).commonName,
         sort: { sortKey: 'COMMON_NAME' },
+    },
+    {
+        label: 'Variety',
+        renderCell: (item: TableNode) => (item as Plant).variety || '-',
+        sort: { sortKey: 'VARIETY' },
     },
     {
         label: 'Scientific Name',
@@ -221,6 +226,10 @@ export default function Plants() {
                 COMMON_NAME: (array: TableNode[]) =>
                     array.sort((a, b) =>
                         ((a as Plant).commonName || '').localeCompare((b as Plant).commonName || '')
+                    ),
+                VARIETY: (array: TableNode[]) =>
+                    array.sort((a, b) =>
+                        ((a as Plant).commonName || '').localeCompare((b as Plant).variety || '')
                     ),
                 SCIENTIFIC_NAME: (array: TableNode[]) =>
                     array.sort((a, b) =>

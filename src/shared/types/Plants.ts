@@ -29,4 +29,5 @@ export interface Plant {
     userVote?: boolean | null
     greenThumbsUp?: number
     greenThumbsDown?: number
+    variety?: string
 }

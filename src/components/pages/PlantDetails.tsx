@@ -99,13 +99,14 @@ export default function PlantDetails() {
         <PageWrapper
             header={
                 <PageHeader
-                    title={!isLoadingPlant ? plant?.commonName || '' : ''}
+                    title={!isLoadingPlant ? (plant?.commonName ? `${plant.commonName}${plant.variety ? ` (${plant.variety})` : ''}` : '') : ''}
                     backButton={true}
                 />
             }
         >
             {!isLoadingPlant ? (
                 <>
+                    {plant?.variety && <h3>VARIETY: {plant.variety}</h3>}
                     {plant?.description && <h3>DESCRIPTION: {plant.description}</h3>}
                     {plant?.scientificName && <h3>SCIENTIFIC NAME: {plant.scientificName}</h3>}
                     {(plant?.plantFamilyId !== undefined && plant?.plantFamilyId !== null) && <h3>FAMILY ID: {plant.plantFamilyId}</h3>}

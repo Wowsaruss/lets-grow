@@ -195,7 +195,7 @@ const MyGarden = () => {
                                             backgroundColor: '#f9f9f9'
                                         }}
                                     >
-                                        <span>{plant.commonName}</span>
+                                        <span>{plant.commonName}{plant.variety ? ` (${plant.variety})` : ''}</span>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                             <button
                                                 onClick={() => handleDeletePlant(plant.id)}

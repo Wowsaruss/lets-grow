@@ -77,6 +77,7 @@ export default function EditPlant() {
     const initialValues: FormikValues = isLoaded
         ? {
             commonName: plantData?.commonName || '',
+            variety: plantData?.variety || '',
             scientificName: plantData?.scientificName || '',
             description: plantData?.description || '',
             plantFamilyId: plantData?.plantFamilyId ?? 0,

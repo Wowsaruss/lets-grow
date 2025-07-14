@@ -56,6 +56,7 @@ export default function AddPlant() {
 
     const initialValues: FormikValues = {
         commonName: '',
+        variety: '',
         scientificName: '',
         description: '',
         plantFamilyId: undefined,

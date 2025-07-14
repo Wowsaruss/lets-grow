@@ -49,6 +49,10 @@ export default function PlantForm({ initialValues, handleSubmit, onDelete }: Pro
                     <Field name="commonName" type="text" required />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <label>Variety:</label>
+                    <Field name="variety" type="text" />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                     <label>Scientific Name:</label>
                     <Field name="scientificName" type="text" />
                 </div>
