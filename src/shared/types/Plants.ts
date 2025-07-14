@@ -27,4 +27,6 @@ export interface Plant {
     createdAt?: Date
     updatedAt?: Date
     userVote?: boolean | null
+    greenThumbsUp?: number
+    greenThumbsDown?: number
 }

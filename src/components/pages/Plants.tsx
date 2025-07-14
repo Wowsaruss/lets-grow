@@ -74,7 +74,9 @@ export default function Plants() {
     >(
         'query-plants',
         async () => {
-            return await PlantService.fetchAll()
+            if (!isAuthenticated) return [];
+            const token = await getAccessTokenSilently({ audience: config.auth0.audience });
+            return await PlantService.fetchAll(token);
         },
         {
             enabled: false,
@@ -235,61 +237,74 @@ export default function Plants() {
     )
 
     // Redefine columns here to access userPlants and handlers
+    const addToGardenColumn = {
+        label: 'Add to Garden',
+        renderCell: (item: TableNode) => {
+            const plant = item as Plant
+            const isInGarden = userPlants.includes(plant.id)
+            if (isInGarden) {
+                return (
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            handleRemoveFromGarden(plant.id)
+                        }}
+                        disabled={removingFromGarden === plant.id}
+                        style={{
+                            backgroundColor: '#ff4444',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '3px',
+                            padding: '4px 8px',
+                            fontSize: '12px',
+                            cursor: removingFromGarden === plant.id ? 'not-allowed' : 'pointer',
+                            opacity: removingFromGarden === plant.id ? 0.6 : 1
+                        }}
+                    >
+                        {removingFromGarden === plant.id ? 'Removing...' : 'Remove'}
+                    </button>
+                )
+            }
+            return (
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        handleAddToGarden(plant.id)
+                    }}
+                    disabled={addingToGarden === plant.id}
+                    style={{
+                        backgroundColor: '#2d5a27',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '3px',
+                        padding: '4px 8px',
+                        fontSize: '12px',
+                        cursor: addingToGarden === plant.id ? 'not-allowed' : 'pointer',
+                        opacity: addingToGarden === plant.id ? 0.6 : 1
+                    }}
+                >
+                    {addingToGarden === plant.id ? 'Adding...' : 'Add'}
+                </button>
+            )
+        },
+    };
     const columnsWithGarden = [
         ...columns.slice(0, 5),
+    ];
+
+    // Add green thumb columns
+    const columnsWithGreenThumbs = [
+        ...columnsWithGarden,
         {
-            label: 'Add to Garden',
-            renderCell: (item: TableNode) => {
-                const plant = item as Plant
-                const isInGarden = userPlants.includes(plant.id)
-                if (isInGarden) {
-                    return (
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                handleRemoveFromGarden(plant.id)
-                            }}
-                            disabled={removingFromGarden === plant.id}
-                            style={{
-                                backgroundColor: '#ff4444',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '3px',
-                                padding: '4px 8px',
-                                fontSize: '12px',
-                                cursor: removingFromGarden === plant.id ? 'not-allowed' : 'pointer',
-                                opacity: removingFromGarden === plant.id ? 0.6 : 1
-                            }}
-                        >
-                            {removingFromGarden === plant.id ? 'Removing...' : 'Remove from Garden'}
-                        </button>
-                    )
-                } else {
-                    return (
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                handleAddToGarden(plant.id)
-                            }}
-                            disabled={addingToGarden === plant.id}
-                            style={{
-                                backgroundColor: '#2d5a27',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '3px',
-                                padding: '4px 8px',
-                                fontSize: '12px',
-                                cursor: addingToGarden === plant.id ? 'not-allowed' : 'pointer',
-                                opacity: addingToGarden === plant.id ? 0.6 : 1
-                            }}
-                        >
-                            {addingToGarden === plant.id ? 'Adding...' : 'Add to Garden'}
-                        </button>
-                    )
-                }
-            },
+            label: 'Green Thumbs Up',
+            renderCell: (item: TableNode) => (item as Plant).greenThumbsUp ?? 0,
         },
-    ]
+        {
+            label: 'Green Thumbs Down',
+            renderCell: (item: TableNode) => (item as Plant).greenThumbsDown ?? 0,
+        },
+        addToGardenColumn,
+    ];
 
     return (
         <PageWrapper header={<PageHeader title="Plants" />}>
@@ -315,10 +330,11 @@ export default function Plants() {
                     <Loader />
                 ) : (
                     <CompactTable
-                        columns={columnsWithGarden}
+                        columns={columnsWithGreenThumbs}
                         data={data}
                         theme={theme}
                         select={select}
+                        sort={sort}
                     />
                 )}
             </div>

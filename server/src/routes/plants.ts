@@ -7,10 +7,48 @@ import { Request } from '../types/express';
 const router = express.Router();
 
 // Get all plants
-router.get('/', async (req, res) => {
+router.get('/', checkJwt, attachUser, async (req: Request, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    const growingZoneId = req.user.growing_zone_id;
+    if (!growingZoneId) {
+      return res.status(400).json({ error: 'User does not have a growing zone set' });
+    }
+
+    // Get all plants
     const plants = await db('plants').select('*');
-    res.json(keysToCamel(plants));
+    const plantIds = plants.map(p => p.id);
+
+    // Get green thumb votes for all plants in the user's growing zone
+    const greenThumbs = await db('green_thumbs')
+      .select(
+        'plant_growing_zone_details.plant_id',
+        db.raw('SUM(CASE WHEN green_thumbs.up THEN 1 ELSE 0 END) as green_thumbs_up'),
+        db.raw('SUM(CASE WHEN green_thumbs.up = false THEN 1 ELSE 0 END) as green_thumbs_down')
+      )
+      .join('plant_growing_zone_details', 'green_thumbs.plant_growing_zone_detail_id', 'plant_growing_zone_details.id')
+      .whereIn('plant_growing_zone_details.plant_id', plantIds)
+      .andWhere('plant_growing_zone_details.growing_zone_id', growingZoneId)
+      .groupBy('plant_growing_zone_details.plant_id');
+
+    // Map plant_id to green thumb counts
+    const thumbsMap = greenThumbs.reduce((acc, row) => {
+      acc[row.plant_id] = {
+        greenThumbsUp: Number(row.green_thumbs_up) || 0,
+        greenThumbsDown: Number(row.green_thumbs_down) || 0,
+      };
+      return acc;
+    }, {} as Record<number, { greenThumbsUp: number; greenThumbsDown: number }>);
+
+    // Attach green thumb data to each plant
+    const plantsWithThumbs = plants.map(plant => ({
+      ...plant,
+      ...thumbsMap[plant.id] || { greenThumbsUp: 0, greenThumbsDown: 0 }
+    }));
+
+    res.json(keysToCamel(plantsWithThumbs));
   } catch (error) {
     console.error('Error fetching plants:', error)
     res.status(500).json({ error: 'Failed to fetch plants' });

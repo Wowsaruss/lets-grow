@@ -9,8 +9,12 @@ const apiClient = axios.create({
     },
 })
 
-const fetchAll = async () => {
-    const response = await apiClient.get<Plant[]>('/api/plants')
+const fetchAll = async (token: string) => {
+    const response = await apiClient.get<Plant[]>('/api/plants', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
     return response.data
 }
 
