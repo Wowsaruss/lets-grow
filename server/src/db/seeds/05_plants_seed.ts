@@ -10,6 +10,7 @@ export async function seed(knex: Knex): Promise<void> {
             id: 1,
             author_id: null,
             common_name: 'Tomato',
+            variety: 'Brandywine',
             scientific_name: 'Solanum lycopersicum',
             description: 'A popular warm-season fruiting vegetable.',
             plant_family_id: 11, // Solanaceae
@@ -39,6 +40,7 @@ export async function seed(knex: Knex): Promise<void> {
             id: 2,
             author_id: null,
             common_name: 'Carrot',
+            variety: 'Nantes',
             scientific_name: 'Daucus carota',
             description: 'A cool-season root vegetable.',
             plant_family_id: 2, // Apiaceae
@@ -68,6 +70,7 @@ export async function seed(knex: Knex): Promise<void> {
             id: 3,
             author_id: null,
             common_name: 'Lettuce',
+            variety: 'Butterhead',
             scientific_name: 'Lactuca sativa',
             description: 'A fast-growing leafy green for salads.',
             plant_family_id: 3, // Asteraceae
@@ -97,6 +100,7 @@ export async function seed(knex: Knex): Promise<void> {
             id: 4,
             author_id: null,
             common_name: 'Green Bean',
+            variety: 'Blue Lake',
             scientific_name: 'Phaseolus vulgaris',
             description: 'A warm-season legume grown for its edible pods.',
             plant_family_id: 6, // Fabaceae
@@ -126,6 +130,7 @@ export async function seed(knex: Knex): Promise<void> {
             id: 5,
             author_id: null,
             common_name: 'Zucchini',
+            variety: 'Black Beauty',
             scientific_name: 'Cucurbita pepo',
             description: 'A prolific summer squash.',
             plant_family_id: 5, // Cucurbitaceae
