@@ -7,7 +7,6 @@ export async function seed(knex: Knex): Promise<void> {
     // Inserts seed entries
     await knex('plants').insert([
         {
-            id: 1,
             author_id: null,
             common_name: 'Tomato',
             variety: 'Brandywine',
@@ -37,7 +36,6 @@ export async function seed(knex: Knex): Promise<void> {
             updated_at: new Date(),
         },
         {
-            id: 2,
             author_id: null,
             common_name: 'Carrot',
             variety: 'Nantes',
@@ -67,7 +65,6 @@ export async function seed(knex: Knex): Promise<void> {
             updated_at: new Date(),
         },
         {
-            id: 3,
             author_id: null,
             common_name: 'Lettuce',
             variety: 'Butterhead',
@@ -97,7 +94,6 @@ export async function seed(knex: Knex): Promise<void> {
             updated_at: new Date(),
         },
         {
-            id: 4,
             author_id: null,
             common_name: 'Green Bean',
             variety: 'Blue Lake',
@@ -127,7 +123,6 @@ export async function seed(knex: Knex): Promise<void> {
             updated_at: new Date(),
         },
         {
-            id: 5,
             author_id: null,
             common_name: 'Zucchini',
             variety: 'Black Beauty',

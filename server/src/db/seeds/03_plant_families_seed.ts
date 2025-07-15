@@ -34,5 +34,6 @@ export async function seed(knex: Knex): Promise<void> {
         { id: 28, name: 'Arecaceae', description: 'Date palm, coconut, oil palm', created_at: new Date(), updated_at: new Date() },
         { id: 29, name: 'Brassicaceae (Cruciferae)', description: 'Horseradish, watercress, cress', created_at: new Date(), updated_at: new Date() },
         { id: 30, name: 'Alliaceae', description: 'Onion, garlic, leek, chive (sometimes separated from Liliaceae)', created_at: new Date(), updated_at: new Date() },
+        { id: 31, name: 'Vitaceae', description: 'Grape family (e.g., grapes, Virginia creeper)', created_at: new Date(), updated_at: new Date() },
     ]);
 }
