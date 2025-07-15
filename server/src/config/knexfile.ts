@@ -71,6 +71,9 @@ export default {
     migrations: {
       tableName: 'knex_migrations',
       directory: path.join(__dirname, '../db/migrations')
+    },
+    seeds: {
+      directory: path.join(__dirname, '../db/seeds')
     }
   }
 }; 
