@@ -307,7 +307,13 @@ router.post('/ai-generate', checkJwt, attachUser, async (req: Request, res) => {
         'last_day_to_plant',
       ];
       for (const field of dateFields) {
-        if (details[field] === 'N/A' || details[field] === 'None' || details[field] === '') {
+        const value = details[field];
+        if (
+          value === 'N/A' ||
+          value === 'None' ||
+          value === '' ||
+          (typeof value === 'string' && !/^\d{4}-\d{2}-\d{2}$/.test(value))
+        ) {
           details[field] = null;
         }
       }

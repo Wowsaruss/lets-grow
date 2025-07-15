@@ -92,4 +92,12 @@ export async function seed(knex: Knex): Promise<void> {
             updated_at: new Date(),
         },
     ]);
+
+    // Reset the sequence so future inserts use the next available id
+    await knex.raw(`
+      SELECT setval(
+        pg_get_serial_sequence('plant_growing_zone_details', 'id'),
+        (SELECT MAX(id) FROM plant_growing_zone_details)
+      );
+    `);
 };
