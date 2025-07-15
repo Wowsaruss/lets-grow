@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from 'react-query'
-import { FormikValues } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import PlantService from '../../services/plants'
 import { addEditMapping } from '../../helpers'
 import PlantForm from '../PlantForm'
@@ -30,54 +30,18 @@ export default function AddPlant() {
         }
     )
 
-    const mutation = useMutation(async (data) => {
-        // Ensure we have a valid token before making the request
+    const mutation = useMutation(async (data: { commonName: string, variety: string }) => {
         if (!token) throw new Error('No token')
-        return PlantService.createOne(data, token)
+        return PlantService.createWithAI(data.commonName, data.variety, token)
     })
 
-    const HandleSubmit = async (values: any): Promise<string> => {
-        if (!userData?.id) {
-            console.error('No user data available')
-            return '/plants' // Return the redirect path even on error
-        }
-
-        const newValues = await addEditMapping(values)
-        newValues.authorId = userData.id
-
+    const handleSubmit = async (values: { commonName: string, variety: string }) => {
         try {
-            await mutation.mutateAsync(newValues)
-            return '/plants'
+            await mutation.mutateAsync(values)
+            window.location.href = '/plants'
         } catch (error) {
-            console.error('Error creating plant:', error)
-            return '/plants' // Return the redirect path even on error
+            alert('Error creating plant: ' + (error as any)?.message)
         }
-    }
-
-    const initialValues: FormikValues = {
-        commonName: '',
-        variety: '',
-        scientificName: '',
-        description: '',
-        plantFamilyId: undefined,
-        plantTypeId: undefined,
-        daysToGermination: undefined,
-        daysToHarvest: undefined,
-        indeterminate: false,
-        germinationTempHigh: undefined,
-        germinationTempLow: undefined,
-        light: '',
-        water: '',
-        soil: '',
-        perennial: false,
-        heirloom: false,
-        hybrid: false,
-        openPollinated: false,
-        selfPollinated: false,
-        spacing: undefined,
-        rowSpacing: undefined,
-        pruning: '',
-        sowingDepth: undefined,
     }
 
     if (isUserLoading) {
@@ -99,13 +63,41 @@ export default function AddPlant() {
     }
 
     return (
-        <PageWrapper
-            header={<PageHeader title="Add Plant" backButton={true} />}
-        >
-            <PlantForm
-                initialValues={initialValues}
-                handleSubmit={HandleSubmit}
-            />
+        <PageWrapper header={<PageHeader title="Add Plant" backButton={true} />}>
+            <Formik
+                initialValues={{ commonName: '', variety: '' }}
+                onSubmit={handleSubmit}
+            >
+                <Form style={{ width: 400, margin: '0 auto', marginTop: 32 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                        <label>
+                            Common Name:
+                            <Field name="commonName" type="text" required style={{ marginLeft: 8, width: '100%' }} />
+                        </label>
+                        <label>
+                            Variety:
+                            <Field name="variety" type="text" required style={{ marginLeft: 8, width: '100%' }} />
+                        </label>
+                        <button
+                            type="submit"
+                            style={{
+                                backgroundColor: '#2d5a27',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '3px',
+                                padding: '10px 20px',
+                                fontSize: '16px',
+                                cursor: mutation.isLoading ? 'not-allowed' : 'pointer',
+                                opacity: mutation.isLoading ? 0.6 : 1,
+                                marginTop: 16
+                            }}
+                            disabled={mutation.isLoading}
+                        >
+                            {mutation.isLoading ? 'Generating...' : 'Generate Plant with AI'}
+                        </button>
+                    </div>
+                </Form>
+            </Formik>
         </PageWrapper>
     )
 }

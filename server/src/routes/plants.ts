@@ -252,19 +252,65 @@ router.post('/ai-generate', checkJwt, attachUser, async (req: Request, res) => {
       return res.status(400).json({ error: 'commonName and variety are required' });
     }
 
-    // 1. Use AI to generate plant data (placeholder)
+    // 1. Use AI to generate plant data (now returns plant_family_name and plant_type_name)
     const plantData = await req.app.locals.ai.generatePlantData(commonName, variety);
-    // plantData should include all fields needed for the plants table
 
-    // 2. Insert plant
+    // 2. Look up plant_family_id from plant_family_name
+    const familyName = plantData.plant_family_name;
+    if (!familyName) {
+      plantData.plant_family_id = null;
+    } else {
+      const family = await db('plant_families').where({ name: familyName }).first();
+      if (!family) {
+        plantData.plant_family_id = null;
+      } else {
+        plantData.plant_family_id = family.id;
+      }
+    }
+    delete plantData.plant_family_name;
+
+    // 3. Look up plant_type_id from plant_type_name
+    const typeName = plantData.plant_type_name;
+    if (!typeName) {
+      plantData.plant_type_id = null;
+    } else {
+      const type = await db('plant_types').where({ name: typeName }).first();
+      if (!type) {
+        plantData.plant_type_id = null;
+      } else {
+        plantData.plant_type_id = type.id;
+      }
+    }
+    delete plantData.plant_type_name;
+
+    // 4. Insert plant
     const [plant] = await db('plants').insert(plantData).returning('*');
 
-    // 3. Fetch all growing zones
+    // 5. Fetch all growing zones
     const growingZones = await db('growing_zones').select('id', 'zone');
 
-    // 4. For each zone, use AI to generate growing zone details (placeholder)
+    // 6. For each zone, use AI to generate growing zone details (placeholder)
     const zoneDetails = await Promise.all(growingZones.map(async (zone) => {
       const details = await req.app.locals.ai.generateZoneDetails(commonName, variety, zone.zone);
+      // Remove green_thumbs if present
+      if ('green_thumbs' in details) {
+        delete details.green_thumbs;
+      }
+      // Sanitize date fields: convert 'N/A', 'None', or '' to null
+      const dateFields = [
+        'spring_start_indoors',
+        'spring_start_outdoors',
+        'spring_transplant',
+        'fall_start_indoors',
+        'fall_start_outdoors',
+        'fall_transplant',
+        'last_day_to_plant',
+      ];
+      for (const field of dateFields) {
+        if (details[field] === 'N/A' || details[field] === 'None' || details[field] === '') {
+          details[field] = null;
+        }
+      }
       return {
         plant_id: plant.id,
         growing_zone_id: zone.id,
@@ -274,10 +320,10 @@ router.post('/ai-generate', checkJwt, attachUser, async (req: Request, res) => {
       };
     }));
 
-    // 5. Insert all plant_growing_zone_details
+    // 7. Insert all plant_growing_zone_details
     await db('plant_growing_zone_details').insert(zoneDetails);
 
-    // 6. Return the created plant and its growing zone details
+    // 8. Return the created plant and its growing zone details
     res.status(201).json({ plant, growingZoneDetails: zoneDetails });
   } catch (error) {
     console.error('Error in AI plant creation:', error);

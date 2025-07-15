@@ -80,6 +80,15 @@ const fetchGreenThumbs = async (token: string) => {
     return response.data
 }
 
-const PlantService = { fetchAll, fetchOne, fetchUserPlants, updateOne, createOne, deleteOne, greenThumb, fetchGreenThumbs }
+const createWithAI = async (commonName: string, variety: string, token: string) => {
+    const response = await apiClient.post(`/api/plants/ai-generate`, { commonName, variety }, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    return response.data
+}
+
+const PlantService = { fetchAll, fetchOne, fetchUserPlants, updateOne, createOne, deleteOne, greenThumb, fetchGreenThumbs, createWithAI }
 
 export default PlantService
