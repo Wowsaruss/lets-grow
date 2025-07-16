@@ -15,7 +15,7 @@ import Button from '../Button'
 import { useNavigate } from 'react-router-dom'
 import { config } from '../../config'
 import { useProfileCompletion } from '../../hooks/useProfileCompletion'
-import greenThumbImg from '../../assets/green-thumb.jpg'
+import greenThumbImg from '../../assets/green-thumb.png'
 
 const MyGarden = () => {
     const { isAuthenticated, getAccessTokenSilently } = useAuth0()
