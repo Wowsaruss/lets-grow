@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import plantsRouter from './routes/plants';
+import greenThumbsRouter from './routes/green_thumbs';
 import usersRouter from './routes/users';
 import userPlantsRouter from './routes/user_plants';
 import journalEntriesRouter from './routes/journal_entries';
@@ -33,6 +34,7 @@ app.use(express.json());
 // Routes
 app.use('/api/users', usersRouter);
 app.use('/api/plants', plantsRouter);
+app.use('/api/green-thumbs', greenThumbsRouter);
 app.use('/api/user-plants', userPlantsRouter);
 app.use('/api/journal-entries', journalEntriesRouter);
 
