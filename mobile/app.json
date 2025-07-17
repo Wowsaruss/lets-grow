@@ -37,6 +37,10 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "EXPO_PUBLIC_AUTH0_DOMAIN": "dev-4mrz8mawytjq0suo.us.auth0.com",
+      "EXPO_PUBLIC_AUTH0_CLIENT_ID": "pqKGmfgNKVQRRwBVczKQdaCmVJtd8D7J"
     }
   }
 }
