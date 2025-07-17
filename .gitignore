@@ -24,3 +24,24 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# React Native / Expo
+mobile/node_modules/
+mobile/.expo/
+mobile/.expo-shared/
+mobile/.expo-packager/
+mobile/dist/
+mobile/web-build/
+mobile/.DS_Store
+
+# Metro/Expo cache
+mobile/.cache/
+mobile/.turbo/
+
+# Log files
+mobile/npm-debug.log*
+mobile/yarn-debug.log*
+mobile/yarn-error.log*
+
+# Expo Application Services (EAS)
+mobile/.eas/
