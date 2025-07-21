@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom'
 import { config } from '../../config'
 import { useProfileCompletion } from '../../hooks/useProfileCompletion'
 import greenThumbImg from '../../assets/green-thumb.png'
+import blackThumbImg from '../../assets/black-thumb.png'
 
 const MyGarden = () => {
     const { isAuthenticated, getAccessTokenSilently } = useAuth0()
@@ -240,10 +241,7 @@ const MyGarden = () => {
                                                 }}
                                                 title={plant.userVote === false ? "You downvoted this plant!" : "Give a downvote!"}
                                             >
-                                                <span style={{
-                                                    fontSize: 24,
-                                                    color: plant.userVote === false ? '#ff4444' : '#666'
-                                                }}>👎</span>
+                                                <img src={blackThumbImg} alt="Black Thumb Down" style={{ width: 32, height: 32 }} />
                                             </button>
                                         </div>
                                     </li>
